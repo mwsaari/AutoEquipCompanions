@@ -1,0 +1,7 @@
+E:\Program Files\steamapps\common\Mount & Blade II Bannerlord\Modules\AutoEquipCompanions\bin\Win64_Shipping_Client\AutoEquipCompanions\Auto Equip Companions\obj\Debug\AutoEquipCompanions.csproj.AssemblyReference.cache
+E:\Program Files\steamapps\common\Mount & Blade II Bannerlord\Modules\AutoEquipCompanions\bin\Win64_Shipping_Client\AutoEquipCompanions\Auto Equip Companions\obj\Debug\AutoEquipCompanions.csproj.CoreCompileInputs.cache
+E:\Program Files\steamapps\common\Mount & Blade II Bannerlord\Modules\AutoEquipCompanions\bin\Win64_Shipping_Client\AutoEquipCompanions\Auto Equip Companions\obj\Debug\AutoEquipCompanions.csproj.CopyComplete
+E:\Program Files\steamapps\common\Mount & Blade II Bannerlord\Modules\AutoEquipCompanions\bin\Win64_Shipping_Client\AutoEquipCompanions\Auto Equip Companions\obj\Debug\AutoEquipCompanions.dll
+E:\Program Files\steamapps\common\Mount & Blade II Bannerlord\Modules\AutoEquipCompanions\bin\Win64_Shipping_Client\AutoEquipCompanions\Auto Equip Companions\obj\Debug\AutoEquipCompanions.pdb
+E:\Program Files\steamapps\common\Mount & Blade II Bannerlord\Modules\AutoEquipCompanions\bin\Win64_Shipping_Client\AutoEquipCompanions.dll
+E:\Program Files\steamapps\common\Mount & Blade II Bannerlord\Modules\AutoEquipCompanions\bin\Win64_Shipping_Client\AutoEquipCompanions.pdb
