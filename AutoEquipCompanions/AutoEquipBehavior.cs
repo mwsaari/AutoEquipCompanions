@@ -3,7 +3,6 @@ using System.Linq;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.Core;
-using TaleWorlds.Library;
 using static TaleWorlds.Core.ItemObject;
 
 namespace AutoEquipCompanions

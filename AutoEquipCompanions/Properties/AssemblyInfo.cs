@@ -1,16 +1,16 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Auto Equip Companions")]
+[assembly: AssemblyTitle("AutoEquipCompanions")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Auto Equip Companions")]
-[assembly: AssemblyCopyright("Copyright �  2022")]
+[assembly: AssemblyProduct("AutoEquipCompanions")]
+[assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("26b3ad2d-9fde-4002-a5a8-615fc16b3234")]
+[assembly: Guid("e577663d-d945-49ea-bf4c-85b52bf19813")]
 
 // Version information for an assembly consists of the following four values:
 //
