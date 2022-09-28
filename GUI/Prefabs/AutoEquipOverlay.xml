@@ -3,6 +3,27 @@
   </Constants>
 
   <Window>
-    <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticleAlignment="Center" Text="Hello World"/>
+    <ListPanel >
+      <Children>
+        <AutoEquipWidget
+          PositionXOffset="{Offset0}"
+          WidthSizePolicy="CoverChildren"
+          HeightSizePolicy="CoverChildren"
+          HorizontalAlignment="Center"
+          VerticleAlignment="Center"/>
+        <AutoEquipWidget
+          PositionXOffset="*Offset1"
+          WidthSizePolicy="CoverChildren"
+          HeightSizePolicy="CoverChildren"
+          HorizontalAlignment="Center"
+          VerticleAlignment="Center"/>
+        <AutoEquipWidget
+          PositionXOffset="@Offset2"
+          WidthSizePolicy="CoverChildren"
+          HeightSizePolicy="CoverChildren"
+          HorizontalAlignment="Center"
+          VerticleAlignment="Center"/>
+      </Children>
+    </ListPanel>
   </Window>
 </Prefab>

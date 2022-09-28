@@ -3,9 +3,11 @@ using AutoEquipCompanions.ViewModel;
 using SandBox.GauntletUI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
+using TaleWorlds.GauntletUI.BaseTypes;
 using TaleWorlds.GauntletUI.Data;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ScreenSystem;
@@ -41,7 +43,7 @@ namespace AutoEquipCompanions
             {
                 return;
             }
-            _viewModel = new AutoEquipOverlayViewModel();
+            _viewModel = new AutoEquipOverlayViewModel(inventoryScreen);
             _layer = new GauntletLayer(200);
             _movie = _layer.LoadMovie("AutoEquipOverlay", _viewModel);
             inventoryScreen.AddLayer(_layer);
