@@ -1,0 +1,8 @@
+﻿<Prefab>
+  <Constants>    
+  </Constants>
+
+  <Window>
+    <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticleAlignment="Center" Text="Hello World"/>
+  </Window>
+</Prefab>
