@@ -1,29 +1,46 @@
 ﻿<Prefab>
-  <Constants>    
+  <Constants>
   </Constants>
-
+  <VisualDefinitions>
+    <VisualDefinition Name="TopMenu" TransitionDuration="0.2">
+      <VisualState PositionYOffset="0" State="Default" />
+    </VisualDefinition>
+  </VisualDefinitions>
   <Window>
-    <ListPanel >
+    <Widget Id="AutoEquipOverlay" VisualDefinition="TopMenu"
+            WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+            SuggestedWidth="650"
+            HorizontalAlignment="Right" VerticalAlignment="Top"
+            MarginTop="30">
       <Children>
-        <AutoEquipWidget
-          PositionXOffset="{Offset0}"
-          WidthSizePolicy="CoverChildren"
-          HeightSizePolicy="CoverChildren"
-          HorizontalAlignment="Center"
-          VerticleAlignment="Center"/>
-        <AutoEquipWidget
-          PositionXOffset="*Offset1"
-          WidthSizePolicy="CoverChildren"
-          HeightSizePolicy="CoverChildren"
-          HorizontalAlignment="Center"
-          VerticleAlignment="Center"/>
-        <AutoEquipWidget
-          PositionXOffset="@Offset2"
-          WidthSizePolicy="CoverChildren"
-          HeightSizePolicy="CoverChildren"
-          HorizontalAlignment="Center"
-          VerticleAlignment="Center"/>
+        <Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren"
+                HorizontalAlignment="Right" VerticalAlignment="Top">
+          <Children>
+            <ButtonWidget Command.Click="OpenAutoEquipSettings"
+                    WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                    SuggestedWidth="70" SuggestedHeight="45"
+                    HorizontalAlignment="Right" VerticalAlignment="Top"
+                    MarginTop="17" MarginRight="260"
+                    DoNotPassEventsToChildren="true" UpdateChildrenStates="true"
+                    Brush="Inventory.Tuple.Extension.StockButton"
+                    IsDisabled="false">
+              <Children>
+                <TextWidget Text="AEC"
+                      WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed"
+                      SuggestedHeight="30"
+                      DoNotAcceptEvents="false"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"
+                      Brush="Party.Text.UpgradeAmount" Brush.FontSize="24"
+                      Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center">
+                </TextWidget>
+                <HintWidget DataSource="{SettingHint}"
+                      WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
+                      Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+              </Children>
+            </ButtonWidget>
+          </Children>
+        </Widget>
       </Children>
-    </ListPanel>
+    </Widget>
   </Window>
 </Prefab>

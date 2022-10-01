@@ -19,13 +19,13 @@ namespace AutoEquipCompanions
         AutoEquipModel _model;
         GauntletLayer _layer;
         IGauntletMovie _movie;
-        AutoEquipOverlayViewModel _viewModel;
+        AutoEquipOverlayVM _viewModel;
 
         public override void RegisterEvents()
         {
             CampaignEvents.PlayerInventoryExchangeEvent.AddNonSerializedListener(this, AutoEquipCompanionsEvent);
             ScreenManager.OnPushScreen += OnPushScreen;
-            ScreenManager.OnPopScreen += OnPopScreen;
+            ScreenManager.OnPopScreen += OnPopScreen;  
         }
 
         private void AutoEquipCompanionsEvent(List<(ItemRosterElement, int)> _, List<(ItemRosterElement, int)> __, bool ___)
@@ -43,7 +43,7 @@ namespace AutoEquipCompanions
             {
                 return;
             }
-            _viewModel = new AutoEquipOverlayViewModel(inventoryScreen);
+            _viewModel = new AutoEquipOverlayVM(inventoryScreen);
             _layer = new GauntletLayer(200);
             _movie = _layer.LoadMovie("AutoEquipOverlay", _viewModel);
             inventoryScreen.AddLayer(_layer);
@@ -55,6 +55,7 @@ namespace AutoEquipCompanions
             {
                 return;
             }
+            _layer.ReleaseMovie(_movie);
             inventoryScreen.RemoveLayer(_layer);
             _layer = null;
             _movie = null;

@@ -245,13 +245,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="ViewModel\AutoEquipOverlayViewModel.cs" />
-    <Compile Include="ViewModel\EquipmentPreferenceWidget.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="_moduleFiles\LICENSE" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GUI\Prefabs\Settings.xml" />
     <Content Include="_moduleFiles\readme.txt" />
     <Content Include="_moduleFiles\Submodule.xml" />
     <Content Include="GUI\Prefabs\AutoEquipOverlay.xml" />

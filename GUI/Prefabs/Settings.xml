@@ -1,0 +1,18 @@
+﻿<Prefab>
+  <Window>
+    <BrushWidget
+        HeightSizePolicy="StretchToParent" WidthSizePolicy="StretchToParent"
+        Brush="Encyclopedia.SoundBrush" 
+        Sprite="BlankWhiteSquare_9" 
+        Brush.Color="#000000DD">
+      <Children>
+        <BrushWidget 
+            HeightSizePolicy="StretchToParent" WidthSizePolicy="StretchToParent"
+            SuggestedHeight="1000" SuggestedWidth="1600"
+            HorizontalAlignment="Center" VerticalAlignment="Top" 
+            MarginTop="20" Brush="Encyclopedia.Frame">          
+        </BrushWidget>
+      </Children>
+    </BrushWidget>
+  </Window>
+</Prefab>
