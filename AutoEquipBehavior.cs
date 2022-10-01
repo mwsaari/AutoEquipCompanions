@@ -33,7 +33,7 @@ namespace AutoEquipCompanions
         {
             if (_model == null)
             {
-                _model = new AutoEquipModel();
+                _model = new AutoEquipModel(null);
             }
             _model.AutoEquipCompanions();
         }

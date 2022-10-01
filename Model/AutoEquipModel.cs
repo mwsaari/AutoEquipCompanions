@@ -8,13 +8,17 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.Library;
+using TaleWorlds.CampaignSystem.Inventory;
 
 namespace AutoEquipCompanions.Model
 {
     public class AutoEquipModel
     {
-        public AutoEquipModel()
+        private InventoryLogic _inventoryLogic;
+
+        public AutoEquipModel(InventoryLogic inventoryLogic)
         {
+            _inventoryLogic = inventoryLogic;
         }
 
         public void AutoEquipCompanions()
