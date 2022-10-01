@@ -9,6 +9,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.GauntletUI.BaseTypes;
 using TaleWorlds.GauntletUI.Data;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ScreenSystem;
 
@@ -46,6 +47,7 @@ namespace AutoEquipCompanions
             _viewModel = new AutoEquipOverlayVM(inventoryScreen);
             _layer = new GauntletLayer(200);
             _movie = _layer.LoadMovie("AutoEquipOverlay", _viewModel);
+            _layer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
             inventoryScreen.AddLayer(_layer);
         }
 

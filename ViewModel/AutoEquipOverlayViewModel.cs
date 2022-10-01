@@ -33,7 +33,6 @@ namespace AutoEquipCompanions.ViewModel
             _inventoryState = (InventoryState)GameStateManager.Current.ActiveState;
             _inventoryViewModel = GetInventoryVM();
             _settingsHint = new HintViewModel(new TextObject("AutoEquipCompanions"));
-            RefreshValues();
         }
 
         private SPInventoryVM GetInventoryVM()

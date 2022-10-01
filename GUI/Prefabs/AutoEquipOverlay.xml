@@ -21,9 +21,8 @@
                     SuggestedWidth="70" SuggestedHeight="45"
                     HorizontalAlignment="Right" VerticalAlignment="Top"
                     MarginTop="17" MarginRight="260"
-                    DoNotPassEventsToChildren="true" UpdateChildrenStates="true"
-                    Brush="Inventory.Tuple.Extension.StockButton"
-                    IsDisabled="false">
+                    DoNotPassEventsToChildren="true"
+                    Brush="Inventory.Tuple.Extension.StockButton">
               <Children>
                 <TextWidget Text="AEC"
                       WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed"
