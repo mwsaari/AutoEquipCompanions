@@ -8,10 +8,11 @@ using TaleWorlds.ObjectSystem;
 
 namespace AutoEquipCompanions.Saving
 {
-    public static class AutoEquipConfig
+    public static class Config
     {
         public static void Initialize()
         {
+            CharacterData = new Dictionary<string, CharacterSettings>();
         }
 
         internal static Dictionary<string, CharacterSettings> CharacterData;

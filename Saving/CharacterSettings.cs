@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoEquipCompanions.Saving
 {
-    struct CharacterSettings
+    internal class CharacterSettings
     {
         public bool CharacterToggle;
         public bool[] ItemToggles;

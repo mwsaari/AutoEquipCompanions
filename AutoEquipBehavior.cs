@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Inventory;
 using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.GauntletUI.BaseTypes;
@@ -17,25 +18,19 @@ namespace AutoEquipCompanions
 {
     public class AutoEquipBehavior : CampaignBehaviorBase
     {
+        internal static AutoEquipBehavior Instance = new AutoEquipBehavior();
+
         AutoEquipModel _model;
         GauntletLayer _layer;
         IGauntletMovie _movie;
         AutoEquipOverlayVM _viewModel;
 
+        internal AutoEquipOverlayVM ViewModel => _viewModel;
+
         public override void RegisterEvents()
         {
-            CampaignEvents.PlayerInventoryExchangeEvent.AddNonSerializedListener(this, AutoEquipCompanionsEvent);
             ScreenManager.OnPushScreen += OnPushScreen;
             ScreenManager.OnPopScreen += OnPopScreen;  
-        }
-
-        private void AutoEquipCompanionsEvent(List<(ItemRosterElement, int)> _, List<(ItemRosterElement, int)> __, bool ___)
-        {
-            if (_model == null)
-            {
-                _model = new AutoEquipModel(null);
-            }
-            _model.AutoEquipCompanions();
         }
 
         private void OnPushScreen(ScreenBase pushedScreen)
@@ -59,6 +54,7 @@ namespace AutoEquipCompanions
             }
             _layer.ReleaseMovie(_movie);
             inventoryScreen.RemoveLayer(_layer);
+            _viewModel = null;
             _layer = null;
             _movie = null;
         }

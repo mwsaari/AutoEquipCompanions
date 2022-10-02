@@ -9,18 +9,19 @@
   <Window>
     <Widget Id="AutoEquipOverlay" VisualDefinition="TopMenu"
         WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
-        SuggestedWidth="650"
+        DoNotAcceptEvents="true"
         HorizontalAlignment="Right" VerticalAlignment="Top"
         MarginTop="30">
       <Children>
         <!-- Arrow for future buttons "Inventory.Tabbard.PreviousCharacter"-->
-        <ButtonWidget Command.Click="OpenAutoEquipSettings"
+        <ButtonWidget Command.Click="ToggleEnableAEC"
             WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
-            SuggestedWidth="70" SuggestedHeight="45"
+            SuggestedWidth="150" SuggestedHeight="45"
             HorizontalAlignment="Right" VerticalAlignment="Top"
-            MarginTop="50" MarginRight="590"
+            MarginTop="225" MarginRight="590"
             DoNotPassEventsToChildren="true"
-            Brush="Inventory.Tuple.Extension.StockButton">
+            Brush="Header.Tab.Center"
+            IsSelected="@CharacterToggle">
           <Children>
             <TextWidget Text="Enable AEC"
                 WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed"
@@ -28,8 +29,7 @@
                 DoNotAcceptEvents="false"
                 HorizontalAlignment="Center" VerticalAlignment="Center"
                 Brush="Party.Text.UpgradeAmount" Brush.FontSize="24"
-                Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center">
-            </TextWidget>
+                Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" />
             <HintWidget DataSource="{SettingHint}"
                 WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
                 Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />

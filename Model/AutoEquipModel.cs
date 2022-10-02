@@ -9,6 +9,7 @@ using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.Library;
 using TaleWorlds.CampaignSystem.Inventory;
+using AutoEquipCompanions.Saving;
 
 namespace AutoEquipCompanions.Model
 {
@@ -23,10 +24,12 @@ namespace AutoEquipCompanions.Model
 
         public void AutoEquipCompanions()
         {
+            var cofigData = Config.CharacterData;
             var heroes = MobileParty.MainParty.MemberRoster
                 .GetTroopRoster()
-                .Where(x => x.Character.IsHero && !x.Character.IsPlayerCharacter)
-                .Select(x => x.Character.HeroObject);
+                .Where(x => x.Character.IsHero)
+                .Select(x => x.Character.HeroObject)
+                .Where(x => !Config.CharacterData.ContainsKey(x.StringId) || Config.CharacterData[x.StringId].CharacterToggle);
             var inventoryGroupedByType = new Dictionary<ItemObject.ItemTypeEnum, ItemRosterElement[]>();
             foreach (var hero in heroes)
             {

@@ -3,12 +3,14 @@ using AutoEquipCompanions.Saving;
 using SandBox.GauntletUI;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.CampaignSystem.Inventory;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Inventory;
 using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection.Information;
+using TaleWorlds.Core.ViewModelCollection.Selector;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.GauntletUI.BaseTypes;
 using TaleWorlds.GauntletUI.Data;
@@ -25,12 +27,71 @@ namespace AutoEquipCompanions.ViewModel
         private readonly GauntletInventoryScreen _inventoryScreen;
         private readonly AutoEquipModel _autoEquipModel;
         private readonly SPInventoryVM _inventoryViewModel;
+        private Dictionary<string, CharacterSettings> _characterToggles;
 
         public AutoEquipOverlayVM(GauntletInventoryScreen inventoryScreen) : base()
         {
             _inventoryScreen = inventoryScreen;
             _autoEquipModel = new AutoEquipModel(((InventoryState)GameStateManager.Current.ActiveState).InventoryLogic);
             _inventoryViewModel = GetInventoryVM();
+            _characterToggles = Config.CharacterData;
+            _inventoryViewModel.CharacterList.PropertyChangedWithValue += SelectedCharacterChanged;
+        }
+
+        ~AutoEquipOverlayVM()
+        {
+            _inventoryViewModel.CharacterList.PropertyChangedWithValue -= SelectedCharacterChanged;
+        }
+
+        private SelectorVM<InventoryCharacterSelectorItemVM> CharacterList => _inventoryViewModel.CharacterList;
+
+        private string CurrentCharacter => CharacterList.SelectedItem.CharacterID;
+
+        [DataSourceProperty]
+        public bool CharacterToggle
+        {
+            get
+            {
+                if(_characterToggles.TryGetValue(CurrentCharacter, out var value))
+                {
+                    return value.CharacterToggle;
+                }
+                return true;
+            }
+            set
+            {
+                if (_characterToggles.ContainsKey(CurrentCharacter))
+                {
+                    _characterToggles[CurrentCharacter].CharacterToggle = value;
+                }
+                else
+                {
+                    _characterToggles.Add(CurrentCharacter, new CharacterSettings() { CharacterToggle = value });
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        public override void RefreshValues()
+        {
+            base.RefreshValues();
+            OnPropertyChanged(nameof(CharacterToggle));
+        }
+
+        public void OnExecuteCompleteTransactions()
+        {
+            Config.CharacterData = _characterToggles;
+            _autoEquipModel.AutoEquipCompanions();
+        }
+
+        public void ToggleEnableAEC()
+        {
+            CharacterToggle = !CharacterToggle;
+        }
+
+        private void SelectedCharacterChanged(object sender, PropertyChangedWithValueEventArgs e)
+        {
+            RefreshValues();
         }
 
         private SPInventoryVM GetInventoryVM()
@@ -45,21 +106,6 @@ namespace AutoEquipCompanions.ViewModel
                 }
             }
             return null;
-        }
-
-        public string CurrentCharacter => _inventoryViewModel.CharacterList.SelectedItem.CharacterID;
-
-        [DataSourceProperty]
-        public bool CharacterToggle => AutoEquipConfig.CharacterData[CurrentCharacter].CharacterToggle;
-
-        [DataSourceProperty]
-        public bool[] SlotToggles => AutoEquipConfig.CharacterData[CurrentCharacter].ItemToggles;
-
-        public override void RefreshValues()
-        {
-            base.RefreshValues();
-            OnPropertyChanged(nameof(CharacterToggle));
-            OnPropertyChanged(nameof(SlotToggles));
         }
     }
 }
