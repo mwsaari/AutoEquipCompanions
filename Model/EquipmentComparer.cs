@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using TaleWorlds.Core;
-using static TaleWorlds.Core.ItemObject;
 
 namespace AutoEquipCompanions.Model
 {
@@ -15,6 +14,10 @@ namespace AutoEquipCompanions.Model
 
         private int MattsBSMagicCalculation(EquipmentElement equipment)
         {
+            if (equipment.IsEmpty)
+            {
+                return 0;
+            }
             if (equipment.Item.HasArmorComponent)
             {
                 if(equipment.Item.ItemType == ItemObject.ItemTypeEnum.HorseHarness)

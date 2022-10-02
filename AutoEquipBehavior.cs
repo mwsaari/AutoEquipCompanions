@@ -1,19 +1,11 @@
 ﻿using AutoEquipCompanions.Model;
 using AutoEquipCompanions.Saving;
 using AutoEquipCompanions.ViewModel;
-using Newtonsoft.Json;
 using SandBox.GauntletUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.CampaignSystem.Inventory;
-using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
-using TaleWorlds.GauntletUI.BaseTypes;
 using TaleWorlds.GauntletUI.Data;
 using TaleWorlds.Library;
-using TaleWorlds.MountAndBlade;
 using TaleWorlds.ScreenSystem;
 
 namespace AutoEquipCompanions
@@ -32,12 +24,18 @@ namespace AutoEquipCompanions
         public override void RegisterEvents()
         {
             ScreenManager.OnPushScreen += OnPushScreen;
-            ScreenManager.OnPopScreen += OnPopScreen;  
+            ScreenManager.OnPopScreen += OnPopScreen;
+        }
+
+        public void DeRegisterEvents()
+        {
+            ScreenManager.OnPushScreen -= OnPushScreen;
+            ScreenManager.OnPopScreen -= OnPopScreen;
         }
 
         private void OnPushScreen(ScreenBase pushedScreen)
         {
-            if(pushedScreen is not GauntletInventoryScreen inventoryScreen)
+            if (pushedScreen is not GauntletInventoryScreen inventoryScreen)
             {
                 return;
             }
@@ -50,7 +48,8 @@ namespace AutoEquipCompanions
 
         private void OnPopScreen(ScreenBase poppedScreen)
         {
-            if (poppedScreen is not GauntletInventoryScreen inventoryScreen)
+            if (poppedScreen is not GauntletInventoryScreen inventoryScreen
+                || _layer is null)
             {
                 return;
             }
@@ -65,19 +64,19 @@ namespace AutoEquipCompanions
         {
             if (dataStore.IsSaving)
             {
-                var saveData = JsonConvert.SerializeObject(Config.CharacterSettings);
+                var saveData = Config.CreateSaveData();
                 dataStore.SyncData("AECharacterToggles", ref saveData);
             }
             if (dataStore.IsLoading)
             {
-                var jsonString = "";
-                if (dataStore.SyncData("AECharacterToggles", ref jsonString) && !string.IsNullOrEmpty(jsonString))
+                var saveData = "";
+                if (dataStore.SyncData("AECharacterToggles", ref saveData) && !string.IsNullOrEmpty(saveData))
                 {
-                    Config.CharacterSettings = JsonConvert.DeserializeObject<Dictionary<string, CharacterSettings>>(jsonString);
+                    Config.ReadSaveData(saveData);
                 }
                 else
                 {
-                    Config.CharacterSettings = new Dictionary<string, CharacterSettings>();
+                    Config.Initialize();
                 }
             }
         }

@@ -1,8 +1,7 @@
-﻿using AutoEquipCompanions.Model;
-using AutoEquipCompanions.Saving;
+﻿using AutoEquipCompanions.Saving;
 using HarmonyLib;
+using System.Linq;
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.CampaignSystem.ViewModelCollection.Inventory;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
@@ -19,10 +18,15 @@ namespace AutoEquipCompanions
 
         protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
         {
-            if(starterObject is CampaignGameStarter campaignGameStarter)
+            if (starterObject is CampaignGameStarter campaignGameStarter)
             {
                 campaignGameStarter.AddBehavior(AutoEquipBehavior.Instance);
             }
+        }
+
+        public override void OnGameEnd(Game game)
+        {
+            AutoEquipBehavior.Instance.DeRegisterEvents();
         }
     }
 }

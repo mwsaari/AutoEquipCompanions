@@ -1,24 +1,14 @@
 ﻿using AutoEquipCompanions.Model;
 using AutoEquipCompanions.Saving;
 using SandBox.GauntletUI;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using TaleWorlds.CampaignSystem.GameState;
-using TaleWorlds.CampaignSystem.Inventory;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Inventory;
 using TaleWorlds.Core;
-using TaleWorlds.Core.ViewModelCollection.Information;
 using TaleWorlds.Core.ViewModelCollection.Selector;
 using TaleWorlds.Engine.GauntletUI;
-using TaleWorlds.GauntletUI.BaseTypes;
-using TaleWorlds.GauntletUI.Data;
-using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
-using TaleWorlds.Localization;
-using TaleWorlds.MountAndBlade.GauntletUI.Widgets.Inventory;
-using TaleWorlds.ScreenSystem;
 
 namespace AutoEquipCompanions.ViewModel
 {
@@ -27,15 +17,17 @@ namespace AutoEquipCompanions.ViewModel
         private readonly GauntletInventoryScreen _inventoryScreen;
         private readonly AutoEquipModel _autoEquipModel;
         private readonly SPInventoryVM _inventoryViewModel;
-        private Dictionary<string, CharacterSettings> _characterToggles;
+        private Dictionary<string, CharacterSettings> _heroToggles;
 
         public AutoEquipOverlayVM(GauntletInventoryScreen inventoryScreen) : base()
         {
             _inventoryScreen = inventoryScreen;
             _autoEquipModel = new AutoEquipModel(((InventoryState)GameStateManager.Current.ActiveState).InventoryLogic);
             _inventoryViewModel = GetInventoryVM();
-            _characterToggles = Config.CharacterSettings;
+            SettingsToggle = Config.SettingsVisible;
+            _heroToggles = Config.CharacterSettings;
             _inventoryViewModel.CharacterList.PropertyChangedWithValue += SelectedCharacterChanged;
+            RefreshValues();
         }
 
         ~AutoEquipOverlayVM()
@@ -45,14 +37,20 @@ namespace AutoEquipCompanions.ViewModel
 
         private SelectorVM<InventoryCharacterSelectorItemVM> CharacterList => _inventoryViewModel.CharacterList;
 
-        private string CurrentCharacter => CharacterList.SelectedItem.CharacterID;
+        private string CurrentHero => CharacterList.SelectedItem.CharacterID;
+
+        [DataSourceProperty]
+        public bool SettingsToggle { get; set; }
+
+        [DataSourceProperty]
+        public string SettingsToggleText => SettingsToggle ? "Hide AEC" : "Show AEC";
 
         [DataSourceProperty]
         public bool CharacterToggle
         {
             get
             {
-                if(_characterToggles.TryGetValue(CurrentCharacter, out var value))
+                if (_heroToggles.TryGetValue(CurrentHero, out var value))
                 {
                     return value.CharacterToggle;
                 }
@@ -60,33 +58,186 @@ namespace AutoEquipCompanions.ViewModel
             }
             set
             {
-                if (_characterToggles.ContainsKey(CurrentCharacter))
+                if (_heroToggles.ContainsKey(CurrentHero))
                 {
-                    _characterToggles[CurrentCharacter].CharacterToggle = value;
+                    _heroToggles[CurrentHero].CharacterToggle = value;
                 }
                 else
                 {
-                    _characterToggles.Add(CurrentCharacter, new CharacterSettings() { CharacterToggle = value });
+                    var characterSettings = new CharacterSettings().Initialize();
+                    characterSettings.CharacterToggle = value;
+                    _heroToggles.Add(CurrentHero, characterSettings);
                 }
-                OnPropertyChanged();
             }
         }
+
+        public void ToggleSettings()
+        {
+            SettingsToggle = !SettingsToggle;
+            OnPropertyChanged(nameof(SettingsToggle));
+            OnPropertyChanged(nameof(SettingsToggleText));
+        }
+
+        public void ToggleCharacter()
+        {
+            CharacterToggle = !CharacterToggle;
+            OnPropertyChanged(nameof(CharacterToggle));
+        }
+
+        #region Armor
+        [DataSourceProperty]
+        public bool HeadToggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
+                               || characterSettings[EquipmentIndex.Head];
+
+        public void ToggleHead()
+        {
+            ToggleEquipment(EquipmentIndex.Head);
+            OnPropertyChanged(nameof(HeadToggle));
+        }
+
+        [DataSourceProperty]
+        public bool CapeToggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
+                               || characterSettings[EquipmentIndex.Cape];
+
+        public void ToggleCape()
+        {
+            ToggleEquipment(EquipmentIndex.Cape);
+            OnPropertyChanged(nameof(CapeToggle));
+        }
+
+        [DataSourceProperty]
+        public bool BodyToggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
+                               || characterSettings[EquipmentIndex.Body];
+
+        public void ToggleBody()
+        {
+            ToggleEquipment(EquipmentIndex.Body);
+            OnPropertyChanged(nameof(BodyToggle));
+        }
+
+        [DataSourceProperty]
+        public bool GlovesToggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
+                               || characterSettings[EquipmentIndex.Gloves];
+
+        public void ToggleGloves()
+        {
+            ToggleEquipment(EquipmentIndex.Gloves);
+            OnPropertyChanged(nameof(GlovesToggle));
+        }
+
+        [DataSourceProperty]
+        public bool LegToggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
+                               || characterSettings[EquipmentIndex.Leg];
+
+        public void ToggleLeg()
+        {
+            ToggleEquipment(EquipmentIndex.Leg);
+            OnPropertyChanged(nameof(LegToggle));
+        }
+        #endregion
+
+        #region Horse
+        [DataSourceProperty]
+        public bool HorseToggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
+                               || characterSettings[EquipmentIndex.Horse];
+
+        public void ToggleHorse()
+        {
+            ToggleEquipment(EquipmentIndex.Horse);
+            OnPropertyChanged(nameof(HorseToggle));
+        }
+
+        [DataSourceProperty]
+        public bool HarnessToggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
+                               || characterSettings[EquipmentIndex.HorseHarness];
+
+        public void ToggleHarness()
+        {
+            ToggleEquipment(EquipmentIndex.HorseHarness);
+            OnPropertyChanged(nameof(HarnessToggle));
+        }
+        #endregion
+
+        #region Weapons
+        [DataSourceProperty]
+        public bool Weapon0Toggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
+                               || characterSettings[EquipmentIndex.Weapon0];
+
+        public void ToggleWeapon0()
+        {
+            ToggleEquipment(EquipmentIndex.Weapon0);
+            OnPropertyChanged(nameof(Weapon0Toggle));
+        }
+
+        [DataSourceProperty]
+        public bool Weapon1Toggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
+                               || characterSettings[EquipmentIndex.Weapon1];
+
+        public void ToggleWeapon1()
+        {
+            ToggleEquipment(EquipmentIndex.Weapon1);
+            OnPropertyChanged(nameof(Weapon1Toggle));
+        }
+
+        [DataSourceProperty]
+        public bool Weapon2Toggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
+                               || characterSettings[EquipmentIndex.Weapon2];
+
+        public void ToggleWeapon2()
+        {
+            ToggleEquipment(EquipmentIndex.Weapon2);
+            OnPropertyChanged(nameof(Weapon2Toggle));
+        }
+
+        [DataSourceProperty]
+        public bool Weapon3Toggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
+                               || characterSettings[EquipmentIndex.Weapon3];
+
+        public void ToggleWeapon3()
+        {
+            ToggleEquipment(EquipmentIndex.Weapon3);
+            OnPropertyChanged(nameof(Weapon3Toggle));
+        }
+        #endregion
 
         public override void RefreshValues()
         {
             base.RefreshValues();
+            OnPropertyChanged(nameof(SettingsToggle));
+            OnPropertyChanged(nameof(SettingsToggleText));
             OnPropertyChanged(nameof(CharacterToggle));
+            OnPropertyChanged(nameof(HeadToggle));
+            OnPropertyChanged(nameof(CapeToggle));
+            OnPropertyChanged(nameof(BodyToggle));
+            OnPropertyChanged(nameof(GlovesToggle));
+            OnPropertyChanged(nameof(LegToggle));
+            OnPropertyChanged(nameof(HorseToggle));
+            OnPropertyChanged(nameof(HarnessToggle));
+            OnPropertyChanged(nameof(Weapon0Toggle));
+            OnPropertyChanged(nameof(Weapon1Toggle));
+            OnPropertyChanged(nameof(Weapon2Toggle));
+            OnPropertyChanged(nameof(Weapon3Toggle));
+        }
+
+        public void ToggleEquipment(EquipmentIndex index)
+        {
+            if (_heroToggles.TryGetValue(CurrentHero, out var characterSettings))
+            {
+                characterSettings[index] = !characterSettings[index];
+            }
+            else
+            {
+                characterSettings = new CharacterSettings().Initialize();
+                characterSettings[index] = false;
+                _heroToggles.Add(CurrentHero, characterSettings);
+            }
         }
 
         public void OnExecuteCompleteTransactions()
         {
-            Config.CharacterSettings = _characterToggles;
+            Config.SettingsVisible = SettingsToggle;
+            Config.CharacterSettings = _heroToggles;
             _autoEquipModel.AutoEquipCompanions();
-        }
-
-        public void ToggleEnableAEC()
-        {
-            CharacterToggle = !CharacterToggle;
         }
 
         private void SelectedCharacterChanged(object sender, PropertyChangedWithValueEventArgs e)

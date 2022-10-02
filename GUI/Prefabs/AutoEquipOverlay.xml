@@ -8,33 +8,75 @@
   </VisualDefinitions>
   <Window>
     <Widget Id="AutoEquipOverlay" VisualDefinition="TopMenu"
-        WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
-        DoNotAcceptEvents="true"
-        HorizontalAlignment="Right" VerticalAlignment="Top"
-        MarginTop="30">
+            MarginTop="30"
+            DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" VerticalAlignment="Top">
       <Children>
-        <!-- Arrow for future buttons "Inventory.Tabbard.PreviousCharacter"-->
-        <ButtonWidget Command.Click="ToggleEnableAEC"
-            WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
-            SuggestedWidth="150" SuggestedHeight="45"
-            HorizontalAlignment="Right" VerticalAlignment="Top"
-            MarginTop="225" MarginRight="590"
-            DoNotPassEventsToChildren="true"
-            Brush="Header.Tab.Center"
-            IsSelected="@CharacterToggle">
+        <ButtonWidget Id="SettingsToggleButton"
+                      Command.Click="ToggleSettings" IsSelected="@SettingsToggle"
+                      MarginTop="30" MarginRight="590"
+                      DoNotPassEventsToChildren="true" Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="150" SuggestedHeight="45" HorizontalAlignment="Right" VerticalAlignment="Top">
           <Children>
-            <TextWidget Text="Enable AEC"
-                WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed"
-                SuggestedHeight="30"
-                DoNotAcceptEvents="false"
-                HorizontalAlignment="Center" VerticalAlignment="Center"
-                Brush="Party.Text.UpgradeAmount" Brush.FontSize="24"
-                Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" />
-            <HintWidget DataSource="{SettingHint}"
-                WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"
-                Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+            <TextWidget Text="@SettingsToggleText"
+                        Brush="Party.Text.UpgradeAmount" Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Children>
         </ButtonWidget>
+        <Widget Id="Settings"
+                IsVisible="@SettingsToggle"
+                DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+          <Children>
+            <ButtonWidget Id="CharacterToggleButton"
+                          Command.Click="ToggleCharacter" IsSelected="@CharacterToggle"
+                          MarginTop="200" MarginRight="590"
+                          DoNotPassEventsToChildren="true" Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="150" SuggestedHeight="45" HorizontalAlignment="Right" VerticalAlignment="Top">
+              <Children>
+                <TextWidget Text="Enable AEC"
+                            Brush="Party.Text.UpgradeAmount" Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              </Children>
+            </ButtonWidget>
+            <Widget Id="EquipmentToggles"
+                    IsVisible="@CharacterToggle"
+                    DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+              <Children>
+                <!-- Armor -->
+                <ButtonWidget Command.Click="ToggleHead" IsSelected="@HeadToggle"
+                              MarginTop="225" MarginLeft="715"
+                              Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ButtonWidget Command.Click="ToggleCape" IsSelected="@CapeToggle"
+                              MarginTop="310" MarginLeft="715"
+                              Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ButtonWidget Command.Click="ToggleBody" IsSelected="@BodyToggle"
+                              MarginTop="396" MarginLeft="715"
+                              Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ButtonWidget Command.Click="ToggleGloves" IsSelected="@GlovesToggle"
+                              MarginTop="482" MarginLeft="715"
+                              Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ButtonWidget Command.Click="ToggleLeg" IsSelected="@LegToggle"
+                              MarginTop="568" MarginLeft="715"
+                              Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <!-- Horse -->
+                <ButtonWidget Command.Click="ToggleHorse" IsSelected="@HorseToggle"
+                              MarginTop="685" MarginLeft="715"
+                              Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ButtonWidget Command.Click="ToggleHarness" IsSelected="@HarnessToggle"
+                              MarginTop="770" MarginLeft="715"
+                              Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <!-- Weapons -->
+                <ButtonWidget Command.Click="ToggleWeapon0" IsSelected="@Weapon0Toggle"
+                              MarginTop="310" MarginRight="710"
+                              Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                <ButtonWidget Command.Click="ToggleWeapon1" IsSelected="@Weapon1Toggle"
+                              MarginTop="396" MarginRight="710"
+                              Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                <ButtonWidget Command.Click="ToggleWeapon2" IsSelected="@Weapon2Toggle"
+                              MarginTop="482" MarginRight="710"
+                              Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                <ButtonWidget Command.Click="ToggleWeapon3" IsSelected="@Weapon3Toggle"
+                              MarginTop="568" MarginRight="710"
+                              Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+              </Children>
+            </Widget>
+          </Children>
+        </Widget>
       </Children>
     </Widget>
   </Window>

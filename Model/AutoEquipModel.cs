@@ -34,9 +34,10 @@ namespace AutoEquipCompanions.Model
             foreach (var hero in heroes)
             {
                 bool hasUpgraded = false;
+                var settings = Config.CharacterSettings[hero.StringId];
                 foreach (EquipmentIndex slot in Enumerable.Range(0, (int)EquipmentIndex.NumEquipmentSetSlots))
                 {
-                    if (slot == EquipmentIndex.ExtraWeaponSlot)
+                    if (slot == EquipmentIndex.ExtraWeaponSlot || !settings[slot])
                     {
                         continue;
                     }
@@ -57,13 +58,13 @@ namespace AutoEquipCompanions.Model
         private bool TryGetBestReplacement(Hero hero, EquipmentIndex slot, out EquipmentElement bestReplacement)
         {
             bestReplacement = EquipmentElement.Invalid;
-            var currentEquipment = hero.BattleEquipment.GetEquipmentFromSlot(slot);
-            if (currentEquipment.IsEmpty)
+            var (currentEquipment, itemType) = GetEquipmentInfo(hero, slot);
+            if(itemType == ItemObject.ItemTypeEnum.Invalid)
             {
                 return false;
             }
             var orderedReplacements = MobileParty.MainParty.ItemRoster
-                .Where(x => x.EquipmentElement.Item.Type == currentEquipment.Item.Type)
+                .Where(x => x.EquipmentElement.Item.Type == itemType)
                 .OrderByDescending(x => x.EquipmentElement, EquipmentComparer.Instance)
                 .Select(x => x.EquipmentElement);
             foreach (var replacement in orderedReplacements)
@@ -72,11 +73,13 @@ namespace AutoEquipCompanions.Model
                 {
                     return false;
                 }
-                if (replacement.Item.Difficulty > hero.GetSkillValue(replacement.Item.RelevantSkill))
+                if ( replacement.Item.Difficulty > hero.GetSkillValue(replacement.Item.RelevantSkill))
                 {
                     return false;
                 }
-                if (!hero.BattleEquipment.Horse.IsEmpty && currentEquipment.Item.HasWeaponComponent && replacement.Item.HasWeaponComponent)
+                if (!hero.BattleEquipment.Horse.IsEmpty 
+                    && (currentEquipment.Item?.HasWeaponComponent ?? false) 
+                    && replacement.Item.HasWeaponComponent)
                 {
                     bool isReplacementNotUsableOnHorse = MBItem.GetItemUsageSetFlags(replacement.Item.PrimaryWeapon.ItemUsage).HasFlag(ItemObject.ItemUsageSetFlags.RequiresNoMount);
                     bool isCurrentNotUsableOnHorse = MBItem.GetItemUsageSetFlags(currentEquipment.Item.PrimaryWeapon.ItemUsage).HasFlag(ItemObject.ItemUsageSetFlags.RequiresNoMount);
@@ -89,6 +92,47 @@ namespace AutoEquipCompanions.Model
                 return true;
             }
             return false;
+        }
+
+        private (EquipmentElement, ItemObject.ItemTypeEnum) GetEquipmentInfo(Hero hero, EquipmentIndex slot)
+        {
+            var currentEquipment = hero.BattleEquipment.GetEquipmentFromSlot(slot);
+            if (currentEquipment.IsEmpty)
+            {
+                ItemObject.ItemTypeEnum itemType;
+                switch (slot)
+                {
+                    case EquipmentIndex.Head:
+                        itemType = ItemObject.ItemTypeEnum.HeadArmor;
+                        break;
+                    case EquipmentIndex.Cape:
+                        itemType = ItemObject.ItemTypeEnum.Cape;
+                        break;
+                    case EquipmentIndex.Body:
+                        itemType = ItemObject.ItemTypeEnum.BodyArmor;
+                        break;
+                    case EquipmentIndex.Gloves:
+                        itemType = ItemObject.ItemTypeEnum.HandArmor;
+                        break;
+                    case EquipmentIndex.Leg:
+                        itemType = ItemObject.ItemTypeEnum.LegArmor;
+                        break;
+                    case EquipmentIndex.Horse:
+                        itemType = ItemObject.ItemTypeEnum.Horse;
+                        break;
+                    case EquipmentIndex.HorseHarness:
+                        itemType = ItemObject.ItemTypeEnum.HorseHarness;
+                        break;
+                    default:
+                        itemType = ItemObject.ItemTypeEnum.Invalid;
+                        break;
+                }
+                return (currentEquipment, itemType);
+            }
+            else
+            {
+                return (currentEquipment, currentEquipment.Item.ItemType);
+            }
         }
 
         private void DoWeaponSwap(Hero character, EquipmentIndex slot, EquipmentElement replacement)
