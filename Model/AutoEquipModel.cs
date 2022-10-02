@@ -1,15 +1,12 @@
-﻿using System;
+﻿using AutoEquipCompanions.Saving;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.Core;
-using TaleWorlds.MountAndBlade;
-using TaleWorlds.Library;
 using TaleWorlds.CampaignSystem.Inventory;
-using AutoEquipCompanions.Saving;
+using TaleWorlds.CampaignSystem.Party;
+using TaleWorlds.Core;
+using TaleWorlds.Library;
+using TaleWorlds.MountAndBlade;
 
 namespace AutoEquipCompanions.Model
 {
@@ -59,7 +56,7 @@ namespace AutoEquipCompanions.Model
         {
             bestReplacement = EquipmentElement.Invalid;
             var (currentEquipment, itemType) = GetEquipmentInfo(hero, slot);
-            if(itemType == ItemObject.ItemTypeEnum.Invalid)
+            if (itemType == ItemObject.ItemTypeEnum.Invalid)
             {
                 return false;
             }
@@ -73,12 +70,12 @@ namespace AutoEquipCompanions.Model
                 {
                     return false;
                 }
-                if ( replacement.Item.Difficulty > hero.GetSkillValue(replacement.Item.RelevantSkill))
+                if (replacement.Item.Difficulty > hero.GetSkillValue(replacement.Item.RelevantSkill))
                 {
                     return false;
                 }
-                if (!hero.BattleEquipment.Horse.IsEmpty 
-                    && (currentEquipment.Item?.HasWeaponComponent ?? false) 
+                if (!hero.BattleEquipment.Horse.IsEmpty
+                    && (currentEquipment.Item?.HasWeaponComponent ?? false)
                     && replacement.Item.HasWeaponComponent)
                 {
                     bool isReplacementNotUsableOnHorse = MBItem.GetItemUsageSetFlags(replacement.Item.PrimaryWeapon.ItemUsage).HasFlag(ItemObject.ItemUsageSetFlags.RequiresNoMount);
@@ -140,7 +137,10 @@ namespace AutoEquipCompanions.Model
             var currentEquipment = character.BattleEquipment.GetEquipmentFromSlot(slot);
             character.BattleEquipment.AddEquipmentToSlotWithoutAgent(slot, replacement);
             MobileParty.MainParty.ItemRoster.AddToCounts(replacement, -1);
-            MobileParty.MainParty.ItemRoster.AddToCounts(currentEquipment, 1);
+            if (!currentEquipment.IsEmpty)
+            { 
+                MobileParty.MainParty.ItemRoster.AddToCounts(currentEquipment, 1); 
+            }
         }
     }
 }
