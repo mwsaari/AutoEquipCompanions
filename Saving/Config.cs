@@ -12,9 +12,9 @@ namespace AutoEquipCompanions.Saving
     {
         public static void Initialize()
         {
-            CharacterData = new Dictionary<string, CharacterSettings>();
+            CharacterSettings = new Dictionary<string, CharacterSettings>();
         }
 
-        internal static Dictionary<string, CharacterSettings> CharacterData;
+        internal static Dictionary<string, CharacterSettings> CharacterSettings;
     }
 }

@@ -34,7 +34,7 @@ namespace AutoEquipCompanions.ViewModel
             _inventoryScreen = inventoryScreen;
             _autoEquipModel = new AutoEquipModel(((InventoryState)GameStateManager.Current.ActiveState).InventoryLogic);
             _inventoryViewModel = GetInventoryVM();
-            _characterToggles = Config.CharacterData;
+            _characterToggles = Config.CharacterSettings;
             _inventoryViewModel.CharacterList.PropertyChangedWithValue += SelectedCharacterChanged;
         }
 
@@ -80,7 +80,7 @@ namespace AutoEquipCompanions.ViewModel
 
         public void OnExecuteCompleteTransactions()
         {
-            Config.CharacterData = _characterToggles;
+            Config.CharacterSettings = _characterToggles;
             _autoEquipModel.AutoEquipCompanions();
         }
 

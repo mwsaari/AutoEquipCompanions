@@ -24,12 +24,12 @@ namespace AutoEquipCompanions.Model
 
         public void AutoEquipCompanions()
         {
-            var cofigData = Config.CharacterData;
+            var cofigData = Config.CharacterSettings;
             var heroes = MobileParty.MainParty.MemberRoster
                 .GetTroopRoster()
                 .Where(x => x.Character.IsHero)
                 .Select(x => x.Character.HeroObject)
-                .Where(x => !Config.CharacterData.ContainsKey(x.StringId) || Config.CharacterData[x.StringId].CharacterToggle);
+                .Where(x => !Config.CharacterSettings.ContainsKey(x.StringId) || Config.CharacterSettings[x.StringId].CharacterToggle);
             var inventoryGroupedByType = new Dictionary<ItemObject.ItemTypeEnum, ItemRosterElement[]>();
             foreach (var hero in heroes)
             {

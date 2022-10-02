@@ -1,5 +1,7 @@
 ﻿using AutoEquipCompanions.Model;
+using AutoEquipCompanions.Saving;
 using AutoEquipCompanions.ViewModel;
+using Newtonsoft.Json;
 using SandBox.GauntletUI;
 using System;
 using System.Collections.Generic;
@@ -61,6 +63,23 @@ namespace AutoEquipCompanions
 
         public override void SyncData(IDataStore dataStore)
         {
+            if (dataStore.IsSaving)
+            {
+                var saveData = JsonConvert.SerializeObject(Config.CharacterSettings);
+                dataStore.SyncData("AECharacterToggles", ref saveData);
+            }
+            if (dataStore.IsLoading)
+            {
+                var jsonString = "";
+                if (dataStore.SyncData("AECharacterToggles", ref jsonString) && !string.IsNullOrEmpty(jsonString))
+                {
+                    Config.CharacterSettings = JsonConvert.DeserializeObject<Dictionary<string, CharacterSettings>>(jsonString);
+                }
+                else
+                {
+                    Config.CharacterSettings = new Dictionary<string, CharacterSettings>();
+                }
+            }
         }
     }
 }
