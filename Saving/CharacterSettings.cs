@@ -4,7 +4,7 @@ using TaleWorlds.Core;
 
 namespace AutoEquipCompanions.Saving
 {
-    internal class CharacterSettings
+    public class CharacterSettings
     {
         public CharacterSettings Initialize()
         {

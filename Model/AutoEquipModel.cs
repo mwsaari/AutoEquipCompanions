@@ -19,22 +19,29 @@ namespace AutoEquipCompanions.Model
             _inventoryLogic = inventoryLogic;
         }
 
-        public void AutoEquipCompanions()
+        public void AutoEquipCompanions(Dictionary<string, CharacterSettings> characterSettings)
         {
-            var cofigData = Config.CharacterSettings;
             var heroes = MobileParty.MainParty.MemberRoster
                 .GetTroopRoster()
                 .Where(x => x.Character.IsHero)
                 .Select(x => x.Character.HeroObject)
-                .Where(x => !Config.CharacterSettings.ContainsKey(x.StringId) || Config.CharacterSettings[x.StringId].CharacterToggle);
+                .Where(x => !Config.CharacterSettings.ContainsKey(x.StringId) || characterSettings[x.StringId].CharacterToggle);
             var inventoryGroupedByType = new Dictionary<ItemObject.ItemTypeEnum, ItemRosterElement[]>();
             foreach (var hero in heroes)
             {
                 bool hasUpgraded = false;
-                var settings = Config.CharacterSettings[hero.StringId];
+                CharacterSettings heroSettings;
+                if (characterSettings.ContainsKey(hero.StringId))
+                {
+                    heroSettings = characterSettings[hero.StringId];
+                }
+                else
+                {
+                    heroSettings = new CharacterSettings().Initialize();
+                }
                 foreach (EquipmentIndex slot in Enumerable.Range(0, (int)EquipmentIndex.NumEquipmentSetSlots))
                 {
-                    if (slot == EquipmentIndex.ExtraWeaponSlot || !settings[slot])
+                    if (slot == EquipmentIndex.ExtraWeaponSlot || !heroSettings[slot])
                     {
                         continue;
                     }

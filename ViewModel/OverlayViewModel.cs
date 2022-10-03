@@ -232,12 +232,17 @@ namespace AutoEquipCompanions.ViewModel
                 _heroToggles.Add(CurrentHero, characterSettings);
             }
         }
+        public void RunAutoEquip()
+        {
+            _autoEquipModel.AutoEquipCompanions(_heroToggles);
+            _inventoryViewModel.RefreshValues();
+        }
 
         public void OnExecuteCompleteTransactions()
         {
             Config.SettingsVisible = SettingsToggle;
             Config.CharacterSettings = _heroToggles;
-            _autoEquipModel.AutoEquipCompanions();
+            _autoEquipModel.AutoEquipCompanions(Config.CharacterSettings);
         }
 
         private void SelectedCharacterChanged(object sender, PropertyChangedWithValueEventArgs e)
