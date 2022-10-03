@@ -45,7 +45,7 @@ namespace AutoEquipCompanions.Model
                     {
                         continue;
                     }
-                    if (TryGetBestReplacement(hero, slot, out EquipmentElement replacement))
+                    if (TryGetBestReplacement(hero, slot, out ItemRosterElement replacement))
                     {
                         DoWeaponSwap(hero, slot, replacement);
                         hasUpgraded = true;
@@ -59,9 +59,9 @@ namespace AutoEquipCompanions.Model
             }
         }
 
-        private bool TryGetBestReplacement(Hero hero, EquipmentIndex slot, out EquipmentElement bestReplacement)
+        private bool TryGetBestReplacement(Hero hero, EquipmentIndex slot, out ItemRosterElement bestReplacement)
         {
-            bestReplacement = EquipmentElement.Invalid;
+            bestReplacement = ItemRosterElement.Invalid;
             var (currentEquipment, itemType) = GetEquipmentInfo(hero, slot);
             if (itemType == ItemObject.ItemTypeEnum.Invalid)
             {
@@ -69,23 +69,22 @@ namespace AutoEquipCompanions.Model
             }
             var orderedReplacements = MobileParty.MainParty.ItemRoster
                 .Where(x => x.EquipmentElement.Item.Type == itemType)
-                .OrderByDescending(x => x.EquipmentElement, EquipmentComparer.Instance)
-                .Select(x => x.EquipmentElement);
+                .OrderByDescending(x => x.EquipmentElement, EquipmentComparer.Instance);
             foreach (var replacement in orderedReplacements)
             {
-                if (currentEquipment.Compare(replacement) >= 0)
+                if (currentEquipment.Compare(replacement.EquipmentElement) >= 0)
                 {
                     return false;
                 }
-                if (replacement.Item.Difficulty > hero.GetSkillValue(replacement.Item.RelevantSkill))
+                if (replacement.EquipmentElement.Item.Difficulty > hero.GetSkillValue(replacement.EquipmentElement.Item.RelevantSkill))
                 {
                     return false;
                 }
                 if (!hero.BattleEquipment.Horse.IsEmpty
                     && (currentEquipment.Item?.HasWeaponComponent ?? false)
-                    && replacement.Item.HasWeaponComponent)
+                    && replacement.EquipmentElement.Item.HasWeaponComponent)
                 {
-                    bool isReplacementNotUsableOnHorse = MBItem.GetItemUsageSetFlags(replacement.Item.PrimaryWeapon.ItemUsage).HasFlag(ItemObject.ItemUsageSetFlags.RequiresNoMount);
+                    bool isReplacementNotUsableOnHorse = MBItem.GetItemUsageSetFlags(replacement.EquipmentElement.Item.PrimaryWeapon.ItemUsage).HasFlag(ItemObject.ItemUsageSetFlags.RequiresNoMount);
                     bool isCurrentNotUsableOnHorse = MBItem.GetItemUsageSetFlags(currentEquipment.Item.PrimaryWeapon.ItemUsage).HasFlag(ItemObject.ItemUsageSetFlags.RequiresNoMount);
                     if (isReplacementNotUsableOnHorse && !isCurrentNotUsableOnHorse)
                     {
@@ -139,15 +138,10 @@ namespace AutoEquipCompanions.Model
             }
         }
 
-        private void DoWeaponSwap(Hero character, EquipmentIndex slot, EquipmentElement replacement)
+        private void DoWeaponSwap(Hero character, EquipmentIndex slot, ItemRosterElement replacement)
         {
             var currentEquipment = character.BattleEquipment.GetEquipmentFromSlot(slot);
-            character.BattleEquipment.AddEquipmentToSlotWithoutAgent(slot, replacement);
-            MobileParty.MainParty.ItemRoster.AddToCounts(replacement, -1);
-            if (!currentEquipment.IsEmpty)
-            { 
-                MobileParty.MainParty.ItemRoster.AddToCounts(currentEquipment, 1); 
-            }
+            _inventoryLogic.AddTransferCommand(TransferCommand.Transfer(1, InventoryLogic.InventorySide.PlayerInventory, InventoryLogic.InventorySide.Equipment, replacement, EquipmentIndex.None, slot, character.CharacterObject, false));
         }
     }
 }

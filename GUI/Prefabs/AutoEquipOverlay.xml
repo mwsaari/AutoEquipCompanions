@@ -11,7 +11,7 @@
             MarginTop="30"
             DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" VerticalAlignment="Top">
       <Children>
-        <!--<ButtonWidget Id="RunAutoEquipButton"
+        <ButtonWidget Id="RunAutoEquipButton"
               Command.Click="RunAutoEquip"
               MarginTop="30" MarginLeft="590"
               DoNotPassEventsToChildren="true" Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="150" SuggestedHeight="45" HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -19,7 +19,7 @@
             <TextWidget Text="Run AEC"
                         Brush="Party.Text.UpgradeAmount" Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Children>
-        </ButtonWidget>-->
+        </ButtonWidget>
         <ButtonWidget Id="SettingsToggleButton"
                       Command.Click="ToggleSettings" IsSelected="@SettingsToggle"
                       MarginTop="30" MarginRight="590"
