@@ -253,6 +253,7 @@
     <Compile Include="Saving\Config.cs" />
     <Compile Include="Saving\CharacterSettings.cs" />
     <Compile Include="Utilities.cs" />
+    <Compile Include="ViewModel\AutoEquipWidget.cs" />
     <Compile Include="ViewModel\OverlayViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -261,6 +262,7 @@
     <None Include="_moduleFiles\LICENSE" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GUI\Brushes\AutoEquipCompanionsBrush.xml" />
     <Content Include="_moduleFiles\readme.txt" />
     <Content Include="_moduleFiles\Submodule.xml" />
     <Content Include="GUI\Prefabs\AutoEquipOverlay.xml" />
