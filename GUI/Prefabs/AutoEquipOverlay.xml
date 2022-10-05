@@ -13,20 +13,26 @@
       <Children>
         <ButtonWidget Id="RunAutoEquipButton"
               Command.Click="RunAutoEquip"
-              MarginTop="30" MarginLeft="590"
-              DoNotPassEventsToChildren="true" Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="150" SuggestedHeight="45" HorizontalAlignment="Left" VerticalAlignment="Top">
+              SuggestedWidth="50" SuggestedHeight="50"
+              MarginBottom="125" MarginRight="610"
+              Brush="Inventory.AutoEquipCompanions.Button" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
           <Children>
-            <TextWidget Text="Run AEC"
-                        Brush="Party.Text.UpgradeAmount" Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                         SuggestedWidth="40" SuggestedHeight="40"
+                         MarginTop="-5"
+                         Brush="Inventory.AutoEquipCompanions.RecruitPrisoners" DoNotAcceptEvents="true" VerticalAlignment="Center" HorizontalAlignment="Center"/>
           </Children>
         </ButtonWidget>
         <ButtonWidget Id="SettingsToggleButton"
                       Command.Click="ToggleSettings" IsSelected="@SettingsToggle"
-                      MarginTop="30" MarginRight="590"
-                      DoNotPassEventsToChildren="true" Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="150" SuggestedHeight="45" HorizontalAlignment="Right" VerticalAlignment="Top">
+                      SuggestedWidth="25" SuggestedHeight="50"
+                      MarginBottom="125" MarginRight="590"
+                      Brush="Inventory.AutoEquipCompanions.Button" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
           <Children>
-            <TextWidget Text="@SettingsToggleText"
-                        Brush="Party.Text.UpgradeAmount" Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
+                         SuggestedWidth="10" SuggestedHeight="30"
+                         MarginTop="-5"
+                         Brush="MapBar.Left.Icon1" DoNotAcceptEvents="false" VerticalAlignment="Center" HorizontalAlignment="Center"/>
           </Children>
         </ButtonWidget>
         <Widget Id="Settings"
@@ -48,8 +54,7 @@
               <Children>
                 <!-- Armor -->
                 <ButtonWidget Command.Click="ToggleHead" IsSelected="@HeadToggle"
-                              MarginTop="225" MarginLeft="715"
-                              Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                              MarginTop="225" MarginLeft="715"/>
                 <ButtonWidget Command.Click="ToggleCape" IsSelected="@CapeToggle"
                               MarginTop="310" MarginLeft="715"
                               Brush="Header.Tab.Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Left" VerticalAlignment="Top"/>

@@ -2,11 +2,13 @@
 using AutoEquipCompanions.Saving;
 using AutoEquipCompanions.ViewModel;
 using SandBox.GauntletUI;
+using System;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.GauntletUI.Data;
 using TaleWorlds.Library;
 using TaleWorlds.ScreenSystem;
+using TaleWorlds.TwoDimension;
 
 namespace AutoEquipCompanions
 {
@@ -18,6 +20,7 @@ namespace AutoEquipCompanions
         GauntletLayer _layer;
         IGauntletMovie _movie;
         AutoEquipOverlayVM _viewModel;
+        SpriteCategory _category;
 
         internal AutoEquipOverlayVM ViewModel => _viewModel;
 
@@ -39,12 +42,14 @@ namespace AutoEquipCompanions
             {
                 return;
             }
+            LoadSprites();
             _viewModel = new AutoEquipOverlayVM(inventoryScreen);
             _layer = new GauntletLayer(200);
             _movie = _layer.LoadMovie("AutoEquipOverlay", _viewModel);
             _layer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
             inventoryScreen.AddLayer(_layer);
         }
+
 
         private void OnPopScreen(ScreenBase poppedScreen)
         {
@@ -53,6 +58,7 @@ namespace AutoEquipCompanions
             {
                 return;
             }
+            _category.Unload();
             _layer.ReleaseMovie(_movie);
             inventoryScreen.RemoveLayer(_layer);
             _viewModel = null;
@@ -79,6 +85,15 @@ namespace AutoEquipCompanions
                     Config.Initialize();
                 }
             }
+        }
+        private void LoadSprites()
+        {
+            var spriteData = UIResourceManager.SpriteData;
+            var resourceContext = UIResourceManager.ResourceContext;
+            var resourceDepot = UIResourceManager.UIResourceDepot;
+
+            _category = spriteData.SpriteCategories["ui_partyscreen"]; // select which category to load, put your category name here
+            _category.Load(resourceContext, resourceDepot); // load the selected category
         }
     }
 }

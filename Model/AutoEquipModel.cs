@@ -140,7 +140,6 @@ namespace AutoEquipCompanions.Model
 
         private void DoWeaponSwap(Hero character, EquipmentIndex slot, ItemRosterElement replacement)
         {
-            var currentEquipment = character.BattleEquipment.GetEquipmentFromSlot(slot);
             _inventoryLogic.AddTransferCommand(TransferCommand.Transfer(1, InventoryLogic.InventorySide.PlayerInventory, InventoryLogic.InventorySide.Equipment, replacement, EquipmentIndex.None, slot, character.CharacterObject, false));
         }
     }

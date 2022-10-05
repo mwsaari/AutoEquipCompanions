@@ -1,0 +1,43 @@
+﻿<Brushes>
+  <Brush Name="Inventory.AutoEquipCompanions.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button_pressed" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" ColorFactor="0.6" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button_pressed" ColorFactor="1.0" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.AutoEquipCompanions.RecruitPrisoners">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\recruit_prisoner" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.6" />
+      </Style>
+    </Styles>
+  </Brush>
+</Brushes>
