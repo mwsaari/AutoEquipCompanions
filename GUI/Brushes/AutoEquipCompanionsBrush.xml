@@ -17,7 +17,7 @@
         <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" ColorFactor="0.6" />
       </Style>
       <Style Name="Selected">
-        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button_pressed" ColorFactor="1.0" />
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" ColorFactor="2.0" Color="#FFC349FF"/>
       </Style>
     </Styles>
   </Brush>
@@ -37,6 +37,34 @@
       </Style>
       <Style Name="Disabled">
         <BrushLayer Name="Default" ColorFactor="0.6" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.AutoEquipCompanions.UpgradeButton">
+    <Layers>
+      <BrushLayer Name="UpgradeIcon" Sprite="PartyScreen\upgrade_icon" />
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" ColorFactor="1.0" />
+        <BrushLayer Name="UpgradeIcon" ColorFactor="0.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" ColorFactor="1.2" />
+        <BrushLayer Name="UpgradeIcon" ColorFactor="0.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button_pressed" ColorFactor="1.0" />
+        <BrushLayer Name="UpgradeIcon" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" ColorFactor="0.6" />
+        <BrushLayer Name="UpgradeIcon" ColorFactor="0.0" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" ColorFactor="2.0" Color="#FFC349FF"/>
+        <BrushLayer Name="UpgradeIcon" ColorFactor="1.0" />
       </Style>
     </Styles>
   </Brush>

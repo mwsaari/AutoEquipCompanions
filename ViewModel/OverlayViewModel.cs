@@ -6,6 +6,7 @@ using System.Linq;
 using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Inventory;
 using TaleWorlds.Core;
+using TaleWorlds.Core.ViewModelCollection.Information;
 using TaleWorlds.Core.ViewModelCollection.Selector;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.Library;
@@ -38,6 +39,18 @@ namespace AutoEquipCompanions.ViewModel
         private SelectorVM<InventoryCharacterSelectorItemVM> CharacterList => _inventoryViewModel.CharacterList;
 
         private string CurrentHero => CharacterList.SelectedItem.CharacterID;
+
+        [DataSourceProperty]
+        public HintViewModel SettingsHint { get; private set; } = new HintViewModel() 
+        {
+            HintText = new TaleWorlds.Localization.TextObject("Left click to auto equip characters.\nRight click to toggle showing settings.") 
+        };
+
+        [DataSourceProperty]
+        public HintViewModel CharacterToggleHint { get; private set; } = new HintViewModel()
+        {
+            HintText = new TaleWorlds.Localization.TextObject("Left click to toggle auto equip for this character.")
+        };
 
         [DataSourceProperty]
         public bool SettingsToggle { get; set; }

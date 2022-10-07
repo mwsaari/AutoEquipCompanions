@@ -1,5 +1,6 @@
 ﻿using AutoEquipCompanions.Saving;
 using HarmonyLib;
+using SandBox.CampaignBehaviors;
 using System.Linq;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
