@@ -15,8 +15,9 @@
               Command.Click="RunAutoEquip"
               Command.AlternateClick="ToggleSettings" IsSelected="@SettingsToggle"
               SuggestedWidth="50" SuggestedHeight="50"
-              MarginBottom="125" MarginRight="605"
-              Brush="Inventory.AutoEquipCompanions.Button" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
+              MarginTop="15" MarginRight="250"
+              HorizontalAlignment="Right" VerticalAlignment="Top"
+              Brush="Inventory.AutoEquipCompanions.Button" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed">
           <Children>
             <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"
                          SuggestedWidth="40" SuggestedHeight="40"
@@ -53,10 +54,10 @@
                 <AutoEquipWidget Command.Click="ToggleHorse" IsSelected="@HorseToggle" MarginTop="685" MarginLeft="715" HorizontalAlignment="Left"/>
                 <AutoEquipWidget Command.Click="ToggleHarness" IsSelected="@HarnessToggle" MarginTop="770" MarginLeft="715" HorizontalAlignment="Left"/>
                 <!-- Weapons -->
-                <AutoEquipWidget Command.Click="ToggleWeapon0" IsSelected="@Weapon0Toggle" MarginTop="310" MarginRight="710" HorizontalAlignment="Right"/>
-                <AutoEquipWidget Command.Click="ToggleWeapon1" IsSelected="@Weapon1Toggle" MarginTop="396" MarginRight="710" HorizontalAlignment="Right"/>
-                <AutoEquipWidget Command.Click="ToggleWeapon2" IsSelected="@Weapon2Toggle" MarginTop="482" MarginRight="710" HorizontalAlignment="Right"/>
-                <AutoEquipWidget Command.Click="ToggleWeapon3" IsSelected="@Weapon3Toggle" MarginTop="568" MarginRight="710" HorizontalAlignment="Right"/>
+                <AutoEquipWidget Command.Click="ToggleWeapon0" IsSelected="@Weapon0Toggle" MarginTop="225" MarginRight="710" HorizontalAlignment="Right"/>
+                <AutoEquipWidget Command.Click="ToggleWeapon1" IsSelected="@Weapon1Toggle" MarginTop="310" MarginRight="710" HorizontalAlignment="Right"/>
+                <AutoEquipWidget Command.Click="ToggleWeapon2" IsSelected="@Weapon2Toggle" MarginTop="396" MarginRight="710" HorizontalAlignment="Right"/>
+                <AutoEquipWidget Command.Click="ToggleWeapon3" IsSelected="@Weapon3Toggle" MarginTop="482" MarginRight="710" HorizontalAlignment="Right"/>
               </Children>
             </Widget>
           </Children>

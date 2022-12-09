@@ -1,16 +1,16 @@
 <Module>
   <Name value="Auto Equip Companions"/>
   <Id value="AutoEquipCompanions"/>
-  <Version value="v1.8.1"/>
+  <Version value="v1.0.1"/>
   <SingleplayerModule value="true"/>
   <MultiplayerModule value="false"/>
   <DependedModules>
-    <DependedModule Id="Bannerlord.Harmony" DependentVersion="v2.2.2.88"/>
-    <DependedModule Id="Native"  DependentVersion="e1.8.1"/>
-    <DependedModule Id="SandBoxCore" DependentVersion="e1.8.1"/>
-    <DependedModule Id="Sandbox" DependentVersion="e1.8.1"/>
-    <DependedModule Id="CustomBattle" DependentVersion="e1.8.1"/>
-    <DependedModule Id="StoryMode" DependentVersion="e1.8.1"/>
+    <DependedModule Id="Bannerlord.Harmony" DependentVersion="v2.2.2.140"/>
+    <DependedModule Id="Native"  DependentVersion="e1.0.1"/>
+    <DependedModule Id="SandBoxCore" DependentVersion="e1.0.1"/>
+    <DependedModule Id="Sandbox" DependentVersion="e1.0.1"/>
+    <DependedModule Id="CustomBattle" DependentVersion="e1.0.1"/>
+    <DependedModule Id="StoryMode" DependentVersion="e1.0.1"/>
   </DependedModules>
   <SubModules>
     <SubModule>
