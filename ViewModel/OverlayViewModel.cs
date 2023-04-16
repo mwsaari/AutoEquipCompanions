@@ -18,6 +18,7 @@ namespace AutoEquipCompanions.ViewModel
         private readonly GauntletInventoryScreen _inventoryScreen;
         private readonly AutoEquipModel _autoEquipModel;
         private readonly SPInventoryVM _inventoryViewModel;
+        private readonly CharacterSettings defaultSettings = new CharacterSettings().Initialize();
         private Dictionary<string, CharacterSettings> _heroToggles;
 
         public AutoEquipOverlayVM(GauntletInventoryScreen inventoryScreen) : base()
@@ -99,8 +100,8 @@ namespace AutoEquipCompanions.ViewModel
 
         #region Armor
         [DataSourceProperty]
-        public bool HeadToggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-                               || characterSettings[EquipmentIndex.Head];
+        public bool HeadToggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings) 
+            ? characterSettings[EquipmentIndex.Head] : defaultSettings[EquipmentIndex.Head];
 
         public void ToggleHead()
         {
@@ -109,8 +110,8 @@ namespace AutoEquipCompanions.ViewModel
         }
 
         [DataSourceProperty]
-        public bool CapeToggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-                               || characterSettings[EquipmentIndex.Cape];
+        public bool CapeToggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings)
+            ? characterSettings[EquipmentIndex.Cape] : defaultSettings[EquipmentIndex.Cape];
 
         public void ToggleCape()
         {
@@ -119,8 +120,8 @@ namespace AutoEquipCompanions.ViewModel
         }
 
         [DataSourceProperty]
-        public bool BodyToggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-                               || characterSettings[EquipmentIndex.Body];
+        public bool BodyToggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings)
+            ? characterSettings[EquipmentIndex.Body] : defaultSettings[EquipmentIndex.Body];
 
         public void ToggleBody()
         {
@@ -129,8 +130,8 @@ namespace AutoEquipCompanions.ViewModel
         }
 
         [DataSourceProperty]
-        public bool GlovesToggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-                               || characterSettings[EquipmentIndex.Gloves];
+        public bool GlovesToggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings) 
+            ? characterSettings[EquipmentIndex.Gloves] : defaultSettings[EquipmentIndex.Gloves];
 
         public void ToggleGloves()
         {
@@ -139,8 +140,8 @@ namespace AutoEquipCompanions.ViewModel
         }
 
         [DataSourceProperty]
-        public bool LegToggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-                               || characterSettings[EquipmentIndex.Leg];
+        public bool LegToggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings) 
+            ? characterSettings[EquipmentIndex.Leg] : defaultSettings[EquipmentIndex.Leg];
 
         public void ToggleLeg()
         {
@@ -151,8 +152,8 @@ namespace AutoEquipCompanions.ViewModel
 
         #region Horse
         [DataSourceProperty]
-        public bool HorseToggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-                               || characterSettings[EquipmentIndex.Horse];
+        public bool HorseToggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings) 
+            ? characterSettings[EquipmentIndex.Horse] : defaultSettings[EquipmentIndex.Horse];
 
         public void ToggleHorse()
         {
@@ -161,8 +162,8 @@ namespace AutoEquipCompanions.ViewModel
         }
 
         [DataSourceProperty]
-        public bool HarnessToggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-                               || characterSettings[EquipmentIndex.HorseHarness];
+        public bool HarnessToggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings) 
+            ? characterSettings[EquipmentIndex.HorseHarness] : defaultSettings[EquipmentIndex.HorseHarness];
 
         public void ToggleHarness()
         {
@@ -173,8 +174,8 @@ namespace AutoEquipCompanions.ViewModel
 
         #region Weapons
         [DataSourceProperty]
-        public bool Weapon0Toggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-                               || characterSettings[EquipmentIndex.Weapon0];
+        public bool Weapon0Toggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings) 
+            ? characterSettings[EquipmentIndex.Weapon0] : defaultSettings[EquipmentIndex.Weapon0];
 
         public void ToggleWeapon0()
         {
@@ -183,8 +184,8 @@ namespace AutoEquipCompanions.ViewModel
         }
 
         [DataSourceProperty]
-        public bool Weapon1Toggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-                               || characterSettings[EquipmentIndex.Weapon1];
+        public bool Weapon1Toggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings) 
+            ? characterSettings[EquipmentIndex.Weapon1] : defaultSettings[EquipmentIndex.Weapon1];
 
         public void ToggleWeapon1()
         {
@@ -193,8 +194,8 @@ namespace AutoEquipCompanions.ViewModel
         }
 
         [DataSourceProperty]
-        public bool Weapon2Toggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-                               || characterSettings[EquipmentIndex.Weapon2];
+        public bool Weapon2Toggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings) 
+            ? characterSettings[EquipmentIndex.Weapon2] : defaultSettings[EquipmentIndex.Weapon2];
 
         public void ToggleWeapon2()
         {
@@ -203,8 +204,8 @@ namespace AutoEquipCompanions.ViewModel
         }
 
         [DataSourceProperty]
-        public bool Weapon3Toggle => !_heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-                               || characterSettings[EquipmentIndex.Weapon3];
+        public bool Weapon3Toggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings) 
+            ? characterSettings[EquipmentIndex.Weapon3] : defaultSettings[EquipmentIndex.Weapon3];
 
         public void ToggleWeapon3()
         {
