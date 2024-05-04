@@ -34,7 +34,10 @@ namespace AutoEquipCompanions.ViewModel
 
         ~AutoEquipOverlayVM()
         {
-            _inventoryViewModel.CharacterList.PropertyChangedWithValue -= SelectedCharacterChanged;
+            if (_inventoryViewModel?.CharacterList != null)
+            {
+                _inventoryViewModel.CharacterList.PropertyChangedWithValue -= SelectedCharacterChanged;
+            }        
         }
 
         private SelectorVM<InventoryCharacterSelectorItemVM> CharacterList => _inventoryViewModel.CharacterList;
