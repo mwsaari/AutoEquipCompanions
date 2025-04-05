@@ -1,8 +1,6 @@
-﻿using AutoEquipCompanions.Model;
-using AutoEquipCompanions.Saving;
+﻿using AutoEquipCompanions.Saving;
 using AutoEquipCompanions.ViewModel;
 using SandBox.GauntletUI;
-using System;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.GauntletUI.Data;
@@ -16,7 +14,6 @@ namespace AutoEquipCompanions
     {
         internal static AutoEquipBehavior Instance = new AutoEquipBehavior();
 
-        AutoEquipModel _model;
         GauntletLayer _layer;
         IGauntletMovie _movie;
         AutoEquipOverlayVM _viewModel;
@@ -44,7 +41,8 @@ namespace AutoEquipCompanions
             }
             LoadSprites();
             _viewModel = new AutoEquipOverlayVM(inventoryScreen);
-            _layer = new GauntletLayer(200);
+            _layer = new GauntletLayer(200, "GauntletLayer", true);
+            UIConfig.DoNotUseGeneratedPrefabs = true;
             _movie = _layer.LoadMovie("AutoEquipOverlay", _viewModel);
             _layer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
             inventoryScreen.AddLayer(_layer);
@@ -60,7 +58,6 @@ namespace AutoEquipCompanions
             }
             _category.Unload();
             _layer.ReleaseMovie(_movie);
-            inventoryScreen.RemoveLayer(_layer);
             _viewModel = null;
             _layer = null;
             _movie = null;

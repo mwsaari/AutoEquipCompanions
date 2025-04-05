@@ -45,19 +45,19 @@
                     DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
               <Children>
                 <!-- Armor -->
-                <AutoEquipWidget Command.Click="ToggleHead" IsSelected="@HeadToggle" MarginTop="225" MarginLeft="715" HorizontalAlignment="Left"/>
-                <AutoEquipWidget Command.Click="ToggleCape" IsSelected="@CapeToggle" MarginTop="310" MarginLeft="715" HorizontalAlignment="Left"/>
-                <AutoEquipWidget Command.Click="ToggleBody" IsSelected="@BodyToggle" MarginTop="396" MarginLeft="715" HorizontalAlignment="Left"/>
-                <AutoEquipWidget Command.Click="ToggleGloves" IsSelected="@GlovesToggle" MarginTop="482" MarginLeft="715" HorizontalAlignment="Left"/>
-                <AutoEquipWidget Command.Click="ToggleLeg" IsSelected="@LegToggle" MarginTop="568" MarginLeft="715" HorizontalAlignment="Left"/>
+                <AutoEquipWidget Command.Click="ToggleHead" IsSelected="@HeadToggle" MarginTop="208" MarginLeft="715" HorizontalAlignment="Left"/>
+                <AutoEquipWidget Command.Click="ToggleCape" IsSelected="@CapeToggle" MarginTop="308" MarginLeft="715" HorizontalAlignment="Left"/>
+                <AutoEquipWidget Command.Click="ToggleBody" IsSelected="@BodyToggle" MarginTop="408" MarginLeft="715" HorizontalAlignment="Left"/>
+                <AutoEquipWidget Command.Click="ToggleGloves" IsSelected="@GlovesToggle" MarginTop="508" MarginLeft="715" HorizontalAlignment="Left"/>
+                <AutoEquipWidget Command.Click="ToggleLeg" IsSelected="@LegToggle" MarginTop="608" MarginLeft="715" HorizontalAlignment="Left"/>
                 <!-- Horse -->
-                <AutoEquipWidget Command.Click="ToggleHorse" IsSelected="@HorseToggle" MarginTop="685" MarginLeft="715" HorizontalAlignment="Left"/>
-                <AutoEquipWidget Command.Click="ToggleHarness" IsSelected="@HarnessToggle" MarginTop="770" MarginLeft="715" HorizontalAlignment="Left"/>
+                <AutoEquipWidget Command.Click="ToggleHorse" IsSelected="@HorseToggle" MarginTop="758" MarginLeft="715" HorizontalAlignment="Left"/>
+                <AutoEquipWidget Command.Click="ToggleHarness" IsSelected="@HarnessToggle" MarginTop="858" MarginLeft="715" HorizontalAlignment="Left"/>
                 <!-- Weapons -->
-                <AutoEquipWidget Command.Click="ToggleWeapon0" IsSelected="@Weapon0Toggle" MarginTop="225" MarginRight="710" HorizontalAlignment="Right"/>
-                <AutoEquipWidget Command.Click="ToggleWeapon1" IsSelected="@Weapon1Toggle" MarginTop="310" MarginRight="710" HorizontalAlignment="Right"/>
-                <AutoEquipWidget Command.Click="ToggleWeapon2" IsSelected="@Weapon2Toggle" MarginTop="396" MarginRight="710" HorizontalAlignment="Right"/>
-                <AutoEquipWidget Command.Click="ToggleWeapon3" IsSelected="@Weapon3Toggle" MarginTop="482" MarginRight="710" HorizontalAlignment="Right"/>
+                <AutoEquipWidget Command.Click="ToggleWeapon0" IsSelected="@Weapon0Toggle" MarginTop="208" MarginRight="710" HorizontalAlignment="Right"/>
+                <AutoEquipWidget Command.Click="ToggleWeapon1" IsSelected="@Weapon1Toggle" MarginTop="308" MarginRight="710" HorizontalAlignment="Right"/>
+                <AutoEquipWidget Command.Click="ToggleWeapon2" IsSelected="@Weapon2Toggle" MarginTop="408" MarginRight="710" HorizontalAlignment="Right"/>
+                <AutoEquipWidget Command.Click="ToggleWeapon3" IsSelected="@Weapon3Toggle" MarginTop="508" MarginRight="710" HorizontalAlignment="Right"/>
               </Children>
             </Widget>
           </Children>
