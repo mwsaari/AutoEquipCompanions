@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoEquipCompanions", "AutoEquipCompanions.csproj", "{E577663D-D945-49EA-BF4C-85B52BF19813}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlankSlateCompanions", "..\BlankSlateCompanions\BlankSlateCompanions.csproj", "{CE1F3242-40CE-4644-8AA7-5664518C8B0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,18 @@ Global
 		{E577663D-D945-49EA-BF4C-85B52BF19813}.Release|ARM64.ActiveCfg = Release|Any CPU
 		{E577663D-D945-49EA-BF4C-85B52BF19813}.Release|x64.ActiveCfg = Release|x64
 		{E577663D-D945-49EA-BF4C-85B52BF19813}.Release|x64.Build.0 = Release|x64
+		{CE1F3242-40CE-4644-8AA7-5664518C8B0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE1F3242-40CE-4644-8AA7-5664518C8B0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE1F3242-40CE-4644-8AA7-5664518C8B0D}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{CE1F3242-40CE-4644-8AA7-5664518C8B0D}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{CE1F3242-40CE-4644-8AA7-5664518C8B0D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CE1F3242-40CE-4644-8AA7-5664518C8B0D}.Debug|x64.Build.0 = Debug|Any CPU
+		{CE1F3242-40CE-4644-8AA7-5664518C8B0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE1F3242-40CE-4644-8AA7-5664518C8B0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE1F3242-40CE-4644-8AA7-5664518C8B0D}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{CE1F3242-40CE-4644-8AA7-5664518C8B0D}.Release|ARM64.Build.0 = Release|Any CPU
+		{CE1F3242-40CE-4644-8AA7-5664518C8B0D}.Release|x64.ActiveCfg = Release|Any CPU
+		{CE1F3242-40CE-4644-8AA7-5664518C8B0D}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

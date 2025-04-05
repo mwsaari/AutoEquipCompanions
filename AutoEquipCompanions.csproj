@@ -284,7 +284,7 @@
     <Compile Include="Saving\CharacterSettings.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="ViewModel\AutoEquipWidget.cs" />
-    <Compile Include="ViewModel\OverlayViewModel.cs" />
+    <Compile Include="ViewModel\AutoEquipOverlayVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -21,6 +21,8 @@ namespace AutoEquipCompanions
 
         internal AutoEquipOverlayVM ViewModel => _viewModel;
 
+        private static bool _showUI = true;
+
         public override void RegisterEvents()
         {
             ScreenManager.OnPushScreen += OnPushScreen;
@@ -41,11 +43,28 @@ namespace AutoEquipCompanions
             }
             LoadSprites();
             _viewModel = new AutoEquipOverlayVM(inventoryScreen);
-            _layer = new GauntletLayer(200, "GauntletLayer", true);
-            UIConfig.DoNotUseGeneratedPrefabs = true;
-            _movie = _layer.LoadMovie("AutoEquipOverlay", _viewModel);
-            _layer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
-            inventoryScreen.AddLayer(_layer);
+            if (_showUI)
+            {
+                _layer = new GauntletLayer(200, "GauntletLayer", true);
+                UIConfig.DoNotUseGeneratedPrefabs = true;
+                _movie = _layer.LoadMovie("AutoEquipOverlay", _viewModel);
+                _layer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
+                inventoryScreen.AddLayer(_layer);
+            }
+            else
+            {
+                var mainHeroId = Campaign.Current.MainParty.LeaderHero.StringId;
+                if (Config.CharacterSettings.TryGetValue(mainHeroId, out var characterSettings))
+                {
+                    characterSettings.CharacterToggle = false;
+                }
+                else
+                {
+                    characterSettings = new CharacterSettings().Initialize();
+                    characterSettings.CharacterToggle = false;
+                    Config.CharacterSettings.Add(mainHeroId, characterSettings);
+                }
+            }
         }
 
 
@@ -56,11 +75,14 @@ namespace AutoEquipCompanions
             {
                 return;
             }
-            _category.Unload();
-            _layer.ReleaseMovie(_movie);
+            if (_showUI)
+            {
+                _category.Unload();
+                _layer.ReleaseMovie(_movie);
+                _layer = null;
+                _movie = null;
+            }
             _viewModel = null;
-            _layer = null;
-            _movie = null;
         }
 
         public override void SyncData(IDataStore dataStore)
