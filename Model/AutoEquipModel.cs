@@ -63,7 +63,7 @@ namespace AutoEquipCompanions.Model
         {
             bestReplacement = ItemRosterElement.Invalid;
             var (currentEquipment, itemType) = GetEquipmentInfo(hero, slot);
-            if (itemType == ItemObject.ItemTypeEnum.Invalid || currentEquipment.Item is null)
+            if (itemType == ItemObject.ItemTypeEnum.Invalid)
             {
                 return false;
             }
@@ -82,7 +82,7 @@ namespace AutoEquipCompanions.Model
                 {
                     continue;
                 }
-                if (!hero.BattleEquipment.Horse.IsEmpty && currentItem.HasWeaponComponent && replacementItem.HasWeaponComponent)
+                if (!hero.BattleEquipment.Horse.IsEmpty && currentItem is not null && currentItem.HasWeaponComponent && replacementItem.HasWeaponComponent)
                 {
                     bool isReplacementNotUsableOnHorse = MBItem.GetItemUsageSetFlags(replacementItem.PrimaryWeapon.ItemUsage).HasFlag(ItemObject.ItemUsageSetFlags.RequiresNoMount);
                     bool isCurrentNotUsableOnHorse = MBItem.GetItemUsageSetFlags(currentItem.PrimaryWeapon.ItemUsage).HasFlag(ItemObject.ItemUsageSetFlags.RequiresNoMount);
