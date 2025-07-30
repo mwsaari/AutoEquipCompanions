@@ -30,31 +30,42 @@ namespace AutoEquipCompanions.Model
             foreach (var hero in heroes)
             {
                 bool hasUpgraded = false;
-                CharacterSettings heroSettings;
-                if (characterSettings.ContainsKey(hero.StringId))
+                try
                 {
-                    heroSettings = characterSettings[hero.StringId];
-                }
-                else
-                {
-                    heroSettings = new CharacterSettings().Initialize();
-                }
-                foreach (EquipmentIndex slot in Enumerable.Range(0, (int)EquipmentIndex.NumEquipmentSetSlots))
-                {
-                    if (slot == EquipmentIndex.ExtraWeaponSlot || !heroSettings[slot])
+                    CharacterSettings heroSettings;
+                    if (characterSettings.ContainsKey(hero.StringId))
                     {
-                        continue;
+                        heroSettings = characterSettings[hero.StringId];
                     }
-                    if (TryGetBestReplacement(hero, slot, out ItemRosterElement replacement))
+                    else
                     {
-                        DoWeaponSwap(hero, slot, replacement);
-                        hasUpgraded = true;
+                        heroSettings = new CharacterSettings().Initialize();
+                    }
+                    foreach (EquipmentIndex slot in Enumerable.Range(0, (int)EquipmentIndex.NumEquipmentSetSlots))
+                    {
+                        if (slot == EquipmentIndex.ExtraWeaponSlot || !heroSettings[slot])
+                        {
+                            continue;
+                        }
+                        if (TryGetBestReplacement(hero, slot, out ItemRosterElement replacement))
+                        {
+                            DoWeaponSwap(hero, slot, replacement);
+                            hasUpgraded = true;
+                        }
                     }
                 }
-                if (hasUpgraded)
+                catch (System.Exception ex)
                 {
-                    var pronoun = hero.IsFemale ? "her" : "his";
-                    InformationManager.DisplayMessage(new InformationMessage($"{hero.Name} upgraded {pronoun} equipment"));
+                    InformationManager.DisplayMessage(new InformationMessage($"{ex.Message}"));
+                    continue;
+                }
+                finally
+                {
+                    if (hasUpgraded)
+                    {
+                        var pronoun = hero.IsFemale ? "her" : "his";
+                        InformationManager.DisplayMessage(new InformationMessage($"{hero.Name} upgraded {pronoun} equipment"));
+                    }
                 }
             }
         }
@@ -72,41 +83,48 @@ namespace AutoEquipCompanions.Model
                 .OrderByDescending(x => x.EquipmentElement, EquipmentComparer.Instance);
             foreach (var replacement in orderedReplacements)
             {
-                var currentItem = currentEquipment.Item;
-                var replacementItem = replacement.EquipmentElement.Item;
-                if (currentEquipment.Compare(replacement.EquipmentElement) >= 0)
+                try
                 {
-                    continue;
-                }
-                if (replacementItem.Difficulty > hero.GetSkillValue(replacementItem.RelevantSkill))
-                {
-                    continue;
-                }
-                if (!hero.BattleEquipment.Horse.IsEmpty && currentItem is not null && currentItem.HasWeaponComponent && replacementItem.HasWeaponComponent)
-                {
-                    bool isReplacementNotUsableOnHorse = MBItem.GetItemUsageSetFlags(replacementItem.PrimaryWeapon.ItemUsage).HasFlag(ItemObject.ItemUsageSetFlags.RequiresNoMount);
-                    bool isCurrentNotUsableOnHorse = MBItem.GetItemUsageSetFlags(currentItem.PrimaryWeapon.ItemUsage).HasFlag(ItemObject.ItemUsageSetFlags.RequiresNoMount);
-                    if (isReplacementNotUsableOnHorse && !isCurrentNotUsableOnHorse)
+                    var currentItem = currentEquipment.Item;
+                    var replacementItem = replacement.EquipmentElement.Item;
+                    if (currentEquipment.Compare(replacement.EquipmentElement) >= 0)
                     {
                         continue;
                     }
-                }
-                if (itemType == ItemObject.ItemTypeEnum.Horse
-                    && currentItem.HorseComponent.Monster.FamilyType != replacementItem.HorseComponent.Monster.FamilyType)
-                {
-                    continue;
-                }
-                if (itemType == ItemObject.ItemTypeEnum.HorseHarness)
-                {
-                    var horse = GetEquipmentInfo(hero, EquipmentIndex.Horse).Item1;
-                    if (horse.IsEmpty) { return false; }
-                    if (replacementItem.ArmorComponent.FamilyType != horse.Item.HorseComponent.Monster.FamilyType)
+                    if (replacementItem.Difficulty > hero.GetSkillValue(replacementItem.RelevantSkill))
                     {
                         continue;
                     }
+                    if (!hero.BattleEquipment.Horse.IsEmpty && currentItem is not null && currentItem.HasWeaponComponent && replacementItem.HasWeaponComponent)
+                    {
+                        bool isReplacementNotUsableOnHorse = MBItem.GetItemUsageSetFlags(replacementItem.PrimaryWeapon.ItemUsage).HasFlag(ItemObject.ItemUsageSetFlags.RequiresNoMount);
+                        bool isCurrentNotUsableOnHorse = MBItem.GetItemUsageSetFlags(currentItem.PrimaryWeapon.ItemUsage).HasFlag(ItemObject.ItemUsageSetFlags.RequiresNoMount);
+                        if (isReplacementNotUsableOnHorse && !isCurrentNotUsableOnHorse)
+                        {
+                            continue;
+                        }
+                    }
+                    if (itemType == ItemObject.ItemTypeEnum.Horse
+                        && currentItem.HorseComponent.Monster.FamilyType != replacementItem.HorseComponent.Monster.FamilyType)
+                    {
+                        continue;
+                    }
+                    if (itemType == ItemObject.ItemTypeEnum.HorseHarness)
+                    {
+                        var horse = GetEquipmentInfo(hero, EquipmentIndex.Horse).Item1;
+                        if (horse.IsEmpty) { return false; }
+                        if (replacementItem.ArmorComponent.FamilyType != horse.Item.HorseComponent.Monster.FamilyType)
+                        {
+                            continue;
+                        }
+                    }
+                    bestReplacement = replacement;
+                    return true;
                 }
-                bestReplacement = replacement;
-                return true;
+                catch (System.Exception ex)
+                {
+                    throw new System.Exception($"Error processing replacement for {hero.Name} in slot {slot} with weapon {replacement}", ex);
+                }
             }
             return false;
         }

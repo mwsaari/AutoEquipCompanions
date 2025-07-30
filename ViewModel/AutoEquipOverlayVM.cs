@@ -39,7 +39,7 @@ namespace AutoEquipCompanions.ViewModel
 
         private SelectorVM<InventoryCharacterSelectorItemVM> CharacterList => _inventoryViewModel.CharacterList;
 
-        private string CurrentHero => CharacterList.SelectedItem.CharacterID;
+        private string CurrentHero => CharacterList.SelectedItem?.CharacterID ?? "";
 
         [DataSourceProperty]
         public HintViewModel SettingsHint { get; private set; } = new HintViewModel()
