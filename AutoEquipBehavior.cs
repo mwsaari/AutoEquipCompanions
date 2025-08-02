@@ -1,4 +1,4 @@
-﻿using AutoEquipCompanions.Saving;
+﻿using AutoEquipCompanions.Model.Saving;
 using AutoEquipCompanions.ViewModel;
 using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;

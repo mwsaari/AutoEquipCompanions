@@ -1,4 +1,4 @@
-﻿using AutoEquipCompanions.Saving;
+﻿using AutoEquipCompanions.Model.Saving;
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.CampaignSystem;
@@ -13,10 +13,12 @@ namespace AutoEquipCompanions.Model
     public class AutoEquipModel
     {
         private InventoryLogic _inventoryLogic;
+        private IViewDataTracker _viewDataTracker;
 
-        public AutoEquipModel(InventoryLogic inventoryLogic)
+        public AutoEquipModel(InventoryLogic inventoryLogic, IViewDataTracker viewDataTracker)
         {
             _inventoryLogic = inventoryLogic;
+            _viewDataTracker = viewDataTracker;
         }
 
         public void AutoEquipCompanions(Dictionary<string, CharacterSettings> characterSettings)
@@ -47,7 +49,11 @@ namespace AutoEquipCompanions.Model
                         {
                             continue;
                         }
-                        if (TryGetBestReplacement(hero, slot, out ItemRosterElement replacement))
+                        var lockedItems = _viewDataTracker.GetInventoryLocks();
+                        var items = AutoEquipGlobalSettings.Instance.CanAutoEquipIgnoreLockedItems
+                            ? MobileParty.MainParty.ItemRoster
+                            : MobileParty.MainParty.ItemRoster.Where(x => !lockedItems.Contains(x.EquipmentElement.Item.StringId));
+                        if (TryGetBestReplacement(hero, slot, items, out ItemRosterElement replacement))
                         {
                             DoWeaponSwap(hero, slot, replacement);
                             hasUpgraded = true;
@@ -70,7 +76,7 @@ namespace AutoEquipCompanions.Model
             }
         }
 
-        private bool TryGetBestReplacement(Hero hero, EquipmentIndex slot, out ItemRosterElement bestReplacement)
+        private bool TryGetBestReplacement(Hero hero, EquipmentIndex slot, IEnumerable<ItemRosterElement> items, out ItemRosterElement bestReplacement)
         {
             bestReplacement = ItemRosterElement.Invalid;
             var (currentEquipment, itemType) = GetEquipmentInfo(hero, slot);
@@ -78,7 +84,7 @@ namespace AutoEquipCompanions.Model
             {
                 return false;
             }
-            var orderedReplacements = MobileParty.MainParty.ItemRoster
+            var orderedReplacements = items
                 .Where(x => x.EquipmentElement.Item.Type == itemType)
                 .OrderByDescending(x => x.EquipmentElement, EquipmentComparer.Instance);
             foreach (var replacement in orderedReplacements)

@@ -2,7 +2,7 @@
 using System.Linq;
 using TaleWorlds.Core;
 
-namespace AutoEquipCompanions.Saving
+namespace AutoEquipCompanions.Model.Saving
 {
     public class CharacterSettings
     {

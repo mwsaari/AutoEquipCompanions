@@ -1,8 +1,9 @@
 ﻿using AutoEquipCompanions.Model;
-using AutoEquipCompanions.Saving;
+using AutoEquipCompanions.Model.Saving;
 using SandBox.GauntletUI;
 using System.Collections.Generic;
 using System.Linq;
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Inventory;
 using TaleWorlds.Core;
@@ -24,7 +25,9 @@ namespace AutoEquipCompanions.ViewModel
         public AutoEquipOverlayVM(GauntletInventoryScreen inventoryScreen) : base()
         {
             _inventoryScreen = inventoryScreen;
-            _autoEquipModel = new AutoEquipModel(((InventoryState)GameStateManager.Current.ActiveState).InventoryLogic);
+            var inventoryLogic = ((InventoryState)GameStateManager.Current.ActiveState).InventoryLogic;
+            var viewDataTracker = Campaign.Current.GetCampaignBehavior<IViewDataTracker>();
+            _autoEquipModel = new AutoEquipModel(inventoryLogic, viewDataTracker);
             _inventoryViewModel = GetInventoryVM();
             SettingsToggle = Config.SettingsVisible;
             _heroToggles = Config.CharacterSettings;
@@ -44,7 +47,7 @@ namespace AutoEquipCompanions.ViewModel
         [DataSourceProperty]
         public HintViewModel SettingsHint { get; private set; } = new HintViewModel()
         {
-            HintText = new TaleWorlds.Localization.TextObject("Left click to auto equip characters.\nRight click to toggle showing settings.")
+            HintText = new TaleWorlds.Localization.TextObject("Right click to toggle showing settings.\nCannot Manually AutoEquip with current Locked Settings.")
         };
 
         [DataSourceProperty]
@@ -246,13 +249,18 @@ namespace AutoEquipCompanions.ViewModel
                 _heroToggles.Add(CurrentHero, characterSettings);
             }
         }
+
         public void RunAutoEquip()
         {
+            if (!AutoEquipGlobalSettings.Instance.CanAutoEquipIgnoreLockedItems)
+            {
+                return;
+            }
             _autoEquipModel.AutoEquipCompanions(_heroToggles);
             _inventoryViewModel.RefreshValues();
         }
 
-        public void OnExecuteCompleteTransactions()
+        public void OnExecuteCompleteTransactions(List<string> ____lockedItemIDs)
         {
             Config.SettingsVisible = SettingsToggle;
             Config.CharacterSettings = _heroToggles;

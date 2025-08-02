@@ -1,4 +1,4 @@
-﻿using AutoEquipCompanions.Saving;
+﻿using AutoEquipCompanions.Model.Saving;
 using HarmonyLib;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
