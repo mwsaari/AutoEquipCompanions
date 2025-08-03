@@ -1,0 +1,48 @@
+﻿<Prefab>
+  <Constants>
+  </Constants>
+
+  <Window>
+    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center"
+            MarginTop="50" MarginLeft="50" MarginRight="50" MarginBottom="50" Id="AutoEquipPresetsWindow">
+      <Children>
+        <ListPanel>
+          <Children>
+            <TextWidget Text="Auto Equip Presets" HorizontalAlignment="Center" MarginTop="10"/>
+          </Children>
+          <ListPanel StackLayout.LayoutMethod="HorizontalCentered">
+            <Children>
+              <ButtonWidget Id="AddPresetButton"
+                          Command.Click="AddPreset"
+                          SuggestedWidth="150" SuggestedHeight="45"
+                          MarginTop="100" HorizontalAlignment="Left">
+                <Children>
+                  <TextWidget Text="Add Preset"
+                              Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center"/>
+                </Children>
+              </ButtonWidget>
+              <ButtonWidget Id="DeletePresetButton"
+                          Command.Click="DeletePreset"
+                          SuggestedWidth="150" SuggestedHeight="45"
+                          MarginTop="100" HorizontalAlignment="Left">
+                <Children>
+                  <TextWidget Text="Delete Preset"
+                              Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center"/>
+                </Children>
+              </ButtonWidget>
+              <ButtonWidget Id="CloseButton"
+                          Command.Click="SavePreset"
+                          SuggestedWidth="150" SuggestedHeight="45"
+                          MarginTop="100" HorizontalAlignment="Left">
+                <Children>
+                  <TextWidget Text="Close"
+                              Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center"/>
+                </Children>
+              </ButtonWidget>
+            </Children>
+          </ListPanel>
+        </ListPanel>
+      </Children>
+    </Widget>
+  </Window>
+</Prefab>

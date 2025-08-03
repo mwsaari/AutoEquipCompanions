@@ -1,7 +1,10 @@
-﻿using AutoEquipCompanions.Model.Saving;
+﻿using AutoEquipCompanions.Model;
+using AutoEquipCompanions.Model.Saving;
 using AutoEquipCompanions.ViewModel;
 using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.GameState;
+using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.GauntletUI.Data;
 using TaleWorlds.Library;
@@ -42,7 +45,10 @@ namespace AutoEquipCompanions
                 return;
             }
             LoadSprites();
-            _viewModel = new AutoEquipOverlayVM(inventoryScreen);
+            var inventoryLogic = ((InventoryState)GameStateManager.Current.ActiveState).InventoryLogic;
+            var viewDataTracker = Campaign.Current.GetCampaignBehavior<IViewDataTracker>();
+            var autoEquipModel = new AutoEquipModel(inventoryLogic, viewDataTracker);
+            _viewModel = new AutoEquipOverlayVM(autoEquipModel, inventoryScreen);
             if (_showUI)
             {
                 _layer = new GauntletLayer(200, "GauntletLayer", true);
@@ -66,7 +72,6 @@ namespace AutoEquipCompanions
                 }
             }
         }
-
 
         private void OnPopScreen(ScreenBase poppedScreen)
         {
@@ -105,6 +110,7 @@ namespace AutoEquipCompanions
                 }
             }
         }
+
         private void LoadSprites()
         {
             var spriteData = UIResourceManager.SpriteData;

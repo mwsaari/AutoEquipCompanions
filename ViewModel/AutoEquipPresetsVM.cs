@@ -2,5 +2,9 @@
 {
     public class AutoEquipPresetsVM : TaleWorlds.Library.ViewModel
     {
+        public AutoEquipPresetsVM()
+        {
+
+        }
     }
 }

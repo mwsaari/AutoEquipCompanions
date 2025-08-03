@@ -3,8 +3,6 @@ using AutoEquipCompanions.Model.Saving;
 using SandBox.GauntletUI;
 using System.Collections.Generic;
 using System.Linq;
-using TaleWorlds.CampaignSystem;
-using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Inventory;
 using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection.Information;
@@ -22,12 +20,9 @@ namespace AutoEquipCompanions.ViewModel
         private readonly CharacterSettings defaultSettings = new CharacterSettings().Initialize();
         private Dictionary<string, CharacterSettings> _heroToggles;
 
-        public AutoEquipOverlayVM(GauntletInventoryScreen inventoryScreen) : base()
+        public AutoEquipOverlayVM(AutoEquipModel autoEquipModel, GauntletInventoryScreen inventoryScreen) : base()
         {
             _inventoryScreen = inventoryScreen;
-            var inventoryLogic = ((InventoryState)GameStateManager.Current.ActiveState).InventoryLogic;
-            var viewDataTracker = Campaign.Current.GetCampaignBehavior<IViewDataTracker>();
-            _autoEquipModel = new AutoEquipModel(inventoryLogic, viewDataTracker);
             _inventoryViewModel = GetInventoryVM();
             SettingsToggle = Config.SettingsVisible;
             _heroToggles = Config.CharacterSettings;

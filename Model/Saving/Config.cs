@@ -18,8 +18,7 @@ namespace AutoEquipCompanions.Model.Saving
 
         internal static string CreateSaveData()
         {
-            var setCharacterSettings = CharacterSettings.ContainsKey("CharacterSettings");
-            if (SettingsVisible != setCharacterSettings)
+            if (SettingsVisible != CharacterSettings.ContainsKey("CharacterSettings"))
             {
                 if (SettingsVisible)
                 {

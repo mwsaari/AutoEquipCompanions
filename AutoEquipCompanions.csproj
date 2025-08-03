@@ -282,6 +282,7 @@
     <Compile Include="Model\EquipmentComparer.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Patches\InventoryPatch.cs" />
+    <Compile Include="AutoEquipPresetManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Saving\AutoEquipGlobalSettings.cs" />
     <Compile Include="Model\Saving\Config.cs" />
@@ -298,9 +299,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="GUI\Brushes\AutoEquipCompanionsBrush.xml" />
+    <Content Include="GUI\Prefabs\AutoEquipPresets.xml" />
+    <Content Include="GUI\Prefabs\AutoEquipOverlay.xml" />
     <Content Include="_moduleFiles\readme.txt" />
     <Content Include="_moduleFiles\Submodule.xml" />
-    <Content Include="GUI\Prefabs\AutoEquipOverlay.xml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
