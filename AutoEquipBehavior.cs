@@ -19,12 +19,10 @@ namespace AutoEquipCompanions
 
         GauntletLayer _layer;
         IGauntletMovie _movie;
-        AutoEquipOverlayVM _viewModel;
+        AutoEquipOverlayVM _overlayViewModel;
         SpriteCategory _category;
 
-        internal AutoEquipOverlayVM ViewModel => _viewModel;
-
-        private static bool _showUI = true;
+        internal AutoEquipOverlayVM OverlayViewModel => _overlayViewModel;
 
         public override void RegisterEvents()
         {
@@ -40,54 +38,37 @@ namespace AutoEquipCompanions
 
         private void OnPushScreen(ScreenBase pushedScreen)
         {
-            if (pushedScreen is not GauntletInventoryScreen inventoryScreen)
+            if (pushedScreen is GauntletInventoryScreen inventoryScreen
+                && _layer is null)
             {
-                return;
-            }
-            LoadSprites();
-            var inventoryLogic = ((InventoryState)GameStateManager.Current.ActiveState).InventoryLogic;
-            var viewDataTracker = Campaign.Current.GetCampaignBehavior<IViewDataTracker>();
-            var autoEquipModel = new AutoEquipModel(inventoryLogic, viewDataTracker);
-            _viewModel = new AutoEquipOverlayVM(autoEquipModel, inventoryScreen);
-            if (_showUI)
-            {
-                _layer = new GauntletLayer(200, "GauntletLayer", true);
-                UIConfig.DoNotUseGeneratedPrefabs = true;
-                _movie = _layer.LoadMovie("AutoEquipOverlay", _viewModel);
-                _layer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
-                inventoryScreen.AddLayer(_layer);
-            }
-            else
-            {
-                var mainHeroId = Campaign.Current.MainParty.LeaderHero.StringId;
-                if (Config.CharacterSettings.TryGetValue(mainHeroId, out var characterSettings))
-                {
-                    characterSettings.CharacterToggle = false;
-                }
-                else
-                {
-                    characterSettings = new CharacterSettings().Initialize();
-                    characterSettings.CharacterToggle = false;
-                    Config.CharacterSettings.Add(mainHeroId, characterSettings);
-                }
+                OpenOverlay(inventoryScreen);
             }
         }
 
         private void OnPopScreen(ScreenBase poppedScreen)
         {
-            if (poppedScreen is not GauntletInventoryScreen inventoryScreen
-                || _layer is null)
-            {
-                return;
-            }
-            if (_showUI)
+            if (poppedScreen is GauntletInventoryScreen inventoryScreen
+                || _layer is not null)
             {
                 _category.Unload();
                 _layer.ReleaseMovie(_movie);
                 _layer = null;
                 _movie = null;
+                _overlayViewModel = null;
             }
-            _viewModel = null;
+        }
+
+        private void OpenOverlay(GauntletInventoryScreen inventoryScreen)
+        {
+            LoadSprites();
+            var inventoryLogic = ((InventoryState)GameStateManager.Current.ActiveState).InventoryLogic;
+            var autoEquipModel = new AutoEquipModel(inventoryLogic);
+            _overlayViewModel = new AutoEquipOverlayVM(autoEquipModel, inventoryScreen);
+            _layer = new GauntletLayer(200, "GauntletLayer", true);
+            UIConfig.DoNotUseGeneratedPrefabs = true;
+            _movie = _layer.LoadMovie("AutoEquipOverlay", _overlayViewModel);
+            _layer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
+            inventoryScreen.AddLayer(_layer);
         }
 
         public override void SyncData(IDataStore dataStore)

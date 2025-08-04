@@ -9,7 +9,7 @@ namespace AutoEquipCompanions.Patches
     {
         static void Prefix(List<string> ____lockedItemIDs)
         {
-            AutoEquipBehavior.Instance.ViewModel.OnExecuteCompleteTransactions(____lockedItemIDs);
+            AutoEquipBehavior.Instance.OverlayViewModel.OnExecuteCompleteTransactions(____lockedItemIDs);
         }
     }
 }

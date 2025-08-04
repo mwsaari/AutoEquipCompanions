@@ -22,6 +22,7 @@ namespace AutoEquipCompanions.ViewModel
 
         public AutoEquipOverlayVM(AutoEquipModel autoEquipModel, GauntletInventoryScreen inventoryScreen) : base()
         {
+            _autoEquipModel = autoEquipModel;
             _inventoryScreen = inventoryScreen;
             _inventoryViewModel = GetInventoryVM();
             SettingsToggle = Config.SettingsVisible;
@@ -94,6 +95,79 @@ namespace AutoEquipCompanions.ViewModel
         {
             CharacterToggle = !CharacterToggle;
             OnPropertyChanged(nameof(CharacterToggle));
+        }
+
+        public override void RefreshValues()
+        {
+            base.RefreshValues();
+            OnPropertyChanged(nameof(SettingsToggle));
+            OnPropertyChanged(nameof(SettingsToggleText));
+            OnPropertyChanged(nameof(CharacterToggle));
+            OnPropertyChanged(nameof(HeadToggle));
+            OnPropertyChanged(nameof(CapeToggle));
+            OnPropertyChanged(nameof(BodyToggle));
+            OnPropertyChanged(nameof(GlovesToggle));
+            OnPropertyChanged(nameof(LegToggle));
+            OnPropertyChanged(nameof(HorseToggle));
+            OnPropertyChanged(nameof(HarnessToggle));
+            OnPropertyChanged(nameof(Weapon0Toggle));
+            OnPropertyChanged(nameof(Weapon1Toggle));
+            OnPropertyChanged(nameof(Weapon2Toggle));
+            OnPropertyChanged(nameof(Weapon3Toggle));
+        }
+
+        public void ToggleEquipment(EquipmentIndex index)
+        {
+            if (_heroToggles.TryGetValue(CurrentHero, out var characterSettings))
+            {
+                characterSettings[index] = !characterSettings[index];
+            }
+            else
+            {
+                characterSettings = new CharacterSettings().Initialize();
+                characterSettings[index] = false;
+                _heroToggles.Add(CurrentHero, characterSettings);
+            }
+        }
+
+        public void RunAutoEquip()
+        {
+            if (!Config.GeneralSettings.CanAutoEquipIgnoreLockedItems)
+            {
+                return;
+            }
+            _autoEquipModel.AutoEquipCompanions(_heroToggles);
+            _inventoryViewModel.RefreshValues();
+        }
+
+        public void OnExecuteCompleteTransactions(IEnumerable<string> lockedItemIDs)
+        {
+            Config.SettingsVisible = SettingsToggle;
+            Config.CharacterSettings = _heroToggles;
+            if (!Config.GeneralSettings.CanAutoEquipIgnoreLockedItems)
+            {
+                _autoEquipModel.AutoEquipCompanions(Config.CharacterSettings, lockedItemIDs);
+            }
+            _autoEquipModel.AutoEquipCompanions(Config.CharacterSettings);
+        }
+
+        private void SelectedCharacterChanged(object sender, PropertyChangedWithValueEventArgs e)
+        {
+            RefreshValues();
+        }
+
+        private SPInventoryVM GetInventoryVM()
+        {
+            // This is written as a loop for safety. But really inventory screen will be first layer, and inventoryVM will be first view.
+            var gauntletLayers = _inventoryScreen.Layers.OfType<GauntletLayer>();
+            foreach (var view in gauntletLayers.SelectMany(x => x.MoviesAndDataSources))
+            {
+                if (view.Item2 is SPInventoryVM inventoryVM)
+                {
+                    return inventoryVM;
+                }
+            }
+            return null;
         }
 
         #region Armor
@@ -212,73 +286,5 @@ namespace AutoEquipCompanions.ViewModel
         }
         #endregion
 
-        public override void RefreshValues()
-        {
-            base.RefreshValues();
-            OnPropertyChanged(nameof(SettingsToggle));
-            OnPropertyChanged(nameof(SettingsToggleText));
-            OnPropertyChanged(nameof(CharacterToggle));
-            OnPropertyChanged(nameof(HeadToggle));
-            OnPropertyChanged(nameof(CapeToggle));
-            OnPropertyChanged(nameof(BodyToggle));
-            OnPropertyChanged(nameof(GlovesToggle));
-            OnPropertyChanged(nameof(LegToggle));
-            OnPropertyChanged(nameof(HorseToggle));
-            OnPropertyChanged(nameof(HarnessToggle));
-            OnPropertyChanged(nameof(Weapon0Toggle));
-            OnPropertyChanged(nameof(Weapon1Toggle));
-            OnPropertyChanged(nameof(Weapon2Toggle));
-            OnPropertyChanged(nameof(Weapon3Toggle));
-        }
-
-        public void ToggleEquipment(EquipmentIndex index)
-        {
-            if (_heroToggles.TryGetValue(CurrentHero, out var characterSettings))
-            {
-                characterSettings[index] = !characterSettings[index];
-            }
-            else
-            {
-                characterSettings = new CharacterSettings().Initialize();
-                characterSettings[index] = false;
-                _heroToggles.Add(CurrentHero, characterSettings);
-            }
-        }
-
-        public void RunAutoEquip()
-        {
-            if (!AutoEquipGlobalSettings.Instance.CanAutoEquipIgnoreLockedItems)
-            {
-                return;
-            }
-            _autoEquipModel.AutoEquipCompanions(_heroToggles);
-            _inventoryViewModel.RefreshValues();
-        }
-
-        public void OnExecuteCompleteTransactions(List<string> ____lockedItemIDs)
-        {
-            Config.SettingsVisible = SettingsToggle;
-            Config.CharacterSettings = _heroToggles;
-            _autoEquipModel.AutoEquipCompanions(Config.CharacterSettings);
-        }
-
-        private void SelectedCharacterChanged(object sender, PropertyChangedWithValueEventArgs e)
-        {
-            RefreshValues();
-        }
-
-        private SPInventoryVM GetInventoryVM()
-        {
-            // This is written as a loop for safety. But really inventory screen will be first layer, and inventoryVM will be first view.
-            var gauntletLayers = _inventoryScreen.Layers.OfType<GauntletLayer>();
-            foreach (var view in gauntletLayers.SelectMany(x => x.MoviesAndDataSources))
-            {
-                if (view.Item2 is SPInventoryVM inventoryVM)
-                {
-                    return inventoryVM;
-                }
-            }
-            return null;
-        }
     }
 }

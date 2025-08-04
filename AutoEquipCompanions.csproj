@@ -54,9 +54,6 @@
     <Reference Include="0Harmony, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Bannerlord.Lib.Harmony.2.2.2\lib\net472\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="MCMv5, Version=5.10.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\Bannerlord.MCM.5.10.2\lib\netstandard2.0\MCMv5.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -281,10 +278,9 @@
     <Compile Include="Model\AutoEquipModel.cs" />
     <Compile Include="Model\EquipmentComparer.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Model\Saving\GeneralSettings.cs" />
     <Compile Include="Patches\InventoryPatch.cs" />
-    <Compile Include="AutoEquipPresetManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Model\Saving\AutoEquipGlobalSettings.cs" />
     <Compile Include="Model\Saving\Config.cs" />
     <Compile Include="Model\Saving\CharacterSettings.cs" />
     <Compile Include="Utilities.cs" />

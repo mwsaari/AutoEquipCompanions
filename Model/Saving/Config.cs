@@ -9,6 +9,7 @@ namespace AutoEquipCompanions.Model.Saving
         {
             SettingsVisible = true;
             CharacterSettings = new Dictionary<string, CharacterSettings>();
+            GeneralSettings = new GeneralSettings();
         }
 
         internal static void ReadSaveData(string jsonString)
@@ -35,5 +36,7 @@ namespace AutoEquipCompanions.Model.Saving
         internal static bool SettingsVisible;
 
         internal static Dictionary<string, CharacterSettings> CharacterSettings;
+
+        internal static GeneralSettings GeneralSettings { get; private set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoEquipCompanions.Model.Saving;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.CampaignSystem;
@@ -13,15 +14,18 @@ namespace AutoEquipCompanions.Model
     public class AutoEquipModel
     {
         private InventoryLogic _inventoryLogic;
-        private IViewDataTracker _viewDataTracker;
 
-        public AutoEquipModel(InventoryLogic inventoryLogic, IViewDataTracker viewDataTracker)
+        public AutoEquipModel(InventoryLogic inventoryLogic)
         {
             _inventoryLogic = inventoryLogic;
-            _viewDataTracker = viewDataTracker;
         }
 
         public void AutoEquipCompanions(Dictionary<string, CharacterSettings> characterSettings)
+        {
+            AutoEquipCompanions(characterSettings, Enumerable.Empty<string>());
+        }
+
+        public void AutoEquipCompanions(Dictionary<string, CharacterSettings> characterSettings, IEnumerable<string> ignoredItems)
         {
             var heroes = MobileParty.MainParty.MemberRoster
                 .GetTroopRoster()
@@ -49,10 +53,7 @@ namespace AutoEquipCompanions.Model
                         {
                             continue;
                         }
-                        var lockedItems = _viewDataTracker.GetInventoryLocks();
-                        var items = AutoEquipGlobalSettings.Instance.CanAutoEquipIgnoreLockedItems
-                            ? MobileParty.MainParty.ItemRoster
-                            : MobileParty.MainParty.ItemRoster.Where(x => !lockedItems.Contains(x.EquipmentElement.Item.StringId));
+                        var items = MobileParty.MainParty.ItemRoster.Where(x => !ignoredItems.Contains(x.EquipmentElement.Item.StringId));
                         if (TryGetBestReplacement(hero, slot, items, out ItemRosterElement replacement))
                         {
                             DoWeaponSwap(hero, slot, replacement);
@@ -127,9 +128,9 @@ namespace AutoEquipCompanions.Model
                     bestReplacement = replacement;
                     return true;
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
-                    throw new System.Exception($"Error processing replacement for {hero.Name} in slot {slot} with weapon {replacement}", ex);
+                    throw new Exception($"Error processing replacement for {hero.Name} in slot {slot} with weapon {replacement}", ex);
                 }
             }
             return false;
