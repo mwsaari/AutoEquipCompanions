@@ -23,5 +23,6 @@ namespace AutoEquipCompanions.Model.Saving
 
         public bool CharacterToggle { get; set; }
         public List<bool> EquipmentToggles { get; set; }
+        public Preset Preset { get; set; } = null;
     }
 }

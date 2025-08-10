@@ -19,6 +19,7 @@ namespace AutoEquipCompanions.ViewModel
         private readonly SPInventoryVM _inventoryViewModel;
         private readonly CharacterSettings defaultSettings = new CharacterSettings().Initialize();
         private Dictionary<string, CharacterSettings> _heroToggles;
+        private SelectorVM<PresetSelectorItemVM> _selectorOptions;
 
         public AutoEquipOverlayVM(AutoEquipModel autoEquipModel, GauntletInventoryScreen inventoryScreen) : base()
         {
@@ -82,6 +83,29 @@ namespace AutoEquipCompanions.ViewModel
                     _heroToggles.Add(CurrentHero, characterSettings);
                 }
             }
+        }
+
+        [DataSourceProperty]
+        public SelectorVM<PresetSelectorItemVM> PresetOptions
+        {
+            get => _selectorOptions;
+            set
+            {
+                if (_selectorOptions != value)
+                {
+                    _selectorOptions = value;
+                    OnPropertyChanged(nameof(PresetOptions));
+                }
+            }
+        }
+
+        public void TogglePresetDropdown()
+        {
+
+        }
+
+        public void UpdatePresets()
+        {
         }
 
         public void ToggleSettings()
