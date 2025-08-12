@@ -31,9 +31,9 @@ namespace AutoEquipCompanions.Model
 
     public enum CompareMethods
     {
+        Ordered,
         Sum,
         Product,
-        Ordered,
     }
 
     public class SlotPreset
@@ -43,9 +43,9 @@ namespace AutoEquipCompanions.Model
 
         public IList<CompareFields> PresetFields { get; set; } = new List<CompareFields>();
 
-        public CompareMethods CompareMethod { get; set; } = CompareMethods.Sum;
+        public CompareMethods CompareMethod { get; set; } = CompareMethods.Ordered;
 
-        public float GetCalculatedValue(EquipmentElement equipment)
+        public double GetCalculatedValue(EquipmentElement equipment)
         {
             if (!PresetFields.Any())
             {
@@ -53,11 +53,20 @@ namespace AutoEquipCompanions.Model
             }
             else
             {
-                return 0;
+                switch (CompareMethod)
+                {
+                    case CompareMethods.Ordered:
+                        return GetOrderedValue(equipment);
+                    case CompareMethods.Sum:
+                        return GetSumValue(equipment);
+                    case CompareMethods.Product:
+                        return GetProductValue(equipment);
+                }
             }
+            return 0;
         }
 
-        private static int DefaultCalculation(EquipmentElement equipment)
+        private static double DefaultCalculation(EquipmentElement equipment)
         {
             if (equipment.IsEmpty)
             {
@@ -74,7 +83,34 @@ namespace AutoEquipCompanions.Model
             return equipment.ItemValue;
         }
 
-        private static float GetValueFromField(EquipmentElement equipment, CompareFields field)
+        public double GetOrderedValue(EquipmentElement equipment)
+        {
+            double sum = 0;
+            double factor = 1000 ^ 10;
+            foreach (var field in PresetFields)
+            {
+                sum += GetValueFromField(equipment, field) * factor;
+                factor /= 1000;
+            }
+            return sum;
+        }
+
+        public double GetSumValue(EquipmentElement equipment)
+        {
+            return PresetFields.Sum(field => GetValueFromField(equipment, field));
+        }
+
+        public double GetProductValue(EquipmentElement equipment)
+        {
+            double product = 1;
+            foreach (var field in PresetFields)
+            {
+                product *= GetValueFromField(equipment, field);
+            }
+            return product;
+        }
+
+        private static double GetValueFromField(EquipmentElement equipment, CompareFields field)
         {
             switch (field)
             {
