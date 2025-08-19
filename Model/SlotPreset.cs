@@ -1,69 +1,28 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using TaleWorlds.Core;
+﻿using TaleWorlds.Core;
+using TaleWorlds.MountAndBlade;
 
 namespace AutoEquipCompanions.Model
 {
-    public enum CompareFields
-    {
-        Value,
-        Weight,
-        HeadArmor,
-        LegArmor,
-        BodyArmor,
-        ArmArmor,
-        ArmorTotal,
-        HitPoints,
-        ThrustDamage,
-        SwingDamage,
-        MissileDamage,
-        HighestDamage,
-        ThrustSpeed,
-        SwingSpeed,
-        MissileSpeed,
-        Handling,
-        StackCount,
-        MountSpeed,
-        MountManeuver,
-        MountCharge,
-        MountHitPoints,
-    }
-
-    public enum CompareMethods
-    {
-        Ordered,
-        Sum,
-        Product,
-    }
-
     public class SlotPreset
     {
+        public bool IsEnabled { get; set; } = true;
 
-        public ItemObject.ItemUsageSetFlags UsageSetFlags { get; set; } = 0;
+        public ItemObject.ItemTypeEnum? ItemType { get; set; }
 
-        public IList<CompareFields> PresetFields { get; set; } = new List<CompareFields>();
+        public ItemObject.ItemUsageSetFlags? UsageSetFlags { get; set; }
 
-        public CompareMethods CompareMethod { get; set; } = CompareMethods.Ordered;
+        public virtual bool DoesItemMeetRequirements(EquipmentElement equipment)
+        {
+            return ItemType is not null
+                && equipment.Item.ItemType == ItemType
+                && UsageSetFlags is not null
+                && equipment.Item.PrimaryWeapon is not null
+                && MBItem.GetItemUsageSetFlags(equipment.Item.PrimaryWeapon.ItemUsage).HasFlag(UsageSetFlags);
+        }
 
         public double GetCalculatedValue(EquipmentElement equipment)
         {
-            if (!PresetFields.Any())
-            {
-                return DefaultCalculation(equipment);
-            }
-            else
-            {
-                switch (CompareMethod)
-                {
-                    case CompareMethods.Ordered:
-                        return GetOrderedValue(equipment);
-                    case CompareMethods.Sum:
-                        return GetSumValue(equipment);
-                    case CompareMethods.Product:
-                        return GetProductValue(equipment);
-                }
-            }
-            return 0;
+            return DefaultCalculation(equipment);
         }
 
         private static double DefaultCalculation(EquipmentElement equipment)
@@ -82,32 +41,30 @@ namespace AutoEquipCompanions.Model
             }
             return equipment.ItemValue;
         }
-
-        public double GetOrderedValue(EquipmentElement equipment)
+        /**
+        public enum CompareFields
         {
-            double sum = 0;
-            double factor = 1000 ^ 10;
-            foreach (var field in PresetFields)
-            {
-                sum += GetValueFromField(equipment, field) * factor;
-                factor /= 1000;
-            }
-            return sum;
-        }
-
-        public double GetSumValue(EquipmentElement equipment)
-        {
-            return PresetFields.Sum(field => GetValueFromField(equipment, field));
-        }
-
-        public double GetProductValue(EquipmentElement equipment)
-        {
-            double product = 1;
-            foreach (var field in PresetFields)
-            {
-                product *= GetValueFromField(equipment, field);
-            }
-            return product;
+            Value,
+            Weight,
+            HeadArmor,
+            LegArmor,
+            BodyArmor,
+            ArmArmor,
+            ArmorTotal,
+            HitPoints,
+            ThrustDamage,
+            SwingDamage,
+            MissileDamage,
+            HighestDamage,
+            ThrustSpeed,
+            SwingSpeed,
+            MissileSpeed,
+            Handling,
+            StackCount,
+            MountSpeed,
+            MountManeuver,
+            MountCharge,
+            MountHitPoints,
         }
 
         private static double GetValueFromField(EquipmentElement equipment, CompareFields field)
@@ -159,6 +116,26 @@ namespace AutoEquipCompanions.Model
                 default:
                     return 0;
             }
+        }
+        **/
+    }
+
+    public class HorsePreset : SlotPreset
+    {
+        public bool Camel { get; set; } = false;
+
+        public override bool DoesItemMeetRequirements(EquipmentElement equipment)
+        {
+            if (equipment.Item.ItemType == ItemObject.ItemTypeEnum.Horse)
+            {
+                return Camel ^ IsMountCamel(equipment.Item);
+            }
+            return false;
+        }
+
+        private bool IsMountCamel(ItemObject mountObject)
+        {
+            return mountObject?.ItemComponent is HorseComponent itemComponent && itemComponent.Monster.MonsterUsage == "camel";
         }
     }
 }
