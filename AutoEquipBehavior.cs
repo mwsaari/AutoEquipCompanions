@@ -15,6 +15,8 @@ namespace AutoEquipCompanions
 {
     public class AutoEquipBehavior : CampaignBehaviorBase
     {
+        private const string CharacterSettingsKey = "AECharacterToggles";
+        private const string PresetsKey = "AEPresets";
         internal static AutoEquipBehavior Instance = new AutoEquipBehavior();
 
         GauntletLayer _layer;
@@ -75,15 +77,20 @@ namespace AutoEquipCompanions
         {
             if (dataStore.IsSaving)
             {
-                var saveData = Config.CreateSaveData();
-                dataStore.SyncData("AECharacterToggles", ref saveData);
+                var characterData = Config.CreateCharacterSaveData();
+                dataStore.SyncData(CharacterSettingsKey, ref characterData);
+
+                var presetData = Config.CreatePresetSaveData();
+                dataStore.SyncData(PresetsKey, ref presetData);
             }
             if (dataStore.IsLoading)
             {
-                var saveData = "";
-                if (dataStore.SyncData("AECharacterToggles", ref saveData) && !string.IsNullOrEmpty(saveData))
+                var characterData = "";
+                var presetData = "";
+                if (dataStore.SyncData(CharacterSettingsKey, ref characterData)
+                    && dataStore.SyncData(PresetsKey, ref presetData))
                 {
-                    Config.ReadSaveData(saveData);
+                    Config.ReadSaveData(characterData, presetData);
                 }
                 else
                 {

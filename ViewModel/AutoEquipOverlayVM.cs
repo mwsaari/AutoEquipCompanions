@@ -1,6 +1,7 @@
 ﻿using AutoEquipCompanions.Model;
 using AutoEquipCompanions.Model.Saving;
 using SandBox.GauntletUI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Inventory;
@@ -29,6 +30,7 @@ namespace AutoEquipCompanions.ViewModel
             SettingsToggle = Config.SettingsVisible;
             _heroToggles = Config.CharacterSettings;
             _inventoryViewModel.CharacterList.PropertyChangedWithValue += SelectedCharacterChanged;
+            UpdatePresets();
             RefreshValues();
         }
 
@@ -99,13 +101,25 @@ namespace AutoEquipCompanions.ViewModel
             }
         }
 
-        public void TogglePresetDropdown()
+        private void OnPresetSelected(SelectorVM<PresetSelectorItemVM> selectorVM)
         {
-
+            if (_heroToggles.TryGetValue(CurrentHero, out var characterSettings))
+            {
+                characterSettings.Preset = selectorVM.SelectedItem.Preset;
+            }
+            else
+            {
+                characterSettings = new CharacterSettings().Initialize();
+                characterSettings.Preset = selectorVM.SelectedItem.Preset;
+            }
         }
 
         public void UpdatePresets()
         {
+            if (_selectorOptions == null)
+            {
+                _selectorOptions = new SelectorVM<PresetSelectorItemVM>(-1, new Action<SelectorVM<PresetSelectorItemVM>>(OnPresetSelected));
+            }
         }
 
         public void ToggleSettings()
@@ -138,6 +152,7 @@ namespace AutoEquipCompanions.ViewModel
             OnPropertyChanged(nameof(Weapon1Toggle));
             OnPropertyChanged(nameof(Weapon2Toggle));
             OnPropertyChanged(nameof(Weapon3Toggle));
+            OnPropertyChanged(nameof(PresetOptions));
         }
 
         public void ToggleEquipment(EquipmentIndex index)

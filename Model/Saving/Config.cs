@@ -13,12 +13,21 @@ namespace AutoEquipCompanions.Model.Saving
             Presets = new List<Preset>();
         }
 
-        internal static void ReadSaveData(string jsonString)
+        internal static void ReadSaveData(string characterJson, string presetJson)
         {
-            CharacterSettings = JsonConvert.DeserializeObject<Dictionary<string, CharacterSettings>>(jsonString);
+            if (!string.IsNullOrEmpty(presetJson))
+            {
+                Presets = JsonConvert.DeserializeObject<List<Preset>>(presetJson);
+            }
+
+            // Character Settings needs to be deserialized after presets. So the character setting object can lookup the preset object.
+            if (!string.IsNullOrEmpty(characterJson))
+            {
+                CharacterSettings = JsonConvert.DeserializeObject<Dictionary<string, CharacterSettings>>(characterJson);
+            }
         }
 
-        internal static string CreateSaveData()
+        internal static string CreateCharacterSaveData()
         {
             if (SettingsVisible != CharacterSettings.ContainsKey("CharacterSettings"))
             {
@@ -31,7 +40,12 @@ namespace AutoEquipCompanions.Model.Saving
                     CharacterSettings.Remove("CharacterSettings");
                 }
             }
-            return JsonConvert.SerializeObject(Config.CharacterSettings);
+            return JsonConvert.SerializeObject(CharacterSettings);
+        }
+
+        internal static string CreatePresetSaveData()
+        {
+            return JsonConvert.SerializeObject(Presets);
         }
 
         internal static bool SettingsVisible;
