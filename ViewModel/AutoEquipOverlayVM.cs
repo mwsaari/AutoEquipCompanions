@@ -118,7 +118,13 @@ namespace AutoEquipCompanions.ViewModel
         {
             if (_selectorOptions == null)
             {
-                _selectorOptions = new SelectorVM<PresetSelectorItemVM>(-1, new Action<SelectorVM<PresetSelectorItemVM>>(OnPresetSelected));
+                PresetOptions = new SelectorVM<PresetSelectorItemVM>(-1, new Action<SelectorVM<PresetSelectorItemVM>>(OnPresetSelected));
+                PresetOptions.AddItem(new PresetSelectorItemVM(new Preset() { Name = "Custom", Id = 0 }));
+                PresetOptions.AddItem(new PresetSelectorItemVM(new Preset() { Name = "Armor Only", Id = 1 }));
+                PresetOptions.AddItem(new PresetSelectorItemVM(new Preset() { Name = "Weapons Only", Id = 2 }));
+                PresetOptions.AddItem(new PresetSelectorItemVM(new Preset() { Name = "Full Set", Id = 3 }));
+                PresetOptions.SelectedIndex = 0;
+                RefreshValues();
             }
         }
 

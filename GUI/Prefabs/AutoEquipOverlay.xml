@@ -58,7 +58,7 @@
                           SuggestedHeight="50"
                           MarginTop="15"
                           MarginRight="140"/>
-            <Widget Id="PresetDropdownWidget"
+            <!-- <Widget Id="PresetDropdownWidget"
                     MarginTop="55"
                     MarginLeft="410"
                     HorizontalAlignment="Center"
@@ -66,6 +66,7 @@
               <Children>
                 <AnimatedDropDownWidget Id="DropdownParent"
                                         DataSource="{PresetOptions}"
+                                        CurrentSelectedIndex="@SelectedIndex"
                                         SuggestedWidth="120"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
@@ -212,7 +213,7 @@
                   </Children>
                 </AnimatedDropDownWidget>
               </Children>
-            </Widget>
+            </Widget>-->
 
             <ButtonWidget Id="CharacterToggleButton"
                           Command.Click="ToggleCharacter"

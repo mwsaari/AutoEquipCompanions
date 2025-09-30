@@ -1,8 +1,5 @@
-﻿using TaleWorlds.Core.ViewModelCollection.Information;
-using TaleWorlds.GauntletUI;
+﻿using TaleWorlds.GauntletUI;
 using TaleWorlds.GauntletUI.BaseTypes;
-using TaleWorlds.Library;
-using TaleWorlds.MountAndBlade.GauntletUI.Widgets;
 
 namespace AutoEquipCompanions.ViewModel
 {
