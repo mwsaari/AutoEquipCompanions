@@ -179,7 +179,15 @@ namespace AutoEquipCompanions.Model
 
         private void DoWeaponSwap(Hero character, EquipmentIndex slot, ItemRosterElement replacement)
         {
-            _inventoryLogic.AddTransferCommand(TransferCommand.Transfer(1, InventoryLogic.InventorySide.PlayerInventory, InventoryLogic.InventorySide.Equipment, replacement, EquipmentIndex.None, slot, character.CharacterObject, false));
+            _inventoryLogic.AddTransferCommand(
+                TransferCommand.Transfer(
+                    amount: 1,
+                    fromSide: InventoryLogic.InventorySide.PlayerInventory,
+                    toSide: InventoryLogic.InventorySide.BattleEquipment,
+                    elementToTransfer: replacement,
+                    fromEquipmentIndex: EquipmentIndex.None,
+                    toEquipmentIndex: slot,
+                    character: character.CharacterObject));
         }
     }
 }

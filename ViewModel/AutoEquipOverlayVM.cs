@@ -205,9 +205,9 @@ namespace AutoEquipCompanions.ViewModel
         {
             // This is written as a loop for safety. But really inventory screen will be first layer, and inventoryVM will be first view.
             var gauntletLayers = _inventoryScreen.Layers.OfType<GauntletLayer>();
-            foreach (var view in gauntletLayers.SelectMany(x => x.MoviesAndDataSources))
+            foreach (var view in gauntletLayers.Select(x => x.GetMovieIdentifier("Inventory").DataSource))
             {
-                if (view.Item2 is SPInventoryVM inventoryVM)
+                if (view is SPInventoryVM inventoryVM)
                 {
                     return inventoryVM;
                 }

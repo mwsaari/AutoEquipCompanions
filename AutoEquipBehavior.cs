@@ -6,7 +6,6 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
-using TaleWorlds.GauntletUI.Data;
 using TaleWorlds.Library;
 using TaleWorlds.ScreenSystem;
 using TaleWorlds.TwoDimension;
@@ -20,7 +19,7 @@ namespace AutoEquipCompanions
         internal static AutoEquipBehavior Instance = new AutoEquipBehavior();
 
         GauntletLayer _layer;
-        IGauntletMovie _movie;
+        GauntletMovieIdentifier _movie;
         AutoEquipOverlayVM _overlayViewModel;
         SpriteCategory _category;
 
@@ -103,7 +102,7 @@ namespace AutoEquipCompanions
         {
             var spriteData = UIResourceManager.SpriteData;
             var resourceContext = UIResourceManager.ResourceContext;
-            var resourceDepot = UIResourceManager.UIResourceDepot;
+            var resourceDepot = UIResourceManager.ResourceDepot;
 
             _category = spriteData.SpriteCategories["ui_partyscreen"]; // select which category to load, put your category name here
             _category.Load(resourceContext, resourceDepot); // load the selected category
