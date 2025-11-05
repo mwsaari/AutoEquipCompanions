@@ -1,12 +1,11 @@
 <Module>
   <Name value="Auto Equip Companions"/>
   <Id value="AutoEquipCompanions"/>
-  <Version value="v1.0.1"/>
+  <Version value="v1.2.12"/>
   <SingleplayerModule value="true"/>
   <MultiplayerModule value="false"/>
   <DependedModules>
-    <DependedModule Id="Bannerlord.Harmony" order="LoadAfterThis" DependentVersion="v2.3.3"/>
-    <DependedModule Id="Bannerlord.MBOptionScreen" order="LoadAfterThis" DependentVersion="v5.10.1"/>
+    <DependedModule Id="Bannerlord.Harmony" order="LoadAfterThis" DependentVersion="v2.3.6"/>
     <DependedModule Id="Native" order="LoadAfterThis" DependentVersion="v1.2.12"/>
     <DependedModule Id="SandBoxCore" order="LoadAfterThis" DependentVersion="v1.2.12"/>
     <DependedModule Id="Sandbox" order="LoadAfterThis" DependentVersion="v1.2.12"/>

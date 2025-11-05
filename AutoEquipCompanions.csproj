@@ -311,6 +311,6 @@ copy /Y "C:\Users\saari\source\repos\mwsaari\AutoEquipCompanions\Modules\AutoEqu
 copy /Y "C:\Users\saari\source\repos\mwsaari\AutoEquipCompanions\Modules\AutoEquipCompanions\bin\Win64_Shipping_Client\$(TargetName).pdb" "C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\AutoEquipCompanions\bin\Win64_Shipping_Client\$(TargetName).pdb"
 copy /Y "C:\Users\saari\source\repos\mwsaari\AutoEquipCompanions\GUI\Prefabs\AutoEquipOverlay.xml" "C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\AutoEquipCompanions\GUI\Prefabs\AutoEquipOverlay.xml"
 copy /Y "C:\Users\saari\source\repos\mwsaari\AutoEquipCompanions\GUI\Prefabs\AutoEquipPresets.xml" "C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\AutoEquipCompanions\GUI\Prefabs\AutoEquipPresets.xml"
-</PostBuildEvent>
+copy /Y "C:\Users\saari\source\repos\mwsaari\AutoEquipCompanions\_moduleFiles\Submodule.xml" "C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\AutoEquipCompanions\Submodule.xml"</PostBuildEvent>
   </PropertyGroup>
 </Project>
