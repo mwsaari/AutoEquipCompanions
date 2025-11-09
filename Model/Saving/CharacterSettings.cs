@@ -43,7 +43,7 @@ namespace AutoEquipCompanions.Model.Saving
         }
 
         [OnDeserialized]
-        private void OnDeserialized()
+        private void OnDeserialized(StreamingContext context)
         {
             if (PresetId is not null)
             {
