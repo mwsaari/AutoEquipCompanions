@@ -49,12 +49,18 @@ namespace AutoEquipCompanions
         private void OnPopScreen(ScreenBase poppedScreen)
         {
             if (poppedScreen is GauntletInventoryScreen inventoryScreen
-                || _layer is not null)
+                && _layer is not null)
             {
-                _category.Unload();
-                _layer.ReleaseMovie(_movie);
+                if (_category is not null)
+                {
+                    _category.Unload();
+                }
+                if (_movie is not null)
+                {
+                    _layer.ReleaseMovie(_movie);
+                    _movie = null;
+                }
                 _layer = null;
-                _movie = null;
                 _overlayViewModel = null;
             }
         }
