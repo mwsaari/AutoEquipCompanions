@@ -71,7 +71,7 @@ namespace AutoEquipCompanions
             var inventoryLogic = ((InventoryState)GameStateManager.Current.ActiveState).InventoryLogic;
             var autoEquipModel = new AutoEquipModel(inventoryLogic);
             _overlayViewModel = new AutoEquipOverlayVM(autoEquipModel, inventoryScreen);
-            _layer = new GauntletLayer(200, "GauntletLayer", true);
+            _layer = new GauntletLayer("GauntletLayer", 200, true);
             UIConfig.DoNotUseGeneratedPrefabs = true;
             _movie = _layer.LoadMovie("AutoEquipOverlay", _overlayViewModel);
             _layer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
