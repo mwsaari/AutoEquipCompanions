@@ -18,6 +18,18 @@
             WidthSizePolicy="StretchToParent"
             HeightSizePolicy="StretchToParent">
       <Children>
+        <Widget SuggestedWidth="362"
+                SuggestedHeight="42"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                IsVisible="@IsPresetsVisible">
+          <Children>
+            <Standard.DropdownWithHorizontalControl VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center"
+                                                    Parameter.SelectorDataSource="{PresetOptions}" />
+          </Children>
+        </Widget>
+        
         <ButtonWidget Id="RunAutoEquipButton"
                       Command.Click="RunAutoEquip"
                       Command.AlternateClick="ToggleSettings"

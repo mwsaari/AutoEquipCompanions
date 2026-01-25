@@ -96,10 +96,12 @@ namespace AutoEquipCompanions.ViewModel
                 if (_selectorOptions != value)
                 {
                     _selectorOptions = value;
-                    OnPropertyChanged(nameof(PresetOptions));
                 }
             }
         }
+
+        [DataSourceProperty]
+        public bool IsPresetsVisible { get; private set; }
 
         private void OnPresetSelected(SelectorVM<PresetSelectorItemVM> selectorVM)
         {
@@ -124,7 +126,10 @@ namespace AutoEquipCompanions.ViewModel
                 PresetOptions.AddItem(new PresetSelectorItemVM(new Preset() { Name = "Weapons Only", Id = 2 }));
                 PresetOptions.AddItem(new PresetSelectorItemVM(new Preset() { Name = "Full Set", Id = 3 }));
                 PresetOptions.SelectedIndex = 0;
+                IsPresetsVisible = true;
                 RefreshValues();
+                OnPropertyChanged(nameof(PresetOptions));
+                OnPropertyChanged(nameof(IsPresetsVisible));
             }
         }
 
@@ -158,7 +163,6 @@ namespace AutoEquipCompanions.ViewModel
             OnPropertyChanged(nameof(Weapon1Toggle));
             OnPropertyChanged(nameof(Weapon2Toggle));
             OnPropertyChanged(nameof(Weapon3Toggle));
-            OnPropertyChanged(nameof(PresetOptions));
         }
 
         public void ToggleEquipment(EquipmentIndex index)
