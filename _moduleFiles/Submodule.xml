@@ -5,7 +5,6 @@
    <SingleplayerModule value="true"/>
    <MultiplayerModule value="false"/>
    <DependedModules>
-      <DependedModule Id="Bannerlord.Harmony" order="LoadAfterThis"/>
       <DependedModule Id="Native" order="LoadAfterThis" DependentVersion="v1.3.9"/>
       <DependedModule Id="SandBoxCore" order="LoadAfterThis" DependentVersion="v1.3.9"/>
       <DependedModule Id="Sandbox" order="LoadAfterThis" DependentVersion="v1.3.9"/>
