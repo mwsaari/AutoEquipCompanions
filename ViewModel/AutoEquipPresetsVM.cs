@@ -1,10 +1,6 @@
 ﻿namespace AutoEquipCompanions.ViewModel
 {
-    public class AutoEquipPresetsVM : TaleWorlds.Library.ViewModel
-    {
-        public AutoEquipPresetsVM()
-        {
-
-        }
-    }
+   public class AutoEquipPresetsVM : TaleWorlds.Library.ViewModel
+   {
+   }
 }

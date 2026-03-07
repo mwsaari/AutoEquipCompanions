@@ -1,27 +1,27 @@
 <Module>
-  <Name value="Auto Equip Companions"/>
-  <Id value="AutoEquipCompanions"/>
-  <Version value="v1.3.9"/>
-  <SingleplayerModule value="true"/>
-  <MultiplayerModule value="false"/>
-  <DependedModules>
-    <DependedModule Id="Bannerlord.Harmony" order="LoadAfterThis" DependentVersion="v2.3.6"/>
-    <DependedModule Id="Native" order="LoadAfterThis" DependentVersion="v1.3.9"/>
-    <DependedModule Id="SandBoxCore" order="LoadAfterThis" DependentVersion="v1.3.9"/>
-    <DependedModule Id="Sandbox" order="LoadAfterThis" DependentVersion="v1.3.9"/>
-    <DependedModule Id="CustomBattle" order="LoadAfterThis" DependentVersion="v1.3.9"/>
-    <DependedModule Id="StoryMode" order="LoadAfterThis" DependentVersion="v1.3.9"/>
-  </DependedModules>
-  <SubModules>
-    <SubModule>
-      <Name value="AutoEquipCompanions"/>
-      <DLLName value="AutoEquipCompanions.dll"/>
-      <SubModuleClassType value="AutoEquipCompanions.Main"/>
-      <Tags>
-        <Tag key="DedicatedServerType" value="none" />
-        <Tag key="IsNoRenderModeElement" value="false" />
-      </Tags>
-    </SubModule>
-  </SubModules>
-  <Xmls/>
+   <Name value="Auto Equip Companions"/>
+   <Id value="AutoEquipCompanions"/>
+   <Version value="v1.3.9"/>
+   <SingleplayerModule value="true"/>
+   <MultiplayerModule value="false"/>
+   <DependedModules>
+      <DependedModule Id="Bannerlord.Harmony" order="LoadAfterThis"/>
+      <DependedModule Id="Native" order="LoadAfterThis" DependentVersion="v1.3.9"/>
+      <DependedModule Id="SandBoxCore" order="LoadAfterThis" DependentVersion="v1.3.9"/>
+      <DependedModule Id="Sandbox" order="LoadAfterThis" DependentVersion="v1.3.9"/>
+      <DependedModule Id="CustomBattle" order="LoadAfterThis" DependentVersion="v1.3.9"/>
+      <DependedModule Id="StoryMode" order="LoadAfterThis" DependentVersion="v1.3.9"/>
+   </DependedModules>
+   <SubModules>
+      <SubModule>
+         <Name value="AutoEquipCompanions"/>
+         <DLLName value="AutoEquipCompanions.dll"/>
+         <SubModuleClassType value="AutoEquipCompanions.Main"/>
+         <Tags>
+            <Tag key="DedicatedServerType" value="none"/>
+            <Tag key="IsNoRenderModeElement" value="false"/>
+         </Tags>
+      </SubModule>
+   </SubModules>
+   <Xmls/>
 </Module>
