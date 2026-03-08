@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AutoEquipCompanions.Model.Saving
 {
-   public static class InGameSettings
+   public static class CampaignSettings
    {
       public static bool SettingsVisible { get; set; }
       public static Dictionary<string, CharacterSettings> CharacterSettings { get; private set; }

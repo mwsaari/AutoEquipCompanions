@@ -139,10 +139,16 @@
       <Compile Include="AutoEquipBehavior.cs"/>
       <Compile Include="InventoryStateListener.cs"/>
       <Compile Include="Model\AutoEquipModel.cs"/>
-      <Compile Include="Model\EquipmentComparer.cs"/>
       <Compile Include="Main.cs"/>
+      <Compile Include="Model\Templating\EquipmentComparer.cs" />
+      <Compile Include="Model\Templating\SlotTemplate.cs" />
+      <Compile Include="Model\Templating\ArmorSlotTemplate.cs" />
+      <Compile Include="Model\Templating\WeaponSlotTemplate.cs" />
+      <Compile Include="Model\Templating\HorseSlotTemplate.cs" />
+      <Compile Include="Model\Templating\HorseHarnessSlotTemplate.cs" />
+      <Compile Include="Model\Templating\CharacterTemplate.cs" />
       <Compile Include="Properties\AssemblyInfo.cs"/>
-      <Compile Include="Model\Saving\InGameSettings.cs"/>
+      <Compile Include="Model\Saving\CampaignSettings.cs"/>
       <Compile Include="Model\Saving\GameSettings.cs"/>
       <Compile Include="Model\Saving\CharacterSettings.cs"/>
    </ItemGroup>
@@ -153,12 +159,10 @@
    </ItemGroup>
    <ItemGroup>
       <Content Include="GUI\Brushes\AutoEquipCompanionsBrush.xml"/>
-      <Content Include="GUI\Prefabs\AutoEquipPresets.xml"/>
       <Content Include="GUI\Prefabs\AutoEquipOverlay.xml"/>
       <Content Include="_moduleFiles\readme.txt"/>
       <Content Include="_moduleFiles\Submodule.xml"/>
    </ItemGroup>
-   <ItemGroup/>
    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
    <PropertyGroup>
       <PostBuildEvent>mkdir -p "/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/bin/Win64_Shipping_Client"

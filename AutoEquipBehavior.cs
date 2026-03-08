@@ -35,16 +35,16 @@ namespace AutoEquipCompanions
       {
          if (dataStore.IsSaving)
          {
-            var json = InGameSettings.Serialize();
+            var json = CampaignSettings.Serialize();
             dataStore.SyncData(SaveKey, ref json);
          }
          if (dataStore.IsLoading)
          {
             var json = "";
             if (dataStore.SyncData(SaveKey, ref json))
-               InGameSettings.Deserialize(json);
+               CampaignSettings.Deserialize(json);
             else
-               InGameSettings.Initialize();
+               CampaignSettings.Initialize();
          }
       }
    }

@@ -31,7 +31,7 @@ namespace AutoEquipCompanions.Model
             .GetTroopRoster()
             .Where(x => x.Character.IsHero)
             .Select(x => x.Character.HeroObject)
-            .Where(x => !InGameSettings.CharacterSettings.ContainsKey(x.StringId) || characterSettings[x.StringId].CharacterToggle);
+            .Where(x => !CampaignSettings.CharacterSettings.ContainsKey(x.StringId) || characterSettings[x.StringId].CharacterToggle);
          var inventoryGroupedByType = new Dictionary<ItemObject.ItemTypeEnum, ItemRosterElement[]>();
          foreach (var hero in heroes)
          {

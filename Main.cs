@@ -15,7 +15,7 @@ namespace AutoEquipCompanions
       {
          base.OnSubModuleLoad();
          GameSettings = GameSettings.Load();
-         InGameSettings.Initialize();
+         CampaignSettings.Initialize();
       }
 
       protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
