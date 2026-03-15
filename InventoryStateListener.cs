@@ -1,14 +1,15 @@
 using System;
 using TaleWorlds.CampaignSystem.GameState;
+using TaleWorlds.CampaignSystem.Inventory;
 using TaleWorlds.Core;
 
 namespace AutoEquipCompanions
 {
    public class InventoryStateListener : IGameStateManagerListener
    {
-      private readonly Action _onInventoryClosed;
+      private readonly Action<InventoryLogic> _onInventoryClosed;
 
-      public InventoryStateListener(Action onInventoryClosed)
+      public InventoryStateListener(Action<InventoryLogic> onInventoryClosed)
       {
          _onInventoryClosed = onInventoryClosed;
       }
@@ -17,7 +18,7 @@ namespace AutoEquipCompanions
       {
          if (gameState is InventoryState inventoryState)
          {
-            inventoryState.DoneLogicExtrasDelegate += _onInventoryClosed;
+            inventoryState.DoneLogicExtrasDelegate += () => _onInventoryClosed(inventoryState.InventoryLogic);
          }
       }
 

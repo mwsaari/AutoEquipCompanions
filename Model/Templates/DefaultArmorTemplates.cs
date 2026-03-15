@@ -1,0 +1,23 @@
+using AutoEquipCompanions.Model.Templates.Base;
+using System.Collections.Generic;
+using TaleWorlds.Core;
+
+namespace AutoEquipCompanions.Model.Templates
+{
+   public class DefaultArmorTemplate : BaseArmorTemplate
+   {
+      public static readonly DefaultArmorTemplate Instance = new DefaultArmorTemplate();
+
+      public override string Name => "Default Armor";
+      public override ArmorField ComparisonField => ArmorField.ArmorTotal;
+
+      public override IEnumerable<EquipmentIndex> LegalSlots { get; } = new[]
+      {
+         EquipmentIndex.Head,
+         EquipmentIndex.Cape,
+         EquipmentIndex.Body,
+         EquipmentIndex.Gloves,
+         EquipmentIndex.Leg
+      };
+   }
+}

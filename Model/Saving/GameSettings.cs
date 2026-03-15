@@ -16,6 +16,7 @@ namespace AutoEquipCompanions.Model.Saving
          var path = GetPath();
          if (!File.Exists(path))
             return new GameSettings();
+
          try
          {
             var json = File.ReadAllText(path);

@@ -7,9 +7,9 @@ namespace AutoEquipCompanions
 {
    public class Main : MBSubModuleBase
    {
-      public static GameSettings GameSettings { get; private set; }
 
       private AutoEquipBehavior _behavior;
+      public static GameSettings GameSettings { get; private set; }
 
       protected override void OnSubModuleLoad()
       {

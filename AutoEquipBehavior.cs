@@ -1,7 +1,13 @@
+using AutoEquipCompanions.Model;
 using AutoEquipCompanions.Model.Saving;
+using AutoEquipCompanions.ViewModel;
+using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.GameState;
+using TaleWorlds.CampaignSystem.Inventory;
 using TaleWorlds.Core;
-using TaleWorlds.Library;
+using TaleWorlds.Engine.GauntletUI;
+using TaleWorlds.ScreenSystem;
 
 namespace AutoEquipCompanions
 {
@@ -11,6 +17,9 @@ namespace AutoEquipCompanions
 
       private readonly InventoryStateListener _listener;
 
+      private GauntletLayer _overlayLayer;
+      private AutoEquipOverlayVM _overlayVM;
+
       public AutoEquipBehavior()
       {
          _listener = new InventoryStateListener(OnInventoryClosed);
@@ -19,16 +28,37 @@ namespace AutoEquipCompanions
       public override void RegisterEvents()
       {
          _listener.Register();
+         ScreenManager.OnPushScreen += OnScreenPushed;
       }
 
       public void UnregisterEvents()
       {
          _listener.Unregister();
+         ScreenManager.OnPushScreen -= OnScreenPushed;
       }
 
-      private void OnInventoryClosed()
+      private void OnScreenPushed(ScreenBase screen)
       {
-         InformationManager.DisplayMessage(new InformationMessage("[AutoEquipV2] Inventory closed."));
+         if (screen is not GauntletInventoryScreen inventoryScreen)
+            return;
+
+         var inventoryState = Game.Current.GameStateManager.ActiveState as InventoryState;
+         if (inventoryState == null)
+            return;
+
+         var model = new AutoEquipModel(inventoryState.InventoryLogic);
+         _overlayVM = new AutoEquipOverlayVM(model, inventoryScreen);
+         _overlayLayer = new GauntletLayer("AutoEquipOverlay", 16) { IsFocusLayer = false };
+         _overlayLayer.LoadMovie("AutoEquipOverlay", _overlayVM);
+         inventoryScreen.AddLayer(_overlayLayer);
+      }
+
+      private void OnInventoryClosed(InventoryLogic inventoryLogic)
+      {
+         _overlayVM?.OnExecuteCompleteTransactions();
+         _overlayVM?.OnFinalize();
+         _overlayVM = null;
+         _overlayLayer = null;
       }
 
       public override void SyncData(IDataStore dataStore)

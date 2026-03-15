@@ -1,18 +1,28 @@
-# AutoEquipCompanions
+# Auto Equip Companions
 
-:: REQUIREMENTS Template::
-Bannerlord up to date
+:: REQUIREMENTS ::
+Mount & Blade II: Bannerlord v1.3.15+
 
-:: FEATURES Template::
-Heros auto loot items
-Upgrade when closing inventor
-Will upgrade any slot with item to another item of same type
-Use tier + money value to determine whether to upgrade
+:: DESCRIPTION ::
+Automatically equips companions with the best available gear when closing the inventory screen.
+Per-character settings allow you to control which equipment slots are managed for each hero.
 
-:: KNOWN ISSUES Template::
-None, but I just started modding and this is my first one so be safe. 
+:: FEATURES ::
+- Auto-equips companions on inventory close
+- Per-character toggle to enable/disable auto equip
+- Per-slot toggles for armor, weapons, horse, and harness
+- Settings are saved between sessions
+- Manual trigger button in the inventory screen
 
-:: CREDITS Template:: 
-Lesser Scholar for his tutorial on modding setup and basics. 
+:: USAGE ::
+Open the inventory screen. A button will appear in the top-right area.
+- Left click: manually trigger auto equip
+- Right click: toggle the settings panel
 
-I'd love to shoutout the warband mod that I used to use. But I can't find it in Nexus, I didn't directly copy anything though other than high level idea. 
+In the settings panel you can enable/disable auto equip per character and toggle individual equipment slots.
+
+:: KNOWN ISSUES ::
+None known.
+
+:: CREDITS ::
+Lesser Scholar for his tutorial on modding setup and basics.

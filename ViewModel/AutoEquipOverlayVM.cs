@@ -1,12 +1,11 @@
-﻿using AutoEquipCompanions.Model;
-using AutoEquipCompanions.Model.Saving;
-using SandBox.GauntletUI;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEquipCompanions.Model;
+using AutoEquipCompanions.Model.Saving;
+using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Inventory;
 using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection.Information;
-using TaleWorlds.Core.ViewModelCollection.Selector;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
@@ -16,27 +15,27 @@ namespace AutoEquipCompanions.ViewModel
    public class AutoEquipOverlayVM : TaleWorlds.Library.ViewModel
    {
       private readonly AutoEquipModel _autoEquipModel;
+      private readonly CharacterSettings _defaultSettings = new CharacterSettings().Initialize();
       private readonly Dictionary<string, CharacterSettings> _heroToggles;
       private readonly GauntletInventoryScreen _inventoryScreen;
       private readonly SPInventoryVM _inventoryViewModel;
-      private readonly CharacterSettings defaultSettings = new CharacterSettings().Initialize();
-      private SelectorVM<PresetSelectorItemVM> _selectorOptions;
 
       public AutoEquipOverlayVM(AutoEquipModel autoEquipModel, GauntletInventoryScreen inventoryScreen)
       {
          _autoEquipModel = autoEquipModel;
          _inventoryScreen = inventoryScreen;
          _inventoryViewModel = GetInventoryVM();
-         SettingsToggle = Config.SettingsVisible;
-         _heroToggles = Config.CharacterSettings;
+         if (_inventoryViewModel == null)
+            return;
+
+         SettingsToggle = CampaignSettings.SettingsVisible;
+         _heroToggles = CampaignSettings.CharacterSettings;
          _inventoryViewModel.CharacterList.PropertyChangedWithValue += SelectedCharacterChanged;
-         UpdatePresets();
          RefreshValues();
       }
 
-      private SelectorVM<InventoryCharacterSelectorItemVM> CharacterList => _inventoryViewModel.CharacterList;
-
-      private string CurrentHero => CharacterList.SelectedItem?.CharacterID ?? "";
+      private string CurrentHero => _inventoryViewModel?.CharacterList.SelectedItem?.CharacterID;
+      private bool HasCurrentHero => CurrentHero != null;
 
       [DataSourceProperty]
       public HintViewModel SettingsHint { get; private set; } = new HintViewModel
@@ -61,14 +60,14 @@ namespace AutoEquipCompanions.ViewModel
       {
          get
          {
-            if (_heroToggles.TryGetValue(CurrentHero, out var value))
-            {
-               return value.CharacterToggle;
-            }
-            return true;
+            if (!HasCurrentHero)
+               return true;
+            return !_heroToggles.TryGetValue(CurrentHero, out var value) || value.CharacterToggle;
          }
          set
          {
+            if (!HasCurrentHero)
+               return;
             if (_heroToggles.ContainsKey(CurrentHero))
             {
                _heroToggles[CurrentHero].CharacterToggle = value;
@@ -83,90 +82,162 @@ namespace AutoEquipCompanions.ViewModel
       }
 
       [DataSourceProperty]
-      public SelectorVM<PresetSelectorItemVM> PresetOptions
-      {
-         get => _selectorOptions;
-         set
-         {
-            if (_selectorOptions != value)
-            {
-               _selectorOptions = value;
-            }
-         }
-      }
+      public bool HeadToggle => GetSlotToggle(EquipmentIndex.Head);
 
       [DataSourceProperty]
-      public bool IsPresetsVisible { get; private set; }
+      public bool CapeToggle => GetSlotToggle(EquipmentIndex.Cape);
 
-      ~AutoEquipOverlayVM()
+      [DataSourceProperty]
+      public bool BodyToggle => GetSlotToggle(EquipmentIndex.Body);
+
+      [DataSourceProperty]
+      public bool GlovesToggle => GetSlotToggle(EquipmentIndex.Gloves);
+
+      [DataSourceProperty]
+      public bool LegToggle => GetSlotToggle(EquipmentIndex.Leg);
+
+      [DataSourceProperty]
+      public bool HorseToggle => GetSlotToggle(EquipmentIndex.Horse);
+
+      [DataSourceProperty]
+      public bool HarnessToggle => GetSlotToggle(EquipmentIndex.HorseHarness);
+
+      [DataSourceProperty]
+      public bool Weapon0Toggle => GetSlotToggle(EquipmentIndex.Weapon0);
+
+      [DataSourceProperty]
+      public bool Weapon1Toggle => GetSlotToggle(EquipmentIndex.Weapon1);
+
+      [DataSourceProperty]
+      public bool Weapon2Toggle => GetSlotToggle(EquipmentIndex.Weapon2);
+
+      [DataSourceProperty]
+      public bool Weapon3Toggle => GetSlotToggle(EquipmentIndex.Weapon3);
+
+      private SPInventoryVM GetInventoryVM()
       {
-         _inventoryViewModel.CharacterList.PropertyChangedWithValue -= SelectedCharacterChanged;
+         var gauntletLayers = _inventoryScreen.Layers.OfType<GauntletLayer>();
+         foreach (var view in gauntletLayers.Select(x => x.GetMovieIdentifier("Inventory")?.DataSource))
+         {
+            if (view is SPInventoryVM inventoryVM)
+               return inventoryVM;
+         }
+         return null;
       }
 
-      private void OnPresetSelected(SelectorVM<PresetSelectorItemVM> selectorVM)
+      private void SelectedCharacterChanged(object sender, PropertyChangedWithValueEventArgs e)
       {
-         if (_heroToggles.TryGetValue(CurrentHero, out var characterSettings))
-         {
-            characterSettings.Preset = selectorVM.SelectedItem.Preset;
-         }
-         else
-         {
-            characterSettings = new CharacterSettings().Initialize();
-            characterSettings.Preset = selectorVM.SelectedItem.Preset;
-         }
+         RefreshValues();
       }
 
-      public void UpdatePresets()
+      private bool GetSlotToggle(EquipmentIndex index)
       {
-         if (_selectorOptions == null)
-         {
-            PresetOptions = new SelectorVM<PresetSelectorItemVM>(-1, OnPresetSelected);
-            PresetOptions.AddItem(new PresetSelectorItemVM(new Preset { Name = "Custom", Id = 0 }));
-            PresetOptions.AddItem(new PresetSelectorItemVM(new Preset { Name = "Armor Only", Id = 1 }));
-            PresetOptions.AddItem(new PresetSelectorItemVM(new Preset { Name = "Weapons Only", Id = 2 }));
-            PresetOptions.AddItem(new PresetSelectorItemVM(new Preset { Name = "Full Set", Id = 3 }));
-            PresetOptions.SelectedIndex = 0;
-            IsPresetsVisible = true;
-            RefreshValues();
-            OnPropertyChanged(nameof(PresetOptions));
-            OnPropertyChanged(nameof(IsPresetsVisible));
-         }
+         return HasCurrentHero && _heroToggles.TryGetValue(CurrentHero, out var s)
+            ? s[index] : _defaultSettings[index];
+      }
+
+      public override sealed void RefreshValues()
+      {
+         base.RefreshValues();
+         OnPropertyChanged(nameof (SettingsToggle));
+         OnPropertyChanged(nameof (SettingsToggleText));
+         OnPropertyChanged(nameof (CharacterToggle));
+         OnPropertyChanged(nameof (HeadToggle));
+         OnPropertyChanged(nameof (CapeToggle));
+         OnPropertyChanged(nameof (BodyToggle));
+         OnPropertyChanged(nameof (GlovesToggle));
+         OnPropertyChanged(nameof (LegToggle));
+         OnPropertyChanged(nameof (HorseToggle));
+         OnPropertyChanged(nameof (HarnessToggle));
+         OnPropertyChanged(nameof (Weapon0Toggle));
+         OnPropertyChanged(nameof (Weapon1Toggle));
+         OnPropertyChanged(nameof (Weapon2Toggle));
+         OnPropertyChanged(nameof (Weapon3Toggle));
       }
 
       public void ToggleSettings()
       {
          SettingsToggle = !SettingsToggle;
-         OnPropertyChanged(nameof(SettingsToggle));
-         OnPropertyChanged(nameof(SettingsToggleText));
+         OnPropertyChanged(nameof (SettingsToggle));
+         OnPropertyChanged(nameof (SettingsToggleText));
       }
 
       public void ToggleCharacter()
       {
          CharacterToggle = !CharacterToggle;
-         OnPropertyChanged(nameof(CharacterToggle));
+         OnPropertyChanged(nameof (CharacterToggle));
       }
 
-      public override void RefreshValues()
+      public void ToggleHead()
       {
-         base.RefreshValues();
-         OnPropertyChanged(nameof(SettingsToggle));
-         OnPropertyChanged(nameof(SettingsToggleText));
-         OnPropertyChanged(nameof(CharacterToggle));
-         OnPropertyChanged(nameof(HeadToggle));
-         OnPropertyChanged(nameof(CapeToggle));
-         OnPropertyChanged(nameof(BodyToggle));
-         OnPropertyChanged(nameof(GlovesToggle));
-         OnPropertyChanged(nameof(LegToggle));
-         OnPropertyChanged(nameof(HorseToggle));
-         OnPropertyChanged(nameof(HarnessToggle));
-         OnPropertyChanged(nameof(Weapon0Toggle));
-         OnPropertyChanged(nameof(Weapon1Toggle));
-         OnPropertyChanged(nameof(Weapon2Toggle));
-         OnPropertyChanged(nameof(Weapon3Toggle));
+         ToggleEquipment(EquipmentIndex.Head);
+         OnPropertyChanged(nameof (HeadToggle));
       }
 
-      public void ToggleEquipment(EquipmentIndex index)
+      public void ToggleCape()
       {
+         ToggleEquipment(EquipmentIndex.Cape);
+         OnPropertyChanged(nameof (CapeToggle));
+      }
+
+      public void ToggleBody()
+      {
+         ToggleEquipment(EquipmentIndex.Body);
+         OnPropertyChanged(nameof (BodyToggle));
+      }
+
+      public void ToggleGloves()
+      {
+         ToggleEquipment(EquipmentIndex.Gloves);
+         OnPropertyChanged(nameof (GlovesToggle));
+      }
+
+      public void ToggleLeg()
+      {
+         ToggleEquipment(EquipmentIndex.Leg);
+         OnPropertyChanged(nameof (LegToggle));
+      }
+
+      public void ToggleHorse()
+      {
+         ToggleEquipment(EquipmentIndex.Horse);
+         OnPropertyChanged(nameof (HorseToggle));
+      }
+
+      public void ToggleHarness()
+      {
+         ToggleEquipment(EquipmentIndex.HorseHarness);
+         OnPropertyChanged(nameof (HarnessToggle));
+      }
+
+      public void ToggleWeapon0()
+      {
+         ToggleEquipment(EquipmentIndex.Weapon0);
+         OnPropertyChanged(nameof (Weapon0Toggle));
+      }
+
+      public void ToggleWeapon1()
+      {
+         ToggleEquipment(EquipmentIndex.Weapon1);
+         OnPropertyChanged(nameof (Weapon1Toggle));
+      }
+
+      public void ToggleWeapon2()
+      {
+         ToggleEquipment(EquipmentIndex.Weapon2);
+         OnPropertyChanged(nameof (Weapon2Toggle));
+      }
+
+      public void ToggleWeapon3()
+      {
+         ToggleEquipment(EquipmentIndex.Weapon3);
+         OnPropertyChanged(nameof (Weapon3Toggle));
+      }
+
+      private void ToggleEquipment(EquipmentIndex index)
+      {
+         if (!HasCurrentHero)
+            return;
          if (_heroToggles.TryGetValue(CurrentHero, out var characterSettings))
          {
             characterSettings[index] = !characterSettings[index];
@@ -181,159 +252,23 @@ namespace AutoEquipCompanions.ViewModel
 
       public void RunAutoEquip()
       {
-         if (!Config.GeneralSettings.CanAutoEquipIgnoreLockedItems)
-         {
+         if (!Main.GameSettings.CanAutoEquipLocked)
             return;
-         }
          _autoEquipModel.AutoEquipCompanions(_heroToggles);
          _inventoryViewModel.RefreshValues();
       }
 
-      public void OnExecuteCompleteTransactions(IEnumerable<string> lockedItemIDs)
+      public void OnExecuteCompleteTransactions()
       {
-         Config.SettingsVisible = SettingsToggle;
-         Config.CharacterSettings = _heroToggles;
-         if (!Config.GeneralSettings.CanAutoEquipIgnoreLockedItems)
-         {
-            _autoEquipModel.AutoEquipCompanions(Config.CharacterSettings, lockedItemIDs);
-         }
-         _autoEquipModel.AutoEquipCompanions(Config.CharacterSettings);
+         CampaignSettings.SettingsVisible = SettingsToggle;
+         _autoEquipModel.AutoEquipCompanions(CampaignSettings.CharacterSettings);
       }
 
-      private void SelectedCharacterChanged(object sender, PropertyChangedWithValueEventArgs e)
+      public override void OnFinalize()
       {
-         RefreshValues();
+         base.OnFinalize();
+         if (_inventoryViewModel != null)
+            _inventoryViewModel.CharacterList.PropertyChangedWithValue -= SelectedCharacterChanged;
       }
-
-      private SPInventoryVM GetInventoryVM()
-      {
-         // This is written as a loop for safety. But really inventory screen will be first layer, and inventoryVM will be first view.
-         var gauntletLayers = _inventoryScreen.Layers.OfType<GauntletLayer>();
-         foreach (var view in gauntletLayers.Select(x => x.GetMovieIdentifier("Inventory").DataSource))
-         {
-            if (view is SPInventoryVM inventoryVM)
-            {
-               return inventoryVM;
-            }
-         }
-         return null;
-      }
-
-      #region Armor
-      [DataSourceProperty]
-      public bool HeadToggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-         ? characterSettings[EquipmentIndex.Head] : defaultSettings[EquipmentIndex.Head];
-
-      public void ToggleHead()
-      {
-         ToggleEquipment(EquipmentIndex.Head);
-         OnPropertyChanged(nameof(HeadToggle));
-      }
-
-      [DataSourceProperty]
-      public bool CapeToggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-         ? characterSettings[EquipmentIndex.Cape] : defaultSettings[EquipmentIndex.Cape];
-
-      public void ToggleCape()
-      {
-         ToggleEquipment(EquipmentIndex.Cape);
-         OnPropertyChanged(nameof(CapeToggle));
-      }
-
-      [DataSourceProperty]
-      public bool BodyToggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-         ? characterSettings[EquipmentIndex.Body] : defaultSettings[EquipmentIndex.Body];
-
-      public void ToggleBody()
-      {
-         ToggleEquipment(EquipmentIndex.Body);
-         OnPropertyChanged(nameof(BodyToggle));
-      }
-
-      [DataSourceProperty]
-      public bool GlovesToggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-         ? characterSettings[EquipmentIndex.Gloves] : defaultSettings[EquipmentIndex.Gloves];
-
-      public void ToggleGloves()
-      {
-         ToggleEquipment(EquipmentIndex.Gloves);
-         OnPropertyChanged(nameof(GlovesToggle));
-      }
-
-      [DataSourceProperty]
-      public bool LegToggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-         ? characterSettings[EquipmentIndex.Leg] : defaultSettings[EquipmentIndex.Leg];
-
-      public void ToggleLeg()
-      {
-         ToggleEquipment(EquipmentIndex.Leg);
-         OnPropertyChanged(nameof(LegToggle));
-      }
-      #endregion
-
-      #region Horse
-      [DataSourceProperty]
-      public bool HorseToggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-         ? characterSettings[EquipmentIndex.Horse] : defaultSettings[EquipmentIndex.Horse];
-
-      public void ToggleHorse()
-      {
-         ToggleEquipment(EquipmentIndex.Horse);
-         OnPropertyChanged(nameof(HorseToggle));
-      }
-
-      [DataSourceProperty]
-      public bool HarnessToggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-         ? characterSettings[EquipmentIndex.HorseHarness] : defaultSettings[EquipmentIndex.HorseHarness];
-
-      public void ToggleHarness()
-      {
-         ToggleEquipment(EquipmentIndex.HorseHarness);
-         OnPropertyChanged(nameof(HarnessToggle));
-      }
-      #endregion
-
-      #region Weapons
-      [DataSourceProperty]
-      public bool Weapon0Toggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-         ? characterSettings[EquipmentIndex.Weapon0] : defaultSettings[EquipmentIndex.Weapon0];
-
-      public void ToggleWeapon0()
-      {
-         ToggleEquipment(EquipmentIndex.Weapon0);
-         OnPropertyChanged(nameof(Weapon0Toggle));
-      }
-
-      [DataSourceProperty]
-      public bool Weapon1Toggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-         ? characterSettings[EquipmentIndex.Weapon1] : defaultSettings[EquipmentIndex.Weapon1];
-
-      public void ToggleWeapon1()
-      {
-         ToggleEquipment(EquipmentIndex.Weapon1);
-         OnPropertyChanged(nameof(Weapon1Toggle));
-      }
-
-      [DataSourceProperty]
-      public bool Weapon2Toggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-         ? characterSettings[EquipmentIndex.Weapon2] : defaultSettings[EquipmentIndex.Weapon2];
-
-      public void ToggleWeapon2()
-      {
-         ToggleEquipment(EquipmentIndex.Weapon2);
-         OnPropertyChanged(nameof(Weapon2Toggle));
-      }
-
-      [DataSourceProperty]
-      public bool Weapon3Toggle => _heroToggles.TryGetValue(CurrentHero, out var characterSettings)
-         ? characterSettings[EquipmentIndex.Weapon3] : defaultSettings[EquipmentIndex.Weapon3];
-
-      public void ToggleWeapon3()
-      {
-         ToggleEquipment(EquipmentIndex.Weapon3);
-         OnPropertyChanged(nameof(Weapon3Toggle));
-      }
-      #endregion
-
    }
 }

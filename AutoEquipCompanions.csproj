@@ -1,177 +1,186 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
-   <PropertyGroup>
-      <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-      <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-      <ProjectGuid>{E577663D-D945-49EA-BF4C-85B52BF19813}</ProjectGuid>
-      <OutputType>Library</OutputType>
-      <AppDesignerFolder>Properties</AppDesignerFolder>
-      <RootNamespace>AutoEquipCompanions</RootNamespace>
-      <AssemblyName>AutoEquipCompanions</AssemblyName>
-      <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-      <LangVersion>latestMajor</LangVersion>
-      <FileAlignment>512</FileAlignment>
-      <Deterministic>true</Deterministic>
-      <TargetFrameworkProfile/>
-   </PropertyGroup>
-   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-      <DebugSymbols>true</DebugSymbols>
-      <DebugType>full</DebugType>
-      <Optimize>false</Optimize>
-      <OutputPath>Modules\AutoEquipCompanions\bin\Win64_Shipping_Client\</OutputPath>
-      <DefineConstants>DEBUG;TRACE</DefineConstants>
-      <ErrorReport>prompt</ErrorReport>
-      <WarningLevel>4</WarningLevel>
-   </PropertyGroup>
-   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-      <DebugType>pdbonly</DebugType>
-      <Optimize>true</Optimize>
-      <OutputPath>E:\Program Files\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\AutoEquipCompanions\bin\Win64_Shipping_Client\</OutputPath>
-      <DefineConstants>TRACE</DefineConstants>
-      <ErrorReport>prompt</ErrorReport>
-      <WarningLevel>4</WarningLevel>
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-      <DebugSymbols>true</DebugSymbols>
-      <OutputPath>Modules\AutoEquipCompanions\bin\Win64_Shipping_Client\</OutputPath>
-      <DefineConstants>DEBUG;TRACE</DefineConstants>
-      <DebugType>full</DebugType>
-      <PlatformTarget>x64</PlatformTarget>
-      <LangVersion>latestMajor</LangVersion>
-      <ErrorReport>prompt</ErrorReport>
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-      <OutputPath>bin\x64\Release\</OutputPath>
-      <DefineConstants>TRACE</DefineConstants>
-      <Optimize>true</Optimize>
-      <DebugType>pdbonly</DebugType>
-      <PlatformTarget>x64</PlatformTarget>
-      <LangVersion>latestMajor</LangVersion>
-      <ErrorReport>prompt</ErrorReport>
-   </PropertyGroup>
-   <ItemGroup>
-      <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-         <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      </Reference>
-      <Reference Include="SandBox">
-         <HintPath>..\..\..\..\..\media\saari.matthew\SSD 2\Steam Library\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\SandBox\bin\Win64_Shipping_Client\SandBox.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="SandBox.GauntletUI">
-         <HintPath>..\..\..\..\..\media\saari.matthew\SSD 2\Steam Library\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\SandBox\bin\Win64_Shipping_Client\SandBox.GauntletUI.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.CampaignSystem">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.CampaignSystem.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.CampaignSystem.ViewModelCollection">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.CampaignSystem.ViewModelCollection.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.Core">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Core.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.Core.ViewModelCollection">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Core.ViewModelCollection.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.Library">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Library.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.MountAndBlade">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.MountAndBlade.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.GauntletUI">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.GauntletUI.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.Engine.GauntletUI">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Engine.GauntletUI.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.ScreenSystem">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.ScreenSystem.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.TwoDimension">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.TwoDimension.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.Localization">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Localization.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.ObjectSystem">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.ObjectSystem.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.InputSystem">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.InputSystem.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.SaveSystem">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.SaveSystem.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.Engine">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Engine.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="TaleWorlds.NavigationSystem">
-         <HintPath>/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.NavigationSystem.dll</HintPath>
-         <Private>False</Private>
-      </Reference>
-      <Reference Include="System"/>
-      <Reference Include="System.Core"/>
-      <Reference Include="System.Xml.Linq"/>
-      <Reference Include="System.Data.DataSetExtensions"/>
-      <Reference Include="Microsoft.CSharp"/>
-      <Reference Include="System.Data"/>
-      <Reference Include="System.Net.Http"/>
-      <Reference Include="System.Xml"/>
-   </ItemGroup>
-   <ItemGroup>
-      <Compile Include="AutoEquipBehavior.cs"/>
-      <Compile Include="InventoryStateListener.cs"/>
-      <Compile Include="Model\AutoEquipModel.cs"/>
-      <Compile Include="Main.cs"/>
-      <Compile Include="Model\Templating\EquipmentComparer.cs" />
-      <Compile Include="Model\Templating\SlotTemplate.cs" />
-      <Compile Include="Model\Templating\ArmorSlotTemplate.cs" />
-      <Compile Include="Model\Templating\WeaponSlotTemplate.cs" />
-      <Compile Include="Model\Templating\HorseSlotTemplate.cs" />
-      <Compile Include="Model\Templating\HorseHarnessSlotTemplate.cs" />
-      <Compile Include="Model\Templating\CharacterTemplate.cs" />
-      <Compile Include="Properties\AssemblyInfo.cs"/>
-      <Compile Include="Model\Saving\CampaignSettings.cs"/>
-      <Compile Include="Model\Saving\GameSettings.cs"/>
-      <Compile Include="Model\Saving\CharacterSettings.cs"/>
-   </ItemGroup>
-   <ItemGroup>
-      <None Include="app.config"/>
-      <None Include="packages.config"/>
-      <None Include="_moduleFiles\LICENSE"/>
-   </ItemGroup>
-   <ItemGroup>
-      <Content Include="GUI\Brushes\AutoEquipCompanionsBrush.xml"/>
-      <Content Include="GUI\Prefabs\AutoEquipOverlay.xml"/>
-      <Content Include="_moduleFiles\readme.txt"/>
-      <Content Include="_moduleFiles\Submodule.xml"/>
-   </ItemGroup>
-   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
-   <PropertyGroup>
-      <PostBuildEvent>mkdir -p "/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/bin/Win64_Shipping_Client"
-         mkdir -p "/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/GUI/Prefabs"
-         cp "$(TargetPath)" "/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/bin/Win64_Shipping_Client/$(TargetFileName)"
-         cp "$(TargetDir)$(TargetName).pdb" "/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/bin/Win64_Shipping_Client/$(TargetName).pdb"
-         cp "$(ProjectDir)GUI/Prefabs/AutoEquipOverlay.xml" "/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/GUI/Prefabs/AutoEquipOverlay.xml"
-         cp "$(ProjectDir)GUI/Prefabs/AutoEquipPresets.xml" "/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/GUI/Prefabs/AutoEquipPresets.xml"
-         cp "$(ProjectDir)_moduleFiles/Submodule.xml" "/media/saari.matthew/SSD 2/Steam Library/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/Submodule.xml"
-      </PostBuildEvent>
-   </PropertyGroup>
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{E577663D-D945-49EA-BF4C-85B52BF19813}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>AutoEquipCompanions</RootNamespace>
+        <AssemblyName>AutoEquipCompanions</AssemblyName>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <LangVersion>latestMajor</LangVersion>
+        <FileAlignment>512</FileAlignment>
+        <Deterministic>true</Deterministic>
+        <TargetFrameworkProfile/>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>Modules\AutoEquipCompanions\bin\Win64_Shipping_Client\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>E:\Program Files\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\AutoEquipCompanions\bin\Win64_Shipping_Client\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+        <DebugSymbols>true</DebugSymbols>
+        <OutputPath>Modules\AutoEquipCompanions\bin\Win64_Shipping_Client\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <DebugType>full</DebugType>
+        <PlatformTarget>x64</PlatformTarget>
+        <LangVersion>latestMajor</LangVersion>
+        <ErrorReport>prompt</ErrorReport>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+        <OutputPath>bin\x64\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <Optimize>true</Optimize>
+        <DebugType>pdbonly</DebugType>
+        <PlatformTarget>x64</PlatformTarget>
+        <LangVersion>latestMajor</LangVersion>
+        <ErrorReport>prompt</ErrorReport>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+            <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+        </Reference>
+        <Reference Include="SandBox">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/SandBox/bin/Win64_Shipping_Client/SandBox.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="SandBox.GauntletUI">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/SandBox/bin/Win64_Shipping_Client/SandBox.GauntletUI.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.CampaignSystem">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.CampaignSystem.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.CampaignSystem.ViewModelCollection">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.CampaignSystem.ViewModelCollection.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.Core">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Core.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.Core.ViewModelCollection">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Core.ViewModelCollection.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.Library">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Library.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.MountAndBlade">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.MountAndBlade.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.GauntletUI">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.GauntletUI.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.Engine.GauntletUI">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Engine.GauntletUI.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.ScreenSystem">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.ScreenSystem.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.TwoDimension">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.TwoDimension.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.Localization">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Localization.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.ObjectSystem">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.ObjectSystem.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.InputSystem">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.InputSystem.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.SaveSystem">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.SaveSystem.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.Engine">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Engine.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="TaleWorlds.NavigationSystem">
+            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.NavigationSystem.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="System"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="System.Xml.Linq"/>
+        <Reference Include="System.Data.DataSetExtensions"/>
+        <Reference Include="Microsoft.CSharp"/>
+        <Reference Include="System.Data"/>
+        <Reference Include="System.Net.Http"/>
+        <Reference Include="System.Xml"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="AutoEquipBehavior.cs"/>
+        <Compile Include="InventoryStateListener.cs"/>
+        <Compile Include="Model\AutoEquipModel.cs"/>
+        <Compile Include="Main.cs"/>
+        <Compile Include="Model\Templates\Base\ISlotTemplate.cs"/>
+        <Compile Include="Model\Templates\Base\ICharacterTemplate.cs"/>
+        <Compile Include="Model\Templates\Base\BaseCharacterTemplate.cs"/>
+        <Compile Include="Model\Templates\Base\BaseArmorTemplate.cs"/>
+        <Compile Include="Model\Templates\Base\BaseWeaponTemplate.cs"/>
+        <Compile Include="Model\Templates\Base\BaseMountTemplate.cs"/>
+        <Compile Include="Model\Templates\Base\BaseShieldTemplate.cs"/>
+        <Compile Include="Model\Templates\DefaultArmorTemplates.cs"/>
+        <Compile Include="Model\Templates\DefaultWeaponTemplates.cs"/>
+        <Compile Include="Model\Templates\DefaultMountTemplates.cs"/>
+        <Compile Include="Model\Templates\DefaultShieldTemplate.cs"/>
+        <Compile Include="Model\Templates\CharacterTemplate.cs"/>
+        <Compile Include="ViewModel\AutoEquipOverlayVM.cs"/>
+        <Compile Include="ViewModel\AutoEquipWidget.cs"/>
+        <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="Model\Saving\CampaignSettings.cs"/>
+        <Compile Include="Model\Saving\GameSettings.cs"/>
+        <Compile Include="Model\Saving\GeneralSettings.cs"/>
+        <Compile Include="Model\Saving\CharacterSettings.cs"/>
+        <Compile Include="Utilities.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="app.config"/>
+        <None Include="packages.config"/>
+        <None Include="_moduleFiles\LICENSE"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="GUI\Brushes\AutoEquipCompanionsBrush.xml"/>
+        <Content Include="GUI\Prefabs\AutoEquipOverlay.xml"/>
+        <Content Include="_moduleFiles\readme.txt"/>
+        <Content Include="_moduleFiles\Submodule.xml"/>
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <PropertyGroup>
+        <PostBuildEvent>mkdir -p "/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/bin/Win64_Shipping_Client"
+            mkdir -p "/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/GUI/Prefabs"
+            cp "$(TargetPath)" "/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/bin/Win64_Shipping_Client/$(TargetFileName)"
+            cp "$(TargetDir)$(TargetName).pdb" "/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/bin/Win64_Shipping_Client/$(TargetName).pdb"
+            cp "$(ProjectDir)GUI/Prefabs/AutoEquipOverlay.xml" "/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/GUI/Prefabs/AutoEquipOverlay.xml"
+            cp "$(ProjectDir)GUI/Prefabs/AutoEquipPresets.xml" "/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/GUI/Prefabs/AutoEquipPresets.xml"
+            cp "$(ProjectDir)_moduleFiles/Submodule.xml" "/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/Submodule.xml"
+        </PostBuildEvent>
+    </PropertyGroup>
 </Project>

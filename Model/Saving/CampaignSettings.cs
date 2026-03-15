@@ -23,13 +23,16 @@ namespace AutoEquipCompanions.Model.Saving
       {
          if (string.IsNullOrEmpty(json))
             return;
+
          try
          {
-            var data = JsonConvert.DeserializeAnonymousType(json, new
-            {
-               SettingsVisible = true,
-               CharacterSettings = new Dictionary<string, CharacterSettings>()
-            });
+            var data = JsonConvert.DeserializeAnonymousType(
+               json,
+               new
+               {
+                  SettingsVisible = true,
+                  CharacterSettings = new Dictionary<string, CharacterSettings>()
+               });
             SettingsVisible = data.SettingsVisible;
             CharacterSettings = data.CharacterSettings;
          }
