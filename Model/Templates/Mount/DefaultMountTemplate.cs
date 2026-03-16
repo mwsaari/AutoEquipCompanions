@@ -1,6 +1,4 @@
-using AutoEquipCompanions.Model.Templates.Base;
-
-namespace AutoEquipCompanions.Model.Templates
+namespace AutoEquipCompanions.Model.Templates.Mount
 {
    public class DefaultMountTemplate : BaseMountTemplate
    {
@@ -10,13 +8,5 @@ namespace AutoEquipCompanions.Model.Templates
       public override bool UseCamel => false;
       public override HorseField HorseComparisonField => HorseField.Value;
       public override HarnessField HarnessComparisonField => HarnessField.Value;
-   }
-
-   public class CamelMountTemplate : DefaultMountTemplate
-   {
-      public new static readonly CamelMountTemplate Instance = new CamelMountTemplate();
-
-      public override string Name => "Camel Mount";
-      public override bool UseCamel => true;
    }
 }

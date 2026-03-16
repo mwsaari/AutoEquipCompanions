@@ -75,12 +75,18 @@
     <ItemGroup>
         <Compile Include="Tests\TestHelpers.cs"/>
         <Compile Include="Tests\EquipmentIntegrationTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Base\BaseWeaponTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Base\BaseArmorTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Base\BaseShieldTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Base\BaseMountTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Templates\DefaultWeaponTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Templates\CharacterTemplateTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Armor\BaseArmorTemplateTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Mount\BaseMountTemplateTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Shield\BaseShieldTemplateTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Character\CharacterTemplateTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Weapon\ExposedWeaponTemplate.cs"/>
+        <Compile Include="Tests\Model\Templates\Weapon\IsBastardSwordTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Weapon\MeetsDifficultyRequirementTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Weapon\IsBetterThanTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Weapon\DefaultWeaponTemplateTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Weapon\SameTypeWeaponTemplateTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Weapon\MissileTemplateTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Weapon\CouchableLanceTemplateTests.cs"/>
         <Compile Include="Tests\Model\Saving\GameSettingsTests.cs"/>
         <Compile Include="Tests\Properties\AssemblyInfo.cs"/>
     </ItemGroup>

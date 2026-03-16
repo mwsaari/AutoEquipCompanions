@@ -1,8 +1,9 @@
+using AutoEquipCompanions.Model.Templates;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 
-namespace AutoEquipCompanions.Model.Templates.Base
+namespace AutoEquipCompanions.Model.Templates.Armor
 {
    public abstract class BaseArmorTemplate : ISlotTemplate
    {
@@ -49,16 +50,11 @@ namespace AutoEquipCompanions.Model.Templates.Base
                   + candidate.GetModifiedBodyArmor()
                   + candidate.GetModifiedArmArmor()
                   + candidate.GetModifiedLegArmor();
-            case ArmorField.HeadArmor:
-               return candidate.GetModifiedHeadArmor();
-            case ArmorField.BodyArmor:
-               return candidate.GetModifiedBodyArmor();
-            case ArmorField.ArmArmor:
-               return candidate.GetModifiedArmArmor();
-            case ArmorField.LegArmor:
-               return candidate.GetModifiedLegArmor();
-            default:
-               return candidate.ItemValue;
+            case ArmorField.HeadArmor: return candidate.GetModifiedHeadArmor();
+            case ArmorField.BodyArmor: return candidate.GetModifiedBodyArmor();
+            case ArmorField.ArmArmor: return candidate.GetModifiedArmArmor();
+            case ArmorField.LegArmor: return candidate.GetModifiedLegArmor();
+            default: return candidate.ItemValue;
          }
       }
    }

@@ -1,10 +1,9 @@
+using AutoEquipCompanions.Model.Templates.Armor;
 using System.Linq;
-using AutoEquipCompanions.Model.Templates;
-using AutoEquipCompanions.Model.Templates.Base;
 using TaleWorlds.Core;
 using Xunit;
 
-namespace AutoEquipCompanions.Test.Model.Templates.Base
+namespace AutoEquipCompanions.Test.Model.Templates.Armor
 {
    public class BaseArmorTemplateTests
    {

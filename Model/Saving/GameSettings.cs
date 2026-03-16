@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -10,8 +9,6 @@ namespace AutoEquipCompanions.Model.Saving
       public bool DebugEnabled { get; set; } = false;
       public bool BastardSwordsAreOneHanded { get; set; } = true;
 
-      // Placeholder for future template support
-      public List<object> Templates { get; set; } = new List<object>();
 
       public void Load()
       {

@@ -1,8 +1,11 @@
-using AutoEquipCompanions.Model.Templates.Base;
+using AutoEquipCompanions.Model.Templates;
+using AutoEquipCompanions.Model.Templates.Armor;
+using AutoEquipCompanions.Model.Templates.Mount;
+using AutoEquipCompanions.Model.Templates.Weapon;
 using System.Collections.Generic;
 using TaleWorlds.Core;
 
-namespace AutoEquipCompanions.Model.Templates
+namespace AutoEquipCompanions.Model.Templates.Character
 {
    public class CharacterTemplate : BaseCharacterTemplate
    {

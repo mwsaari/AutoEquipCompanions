@@ -1,8 +1,9 @@
+using AutoEquipCompanions.Model.Templates;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 
-namespace AutoEquipCompanions.Model.Templates.Base
+namespace AutoEquipCompanions.Model.Templates.Shield
 {
    public abstract class BaseShieldTemplate : ISlotTemplate
    {

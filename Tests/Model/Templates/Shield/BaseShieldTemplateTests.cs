@@ -1,9 +1,8 @@
-using AutoEquipCompanions.Model.Templates;
-using AutoEquipCompanions.Model.Templates.Base;
+using AutoEquipCompanions.Model.Templates.Shield;
 using TaleWorlds.Core;
 using Xunit;
 
-namespace AutoEquipCompanions.Test.Model.Templates.Base
+namespace AutoEquipCompanions.Test.Model.Templates.Shield
 {
    public class BaseShieldTemplateTests
    {
@@ -34,7 +33,6 @@ namespace AutoEquipCompanions.Test.Model.Templates.Base
       public void DifficultyMet_ReturnsTrue()
       {
          var el = Helpers.MakeWeapon(ItemObject.ItemTypeEnum.Shield, WeaponClass.SmallShield, difficulty: 50);
-         // SmallShield -> OneHanded skill (WeaponComponentData.GetRelevantSkillFromWeaponClass)
          var hero = Helpers.MakeHero(oneHandedSkill: 100);
          Assert.True(DefaultShieldTemplate.Instance.IsValidFor(el, EquipmentIndex.Weapon0, hero));
       }

@@ -1,6 +1,5 @@
 using AutoEquipCompanions.Model.Saving;
 using AutoEquipCompanions.Model.Templates;
-using AutoEquipCompanions.Model.Templates.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +42,7 @@ namespace AutoEquipCompanions.Model
                var heroSettings = characterSettings.TryGetValue(hero.StringId, out var setting)
                   ? setting
                   : new CharacterSettings().Initialize();
-               foreach (var (slot, template) in CharacterTemplate.Instance.Slots.Where(x => heroSettings[x.Slot]))
+               foreach (var (slot, template) in heroSettings.Template.Slots.Where(x => heroSettings[x.Slot]))
                {
                   var replacement = GetBestReplacement(hero, slot, template);
                   if (replacement != null)

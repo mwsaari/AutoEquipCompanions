@@ -1,6 +1,4 @@
-using AutoEquipCompanions.Model.Templates.Base;
-
-namespace AutoEquipCompanions.Model.Templates
+namespace AutoEquipCompanions.Model.Templates.Shield
 {
    public class DefaultShieldTemplate : BaseShieldTemplate
    {

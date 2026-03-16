@@ -1,7 +1,8 @@
+using AutoEquipCompanions.Model.Templates;
 using System.Collections.Generic;
 using TaleWorlds.Core;
 
-namespace AutoEquipCompanions.Model.Templates.Base
+namespace AutoEquipCompanions.Model.Templates.Character
 {
    public abstract class BaseCharacterTemplate : ICharacterTemplate
    {

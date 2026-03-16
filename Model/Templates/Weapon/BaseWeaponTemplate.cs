@@ -1,10 +1,11 @@
+using AutoEquipCompanions.Model.Templates;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
-namespace AutoEquipCompanions.Model.Templates.Base
+namespace AutoEquipCompanions.Model.Templates.Weapon
 {
    public abstract class BaseWeaponTemplate : ISlotTemplate
    {
@@ -81,28 +82,19 @@ namespace AutoEquipCompanions.Model.Templates.Base
 
          switch (ComparisonField)
          {
-            case WeaponField.ThrustDamage:
-               return candidate.GetModifiedThrustDamageForUsage(0);
-            case WeaponField.SwingDamage:
-               return candidate.GetModifiedSwingDamageForUsage(0);
-            case WeaponField.MissileDamage:
-               return candidate.GetModifiedMissileDamageForUsage(0);
+            case WeaponField.ThrustDamage: return candidate.GetModifiedThrustDamageForUsage(0);
+            case WeaponField.SwingDamage: return candidate.GetModifiedSwingDamageForUsage(0);
+            case WeaponField.MissileDamage: return candidate.GetModifiedMissileDamageForUsage(0);
             case WeaponField.HighestDamage:
                return Math.Max(
                   Math.Max(candidate.GetModifiedThrustDamageForUsage(0), candidate.GetModifiedSwingDamageForUsage(0)),
                   candidate.GetModifiedMissileDamageForUsage(0));
-            case WeaponField.ThrustSpeed:
-               return candidate.GetModifiedThrustSpeedForUsage(0);
-            case WeaponField.SwingSpeed:
-               return candidate.GetModifiedSwingSpeedForUsage(0);
-            case WeaponField.MissileSpeed:
-               return candidate.GetModifiedMissileSpeedForUsage(0);
-            case WeaponField.Handling:
-               return candidate.GetModifiedHandlingForUsage(0);
-            case WeaponField.StackCount:
-               return candidate.GetModifiedStackCountForUsage(0);
-            default:
-               return candidate.ItemValue;
+            case WeaponField.ThrustSpeed: return candidate.GetModifiedThrustSpeedForUsage(0);
+            case WeaponField.SwingSpeed: return candidate.GetModifiedSwingSpeedForUsage(0);
+            case WeaponField.MissileSpeed: return candidate.GetModifiedMissileSpeedForUsage(0);
+            case WeaponField.Handling: return candidate.GetModifiedHandlingForUsage(0);
+            case WeaponField.StackCount: return candidate.GetModifiedStackCountForUsage(0);
+            default: return candidate.ItemValue;
          }
       }
 

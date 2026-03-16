@@ -1,12 +1,12 @@
+using AutoEquipCompanions.Model.Templates;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 
-namespace AutoEquipCompanions.Model.Templates.Base
+namespace AutoEquipCompanions.Model.Templates.Mount
 {
    public abstract class BaseMountTemplate : ISlotTemplate
    {
-
       public enum HarnessField
       {
          Value,
@@ -89,6 +89,7 @@ namespace AutoEquipCompanions.Model.Templates.Base
                default: return candidate.ItemValue;
             }
          }
+
          switch (HarnessComparisonField)
          {
             case HarnessField.MountBodyArmor: return candidate.GetModifiedMountBodyArmor();

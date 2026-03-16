@@ -1,9 +1,12 @@
+using AutoEquipCompanions.Model.Templates.Armor;
+using AutoEquipCompanions.Model.Templates.Character;
+using AutoEquipCompanions.Model.Templates.Mount;
+using AutoEquipCompanions.Model.Templates.Weapon;
 using System.Linq;
-using AutoEquipCompanions.Model.Templates;
 using TaleWorlds.Core;
 using Xunit;
 
-namespace AutoEquipCompanions.Test.Model.Templates
+namespace AutoEquipCompanions.Test.Model.Templates.Character
 {
    public class CharacterTemplateTests
    {

@@ -1,8 +1,7 @@
-using AutoEquipCompanions.Model.Templates.Base;
 using System.Collections.Generic;
 using TaleWorlds.Core;
 
-namespace AutoEquipCompanions.Model.Templates
+namespace AutoEquipCompanions.Model.Templates.Armor
 {
    public class DefaultArmorTemplate : BaseArmorTemplate
    {

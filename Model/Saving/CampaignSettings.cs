@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
 namespace AutoEquipCompanions.Model.Saving
@@ -16,7 +16,15 @@ namespace AutoEquipCompanions.Model.Saving
 
       public static string Save()
       {
-         return JsonConvert.SerializeObject(new { SettingsVisible, CharacterSettings });
+         var characterSettingsJson = new JObject();
+         foreach (var kv in CharacterSettings)
+            characterSettingsJson[kv.Key] = kv.Value.ToJson();
+
+         return new JObject
+         {
+            ["SettingsVisible"] = SettingsVisible,
+            ["CharacterSettings"] = characterSettingsJson
+         }.ToString();
       }
 
       public static void Load(string json)
@@ -26,15 +34,16 @@ namespace AutoEquipCompanions.Model.Saving
 
          try
          {
-            var data = JsonConvert.DeserializeAnonymousType(
-               json,
-               new
-               {
-                  SettingsVisible = true,
-                  CharacterSettings = new Dictionary<string, CharacterSettings>()
-               });
-            SettingsVisible = data.SettingsVisible;
-            CharacterSettings = data.CharacterSettings;
+            var obj = JObject.Parse(json);
+            SettingsVisible = obj["SettingsVisible"]?.Value<bool>() ?? true;
+
+            CharacterSettings = new Dictionary<string, CharacterSettings>();
+            var characterSettingsObj = (JObject)obj["CharacterSettings"];
+            if (characterSettingsObj != null)
+            {
+               foreach (var prop in characterSettingsObj.Properties())
+                  CharacterSettings[prop.Name] = Saving.CharacterSettings.FromJson((JObject)prop.Value);
+            }
          }
          catch
          {
