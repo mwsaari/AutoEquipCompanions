@@ -245,7 +245,7 @@ namespace AutoEquipCompanions.ViewModel
          else
          {
             characterSettings = new CharacterSettings().Initialize();
-            characterSettings[index] = false;
+            characterSettings[index] = !characterSettings[index];
             _heroToggles.Add(CurrentHero, characterSettings);
          }
       }
