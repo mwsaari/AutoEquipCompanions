@@ -14,12 +14,12 @@ namespace AutoEquipCompanions.Model.Saving
          CharacterSettings = new Dictionary<string, CharacterSettings>();
       }
 
-      internal static string Serialize()
+      public static string Save()
       {
          return JsonConvert.SerializeObject(new { SettingsVisible, CharacterSettings });
       }
 
-      internal static void Deserialize(string json)
+      public static void Load(string json)
       {
          if (string.IsNullOrEmpty(json))
             return;

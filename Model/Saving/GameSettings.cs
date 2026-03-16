@@ -1,31 +1,30 @@
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace AutoEquipCompanions.Model.Saving
 {
    public class GameSettings
    {
-      public bool CanAutoEquipLocked { get; set; } = true;
+      public bool CanAutoEquipLocked { get; set; } = false;
+      public bool DebugEnabled { get; set; } = false;
+      public bool BastardSwordsAreOneHanded { get; set; } = true;
 
       // Placeholder for future template support
       public List<object> Templates { get; set; } = new List<object>();
 
-      public static GameSettings Load()
+      public void Load()
       {
          var path = GetPath();
          if (!File.Exists(path))
-            return new GameSettings();
+            return;
 
          try
          {
             var json = File.ReadAllText(path);
-            return JsonConvert.DeserializeObject<GameSettings>(json) ?? new GameSettings();
+            JsonConvert.PopulateObject(json, this);
          }
-         catch
-         {
-            return new GameSettings();
-         }
+         catch { }
       }
 
       public void Save()
@@ -40,7 +39,7 @@ namespace AutoEquipCompanions.Model.Saving
 
       private static string GetPath()
       {
-         var assemblyDir = Path.GetDirectoryName(typeof(GameSettings).Assembly.Location);
+         var assemblyDir = Path.GetDirectoryName(typeof (GameSettings).Assembly.Location);
          var moduleRoot = Path.GetFullPath(Path.Combine(assemblyDir, "..", ".."));
          return Path.Combine(moduleRoot, "game_settings.json");
       }

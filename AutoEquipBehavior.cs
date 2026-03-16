@@ -1,4 +1,5 @@
 using AutoEquipCompanions.Model;
+using AutoEquipCompanions.Model.Debug;
 using AutoEquipCompanions.Model.Saving;
 using AutoEquipCompanions.ViewModel;
 using SandBox.GauntletUI;
@@ -7,7 +8,9 @@ using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.CampaignSystem.Inventory;
 using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
+using TaleWorlds.Library;
 using TaleWorlds.ScreenSystem;
+using TaleWorlds.TwoDimension;
 
 namespace AutoEquipCompanions
 {
@@ -16,9 +19,10 @@ namespace AutoEquipCompanions
       private const string SaveKey = "AECharacterSettings";
 
       private readonly InventoryStateListener _listener;
-
       private GauntletLayer _overlayLayer;
       private AutoEquipOverlayVM _overlayVM;
+
+      private SpriteCategory _spriteCategory;
 
       public AutoEquipBehavior()
       {
@@ -46,11 +50,25 @@ namespace AutoEquipCompanions
          if (inventoryState == null)
             return;
 
+         if (Main.GameSettings.DebugEnabled)
+            ItemDebugLogger.DumpAll(inventoryState.InventoryLogic);
+
+         LoadSprites();
          var model = new AutoEquipModel(inventoryState.InventoryLogic);
          _overlayVM = new AutoEquipOverlayVM(model, inventoryScreen);
-         _overlayLayer = new GauntletLayer("AutoEquipOverlay", 16) { IsFocusLayer = false };
+         _overlayLayer = new GauntletLayer("AutoEquipOverlay", 16);
+         _overlayLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.Mouse);
          _overlayLayer.LoadMovie("AutoEquipOverlay", _overlayVM);
          inventoryScreen.AddLayer(_overlayLayer);
+      }
+
+      private void LoadSprites()
+      {
+         var spriteData = UIResourceManager.SpriteData;
+         var resourceContext = UIResourceManager.ResourceContext;
+         var resourceDepot = UIResourceManager.ResourceDepot;
+         _spriteCategory = spriteData.SpriteCategories["ui_partyscreen"];
+         _spriteCategory.Load(resourceContext, resourceDepot);
       }
 
       private void OnInventoryClosed(InventoryLogic inventoryLogic)
@@ -65,14 +83,14 @@ namespace AutoEquipCompanions
       {
          if (dataStore.IsSaving)
          {
-            var json = CampaignSettings.Serialize();
+            var json = CampaignSettings.Save();
             dataStore.SyncData(SaveKey, ref json);
          }
          if (dataStore.IsLoading)
          {
             var json = "";
             if (dataStore.SyncData(SaveKey, ref json))
-               CampaignSettings.Deserialize(json);
+               CampaignSettings.Load(json);
             else
                CampaignSettings.Initialize();
          }

@@ -9,12 +9,12 @@ namespace AutoEquipCompanions
    {
 
       private AutoEquipBehavior _behavior;
-      public static GameSettings GameSettings { get; private set; }
+      public static GameSettings GameSettings { get; private set; } = new GameSettings();
 
       protected override void OnSubModuleLoad()
       {
          base.OnSubModuleLoad();
-         GameSettings = GameSettings.Load();
+         GameSettings.Load();
          CampaignSettings.Initialize();
       }
 

@@ -157,14 +157,16 @@
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="Model\Saving\CampaignSettings.cs"/>
         <Compile Include="Model\Saving\GameSettings.cs"/>
-        <Compile Include="Model\Saving\GeneralSettings.cs"/>
-        <Compile Include="Model\Saving\CharacterSettings.cs"/>
+<Compile Include="Model\Saving\CharacterSettings.cs"/>
+        <Compile Include="Model\Debug\Logger.cs"/>
+        <Compile Include="Model\Debug\ItemDebugLogger.cs"/>
         <Compile Include="Utilities.cs"/>
     </ItemGroup>
     <ItemGroup>
         <None Include="app.config"/>
         <None Include="packages.config"/>
         <None Include="_moduleFiles\LICENSE"/>
+        <None Include="_moduleFiles\game_settings.json"/>
     </ItemGroup>
     <ItemGroup>
         <Content Include="GUI\Brushes\AutoEquipCompanionsBrush.xml"/>
@@ -174,13 +176,12 @@
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <PropertyGroup>
-        <PostBuildEvent>mkdir -p "/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/bin/Win64_Shipping_Client"
-            mkdir -p "/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/GUI/Prefabs"
-            cp "$(TargetPath)" "/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/bin/Win64_Shipping_Client/$(TargetFileName)"
-            cp "$(TargetDir)$(TargetName).pdb" "/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/bin/Win64_Shipping_Client/$(TargetName).pdb"
-            cp "$(ProjectDir)GUI/Prefabs/AutoEquipOverlay.xml" "/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/GUI/Prefabs/AutoEquipOverlay.xml"
-            cp "$(ProjectDir)GUI/Prefabs/AutoEquipPresets.xml" "/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/GUI/Prefabs/AutoEquipPresets.xml"
-            cp "$(ProjectDir)_moduleFiles/Submodule.xml" "/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/Submodule.xml"
+        <PostBuildEvent>MODULE="/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions"
+            mkdir -p "$MODULE/bin/Win64_Shipping_Client"
+            cp "$(TargetPath)" "$MODULE/bin/Win64_Shipping_Client/$(TargetFileName)"
+            cp "$(TargetDir)$(TargetName).pdb" "$MODULE/bin/Win64_Shipping_Client/$(TargetName).pdb"
+            rsync -a "$(ProjectDir)GUI/" "$MODULE/GUI/"
+            rsync -a "$(ProjectDir)_moduleFiles/" "$MODULE/"
         </PostBuildEvent>
     </PropertyGroup>
 </Project>

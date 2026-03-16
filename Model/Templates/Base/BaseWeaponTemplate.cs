@@ -57,11 +57,21 @@ namespace AutoEquipCompanions.Model.Templates.Base
                return false;
          }
 
-         var item = candidate.Item;
-         if (item.Difficulty > 0 && item.RelevantSkill != null)
-            return item.Difficulty <= hero.GetSkillValue(item.RelevantSkill);
+         return MeetsDifficultyRequirement(candidate, hero);
+      }
 
-         return true;
+      protected static bool MeetsDifficultyRequirement(EquipmentElement element, Hero hero)
+      {
+         var item = element.Item;
+         if (item.Difficulty <= 0 || item.RelevantSkill == null)
+            return true;
+         return hero.GetSkillValue(item.RelevantSkill) >= item.Difficulty;
+      }
+
+      protected static bool IsBastardSword(EquipmentElement element)
+      {
+         var usage = element.Item.PrimaryWeapon?.ItemUsage;
+         return !string.IsNullOrEmpty(usage) && usage.Contains("rshield");
       }
 
       public double GetScore(EquipmentElement candidate)

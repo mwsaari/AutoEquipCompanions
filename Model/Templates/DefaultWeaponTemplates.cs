@@ -39,15 +39,31 @@ namespace AutoEquipCompanions.Model.Templates
             return false;
 
          var current = hero.BattleEquipment.GetEquipmentFromSlot(slot);
-         if (current.IsEmpty || candidate.Item.ItemType != current.Item.ItemType)
+         if (current.IsEmpty)
             return false;
 
-         var item = candidate.Item;
-         if (item.Difficulty > 0 && item.RelevantSkill != null)
-            return item.Difficulty <= hero.GetSkillValue(item.RelevantSkill);
+         if (!IsSameEffectiveType(candidate, current))
+            return false;
 
-         return true;
+         return MeetsDifficultyRequirement(candidate, hero);
       }
+
+      private static bool IsSameEffectiveType(EquipmentElement candidate, EquipmentElement current)
+      {
+         var candidateType = GetEffectiveType(candidate);
+         var currentType = GetEffectiveType(current);
+         return candidateType == currentType;
+      }
+
+      private static ItemObject.ItemTypeEnum GetEffectiveType(EquipmentElement element)
+      {
+         if (Main.GameSettings.BastardSwordsAreOneHanded
+             && element.Item.ItemType == ItemObject.ItemTypeEnum.TwoHandedWeapon
+             && IsBastardSword(element))
+            return ItemObject.ItemTypeEnum.OneHandedWeapon;
+         return element.Item.ItemType;
+      }
+
    }
 
    public class MissileTemplate : BaseWeaponTemplate
