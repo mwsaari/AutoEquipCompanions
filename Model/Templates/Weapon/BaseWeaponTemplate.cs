@@ -30,6 +30,7 @@ namespace AutoEquipCompanions.Model.Templates.Weapon
       public virtual ItemObject.ItemUsageSetFlags ExcludedUsageFlags { get; set; } = 0;
 
       public abstract string Name { get; }
+      public abstract string DisplayName { get; }
 
       public virtual IEnumerable<EquipmentIndex> LegalSlots { get; } = new[]
       {

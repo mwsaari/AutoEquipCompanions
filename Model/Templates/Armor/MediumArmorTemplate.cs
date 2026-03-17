@@ -3,13 +3,14 @@ using TaleWorlds.Core;
 
 namespace AutoEquipCompanions.Model.Templates.Armor
 {
-   public class DefaultArmorTemplate : BaseArmorTemplate
+   public class MediumArmorTemplate : BaseArmorTemplate
    {
-      public static readonly DefaultArmorTemplate Instance = new DefaultArmorTemplate();
+      public static readonly MediumArmorTemplate Instance = new MediumArmorTemplate();
 
-      public override string Name => "default_armor";
-      public override string DisplayName => "Armor";
+      public override string Name => "medium_armor";
+      public override string DisplayName => "Medium Armor";
       public override ArmorField ComparisonField => ArmorField.ArmorTotal;
+      protected override ItemObject.ItemTiers? MaxTier => ItemObject.ItemTiers.Tier3;
 
       public override IEnumerable<EquipmentIndex> LegalSlots { get; } = new[]
       {

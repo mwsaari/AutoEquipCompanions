@@ -16,5 +16,6 @@ namespace AutoEquipCompanions.Model.Templates.Character
       }
 
       public override string Name => _name;
+      public override string DisplayName => _name;
    }
 }

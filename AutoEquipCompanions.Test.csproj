@@ -36,6 +36,9 @@
     <ItemGroup>
         <Reference Include="System"/>
         <Reference Include="System.Core"/>
+        <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+            <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+        </Reference>
         <Reference Include="System.Data"/>
         <Reference Include="System.Xml"/>
         <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c">
@@ -83,11 +86,13 @@
         <Compile Include="Tests\Model\Templates\Weapon\IsBastardSwordTests.cs"/>
         <Compile Include="Tests\Model\Templates\Weapon\MeetsDifficultyRequirementTests.cs"/>
         <Compile Include="Tests\Model\Templates\Weapon\IsBetterThanTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Weapon\CouchableLanceTemplateTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Weapon\ArrowsTemplateTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Weapon\BoltsTemplateTests.cs"/>
         <Compile Include="Tests\Model\Templates\Weapon\DefaultWeaponTemplateTests.cs"/>
         <Compile Include="Tests\Model\Templates\Weapon\SameTypeWeaponTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Weapon\MissileTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Weapon\CouchableLanceTemplateTests.cs"/>
         <Compile Include="Tests\Model\Saving\GameSettingsTests.cs"/>
+        <Compile Include="Tests\Model\Saving\CharacterSettingsTests.cs"/>
         <Compile Include="Tests\Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>

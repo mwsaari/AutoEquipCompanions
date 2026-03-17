@@ -11,6 +11,7 @@ namespace AutoEquipCompanions.Test.Model.Templates.Weapon
       public static readonly ExposedWeaponTemplate Instance = new ExposedWeaponTemplate();
 
       public override string Name => "Exposed";
+      public override string DisplayName => "Exposed";
       public override WeaponField ComparisonField => WeaponField.Value;
       public override IEnumerable<ItemObject.ItemTypeEnum> AllowedItemTypes { get; } = new[]
       {

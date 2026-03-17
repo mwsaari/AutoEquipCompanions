@@ -4,7 +4,8 @@ namespace AutoEquipCompanions.Model.Templates.Mount
    {
       public new static readonly CamelMountTemplate Instance = new CamelMountTemplate();
 
-      public override string Name => "Camel Mount";
+      public override string Name => "camel_mount";
+      public override string DisplayName => "Camel";
       public override bool UseCamel => true;
    }
 }

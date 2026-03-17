@@ -1,4 +1,5 @@
 using AutoEquipCompanions.Model.Templates.Weapon;
+using AutoEquipCompanions.Model.Templates.Weapon.Polearm;
 using TaleWorlds.Core;
 using Xunit;
 

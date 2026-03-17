@@ -10,7 +10,8 @@ namespace AutoEquipCompanions.Model.Templates.Weapon
    {
       public static readonly SameTypeWeaponTemplate Instance = new SameTypeWeaponTemplate();
 
-      public override string Name => "Same Type Weapon";
+      public override string Name => "same_type_weapon";
+      public override string DisplayName => "Match Current Type";
       public override WeaponField ComparisonField => WeaponField.Value;
       public override IEnumerable<ItemObject.ItemTypeEnum> AllowedItemTypes { get; } = Array.Empty<ItemObject.ItemTypeEnum>();
 

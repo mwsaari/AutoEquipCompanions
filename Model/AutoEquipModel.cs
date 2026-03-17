@@ -44,10 +44,16 @@ namespace AutoEquipCompanions.Model
                   : new CharacterSettings().Initialize();
                foreach (var (slot, template) in heroSettings.Template.Slots.Where(x => heroSettings[x.Slot]))
                {
-                  var replacement = GetBestReplacement(hero, slot, template);
+                  var current = hero.BattleEquipment.GetEquipmentFromSlot(slot);
+                  var replacement = GetBestReplacement(hero, slot, template, current);
                   if (replacement != null)
                   {
                      DoEquip(hero, slot, replacement.Value);
+                     hasUpgraded = true;
+                  }
+                  else if (!current.IsEmpty && !template.IsValidFor(current, slot, hero))
+                  {
+                     DoUnequip(hero, slot, current);
                      hasUpgraded = true;
                   }
                }
@@ -67,9 +73,8 @@ namespace AutoEquipCompanions.Model
          }
       }
 
-      private ItemRosterElement? GetBestReplacement(Hero hero, EquipmentIndex slot, ISlotTemplate template)
+      private ItemRosterElement? GetBestReplacement(Hero hero, EquipmentIndex slot, ISlotTemplate template, EquipmentElement current)
       {
-         var current = hero.BattleEquipment.GetEquipmentFromSlot(slot);
          return Items
             .Where(x => template.IsValidFor(x.EquipmentElement, slot, hero))
             .OrderByDescending(x => template.GetScore(x.EquipmentElement))
@@ -88,6 +93,19 @@ namespace AutoEquipCompanions.Model
                replacement,
                EquipmentIndex.None,
                slot,
+               character.CharacterObject));
+      }
+
+      private void DoUnequip(Hero character, EquipmentIndex slot, EquipmentElement item)
+      {
+         _inventoryLogic.AddTransferCommand(
+            TransferCommand.Transfer(
+               1,
+               InventoryLogic.InventorySide.BattleEquipment,
+               InventoryLogic.InventorySide.PlayerInventory,
+               new ItemRosterElement(item, 1),
+               slot,
+               EquipmentIndex.None,
                character.CharacterObject));
       }
    }

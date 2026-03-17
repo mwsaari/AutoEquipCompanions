@@ -20,11 +20,17 @@ namespace AutoEquipCompanions.Model.Templates.Armor
       public abstract ArmorField ComparisonField { get; }
 
       public abstract string Name { get; }
+      public abstract string DisplayName { get; }
       public abstract IEnumerable<EquipmentIndex> LegalSlots { get; }
+
+      protected virtual ItemObject.ItemTiers? MaxTier => null;
 
       public bool IsValidFor(EquipmentElement candidate, EquipmentIndex slot, Hero hero)
       {
          if (candidate.IsEmpty || !candidate.Item.HasArmorComponent)
+            return false;
+
+         if (MaxTier.HasValue && candidate.Item.Tier > MaxTier.Value)
             return false;
 
          switch (slot)

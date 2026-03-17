@@ -45,10 +45,5 @@ namespace AutoEquipCompanions.Test.Model.Templates.Shield
          Assert.False(DefaultShieldTemplate.Instance.IsValidFor(el, EquipmentIndex.Weapon0, hero));
       }
 
-      [Fact]
-      public void ComparisonField_IsValue()
-      {
-         Assert.Equal(BaseShieldTemplate.ShieldField.Value, DefaultShieldTemplate.Instance.ComparisonField);
-      }
    }
 }

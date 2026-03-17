@@ -17,6 +17,7 @@ namespace AutoEquipCompanions.Model.Templates.Shield
       public abstract ShieldField ComparisonField { get; }
 
       public abstract string Name { get; }
+      public abstract string DisplayName { get; }
 
       public virtual IEnumerable<EquipmentIndex> LegalSlots { get; } = new[]
       {

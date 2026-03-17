@@ -7,6 +7,7 @@ namespace AutoEquipCompanions.Model.Templates
    public interface ISlotTemplate
    {
       string Name { get; }
+      string DisplayName { get; }
       IEnumerable<EquipmentIndex> LegalSlots { get; }
       bool IsValidFor(EquipmentElement candidate, EquipmentIndex slot, Hero hero);
       double GetScore(EquipmentElement candidate);

@@ -26,7 +26,10 @@ namespace AutoEquipCompanions.Model.Templates.Mount
       public abstract HarnessField HarnessComparisonField { get; }
       public abstract bool UseCamel { get; }
 
+      protected virtual ItemObject.ItemTiers? MaxTier => null;
+
       public abstract string Name { get; }
+      public abstract string DisplayName { get; }
 
       public virtual IEnumerable<EquipmentIndex> LegalSlots { get; } = new[]
       {
@@ -57,6 +60,9 @@ namespace AutoEquipCompanions.Model.Templates.Mount
                return true;
             case EquipmentIndex.HorseHarness:
                if (candidate.Item.ItemType != ItemObject.ItemTypeEnum.HorseHarness)
+                  return false;
+
+               if (MaxTier.HasValue && candidate.Item.Tier > MaxTier.Value)
                   return false;
 
                var equippedHorse = hero.BattleEquipment.Horse;

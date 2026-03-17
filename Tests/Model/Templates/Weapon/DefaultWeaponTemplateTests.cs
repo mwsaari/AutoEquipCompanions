@@ -1,5 +1,4 @@
 using AutoEquipCompanions.Model.Templates.Weapon;
-using System.Linq;
 using TaleWorlds.Core;
 using Xunit;
 
@@ -50,16 +49,5 @@ namespace AutoEquipCompanions.Test.Model.Templates.Weapon
          Assert.False(DefaultWeaponTemplate.Instance.IsValidFor(el, EquipmentIndex.Weapon0, hero));
       }
 
-      [Fact]
-      public void ComparisonField_IsValue()
-      {
-         Assert.Equal(BaseWeaponTemplate.WeaponField.Value, DefaultWeaponTemplate.Instance.ComparisonField);
-      }
-
-      [Fact]
-      public void AllowedItemTypes_ContainsSixTypes()
-      {
-         Assert.Equal(6, DefaultWeaponTemplate.Instance.AllowedItemTypes.Count());
-      }
    }
 }

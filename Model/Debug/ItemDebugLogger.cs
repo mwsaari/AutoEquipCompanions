@@ -140,6 +140,7 @@ namespace AutoEquipCompanions.Model.Debug
          sb.AppendLine($"    Tier:       {item.Tier}");
          sb.AppendLine($"    Value:      {element.ItemValue}");
          sb.AppendLine($"    Difficulty: {item.Difficulty}");
+         sb.AppendLine($"    Weight:     {item.Weight:F2}");
          if (item.RelevantSkill != null)
             sb.AppendLine($"    Skill:      {item.RelevantSkill.Name}");
 
@@ -160,6 +161,10 @@ namespace AutoEquipCompanions.Model.Debug
             sb.AppendLine($"    Handling:   {element.GetModifiedHandlingForUsage(0)}");
             sb.AppendLine($"    MissileDmg: {element.GetModifiedMissileDamageForUsage(0)}");
             sb.AppendLine($"    MissileSpd: {element.GetModifiedMissileSpeedForUsage(0)}");
+         }
+         else if (item.ItemType == ItemObject.ItemTypeEnum.HorseHarness)
+         {
+            sb.AppendLine($"    MountArmor: {element.GetModifiedMountBodyArmor()}");
          }
          else if (item.HasArmorComponent)
          {

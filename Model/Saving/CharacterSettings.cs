@@ -1,9 +1,5 @@
 using AutoEquipCompanions.Model.Templates;
-using AutoEquipCompanions.Model.Templates.Armor;
 using AutoEquipCompanions.Model.Templates.Character;
-using AutoEquipCompanions.Model.Templates.Mount;
-using AutoEquipCompanions.Model.Templates.Shield;
-using AutoEquipCompanions.Model.Templates.Weapon;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -13,20 +9,6 @@ namespace AutoEquipCompanions.Model.Saving
 {
    public class CharacterSettings
    {
-      private static readonly IReadOnlyDictionary<string, ISlotTemplate> SlotTemplates =
-         new Dictionary<string, ISlotTemplate>
-         {
-            { DefaultArmorTemplate.Instance.Name, DefaultArmorTemplate.Instance },
-            { DefaultMountTemplate.Instance.Name, DefaultMountTemplate.Instance },
-            { CamelMountTemplate.Instance.Name, CamelMountTemplate.Instance },
-            { DefaultWeaponTemplate.Instance.Name, DefaultWeaponTemplate.Instance },
-            { SameTypeWeaponTemplate.Instance.Name, SameTypeWeaponTemplate.Instance },
-            { MissileTemplate.Instance.Name, MissileTemplate.Instance },
-            { MountWeaponTemplate.Instance.Name, MountWeaponTemplate.Instance },
-            { CouchableLanceTemplate.Instance.Name, CouchableLanceTemplate.Instance },
-            { DefaultShieldTemplate.Instance.Name, DefaultShieldTemplate.Instance },
-         };
-
       private readonly Dictionary<EquipmentIndex, bool> _slotToggles = new Dictionary<EquipmentIndex, bool>();
 
       public bool CharacterToggle { get; set; }
@@ -34,14 +16,14 @@ namespace AutoEquipCompanions.Model.Saving
 
       public bool this[EquipmentIndex index]
       {
-         get => _slotToggles.TryGetValue(index, out var v) ? v : true;
+         get => !_slotToggles.TryGetValue(index, out var v) || v;
          set => _slotToggles[index] = value;
       }
 
       public CharacterSettings Initialize()
       {
-         CharacterToggle = true;
          Template = CharacterTemplate.Instance;
+         CharacterToggle = Template.DefaultEnabled;
          for (var i = 0; i < (int)EquipmentIndex.NumEquipmentSetSlots; i++)
             _slotToggles[(EquipmentIndex)i] = true;
          this[EquipmentIndex.Horse] = false;
@@ -51,67 +33,74 @@ namespace AutoEquipCompanions.Model.Saving
 
       public JObject ToJson()
       {
-         var templateJson = new JObject { ["Name"] = Template.Name };
+         var json = new JObject { ["CharacterToggle"] = CharacterToggle };
+         WriteTemplate(json);
+         WriteToggles(json);
+         return json;
+      }
 
+      private void WriteTemplate(JObject json)
+      {
+         json["Template"] = Template.Name;
          if (Template is CustomCharacterTemplate)
-         {
-            var slotTemplatesJson = new JObject();
-            foreach (var (slot, slotTemplate) in Template.Slots)
-               slotTemplatesJson[slot.ToString()] = slotTemplate.Name;
-            templateJson["SlotTemplates"] = slotTemplatesJson;
-         }
+            json["SlotTemplates"] = WriteSlotTemplates();
+      }
 
+      private JObject WriteSlotTemplates()
+      {
+         var json = new JObject();
+         foreach (var (slot, slotTemplate) in Template.Slots)
+            json[slot.ToString()] = slotTemplate.Name;
+         return json;
+      }
+
+      private void WriteToggles(JObject json)
+      {
          foreach (var kv in _slotToggles)
-            templateJson[kv.Key.ToString()] = kv.Value;
-
-         return new JObject
-         {
-            ["CharacterToggle"] = CharacterToggle,
-            ["Template"] = templateJson
-         };
+            json[kv.Key.ToString()] = kv.Value;
       }
 
       public static CharacterSettings FromJson(JObject obj)
       {
          var settings = new CharacterSettings();
-         settings.CharacterToggle = obj["CharacterToggle"]?.Value<bool>() ?? true;
-
-         var templateObj = (JObject)obj["Template"];
-         if (templateObj == null)
-            return settings.Initialize();
-
-         settings.Template = ResolveTemplate(templateObj);
-
-         for (var i = 0; i < (int)EquipmentIndex.NumEquipmentSetSlots; i++)
-         {
-            var slot = (EquipmentIndex)i;
-            var token = templateObj[slot.ToString()];
-            if (token != null)
-               settings[slot] = token.Value<bool>();
-         }
-
+         settings.Template = ReadTemplate(obj);
+         settings.CharacterToggle = obj["CharacterToggle"]?.Value<bool>() ?? settings.Template.DefaultEnabled;
+         settings.ApplyToggles(obj);
          return settings;
       }
 
-      private static ICharacterTemplate ResolveTemplate(JObject templateObj)
+      private static ICharacterTemplate ReadTemplate(JObject obj)
       {
-         var name = templateObj["Name"]?.Value<string>();
-         var slotTemplatesObj = (JObject)templateObj["SlotTemplates"];
-
+         var name = obj["Template"]?.Value<string>();
+         var slotTemplatesObj = (JObject)obj["SlotTemplates"];
          if (slotTemplatesObj == null)
             return TemplateRegistry.Resolve(name) ?? TemplateRegistry.Null;
+         return new CustomCharacterTemplate(name, ReadSlotTemplates(slotTemplatesObj));
+      }
 
+      private static List<(EquipmentIndex, ISlotTemplate)> ReadSlotTemplates(JObject obj)
+      {
          var slots = new List<(EquipmentIndex, ISlotTemplate)>();
-         foreach (var prop in slotTemplatesObj.Properties())
+         foreach (var prop in obj.Properties())
          {
             if (!Enum.TryParse<EquipmentIndex>(prop.Name, out var index))
                continue;
-            if (!SlotTemplates.TryGetValue(prop.Value.Value<string>(), out var slotTemplate))
-               continue;
-            slots.Add((index, slotTemplate));
+            var slotTemplate = TemplateRegistry.ResolveSlotTemplate(prop.Value.Value<string>());
+            if (slotTemplate != null)
+               slots.Add((index, slotTemplate));
          }
+         return slots;
+      }
 
-         return new CustomCharacterTemplate(name, slots);
+      private void ApplyToggles(JObject obj)
+      {
+         for (var i = 0; i < (int)EquipmentIndex.NumEquipmentSetSlots; i++)
+         {
+            var slot = (EquipmentIndex)i;
+            var token = obj[slot.ToString()];
+            if (token != null)
+               this[slot] = token.Value<bool>();
+         }
       }
    }
 }

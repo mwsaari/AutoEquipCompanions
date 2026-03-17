@@ -2,18 +2,18 @@ using AutoEquipCompanions.Model.Templates;
 using System.Collections.Generic;
 using TaleWorlds.Core;
 
-namespace AutoEquipCompanions.Model.Templates.Weapon
+namespace AutoEquipCompanions.Model.Templates.Weapon.Crossbow
 {
-   public class MissileTemplate : BaseWeaponTemplate
+   public class BoltsTemplate : BaseWeaponTemplate
    {
-      public static readonly MissileTemplate Instance = new MissileTemplate();
+      public static readonly BoltsTemplate Instance = new BoltsTemplate();
 
-      public override string Name => "Missile";
+      public override string Name => "bolts";
+      public override string DisplayName => "Bolts";
       public override WeaponField ComparisonField => WeaponField.MissileDamage;
 
       public override IEnumerable<ItemObject.ItemTypeEnum> AllowedItemTypes { get; } = new[]
       {
-         ItemObject.ItemTypeEnum.Arrows,
          ItemObject.ItemTypeEnum.Bolts
       };
    }

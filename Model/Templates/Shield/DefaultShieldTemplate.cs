@@ -4,7 +4,8 @@ namespace AutoEquipCompanions.Model.Templates.Shield
    {
       public static readonly DefaultShieldTemplate Instance = new DefaultShieldTemplate();
 
-      public override string Name => "Default Shield";
+      public override string Name => "default_shield";
+      public override string DisplayName => "Shield";
       public override ShieldField ComparisonField => ShieldField.Value;
    }
 }

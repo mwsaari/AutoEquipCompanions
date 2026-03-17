@@ -8,7 +8,8 @@ namespace AutoEquipCompanions.Model.Templates.Weapon
    {
       public static readonly DefaultWeaponTemplate Instance = new DefaultWeaponTemplate();
 
-      public override string Name => "Default Weapon";
+      public override string Name => "default_weapon";
+      public override string DisplayName => "Weapon";
       public override WeaponField ComparisonField => WeaponField.Value;
 
       public override IEnumerable<ItemObject.ItemTypeEnum> AllowedItemTypes { get; } = new[]

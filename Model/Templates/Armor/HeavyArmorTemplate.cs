@@ -3,12 +3,12 @@ using TaleWorlds.Core;
 
 namespace AutoEquipCompanions.Model.Templates.Armor
 {
-   public class DefaultArmorTemplate : BaseArmorTemplate
+   public class HeavyArmorTemplate : BaseArmorTemplate
    {
-      public static readonly DefaultArmorTemplate Instance = new DefaultArmorTemplate();
+      public static readonly HeavyArmorTemplate Instance = new HeavyArmorTemplate();
 
-      public override string Name => "default_armor";
-      public override string DisplayName => "Armor";
+      public override string Name => "heavy_armor";
+      public override string DisplayName => "Heavy Armor";
       public override ArmorField ComparisonField => ArmorField.ArmorTotal;
 
       public override IEnumerable<EquipmentIndex> LegalSlots { get; } = new[]

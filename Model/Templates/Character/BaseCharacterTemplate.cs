@@ -14,6 +14,8 @@ namespace AutoEquipCompanions.Model.Templates.Character
       }
 
       public abstract string Name { get; }
+      public abstract string DisplayName { get; }
+      public virtual bool DefaultEnabled => true;
       public IEnumerable<(EquipmentIndex Slot, ISlotTemplate Template)> Slots => _slots;
    }
 }

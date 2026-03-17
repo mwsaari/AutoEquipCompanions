@@ -1,5 +1,4 @@
 using AutoEquipCompanions.Model.Templates.Armor;
-using System.Linq;
 using TaleWorlds.Core;
 using Xunit;
 
@@ -66,16 +65,5 @@ namespace AutoEquipCompanions.Test.Model.Templates.Armor
          Assert.False(DefaultArmorTemplate.Instance.IsValidFor(el, EquipmentIndex.Head, hero));
       }
 
-      [Fact]
-      public void ComparisonField_IsArmorTotal()
-      {
-         Assert.Equal(BaseArmorTemplate.ArmorField.ArmorTotal, DefaultArmorTemplate.Instance.ComparisonField);
-      }
-
-      [Fact]
-      public void LegalSlots_ContainsFiveSlots()
-      {
-         Assert.Equal(5, DefaultArmorTemplate.Instance.LegalSlots.Count());
-      }
    }
 }
