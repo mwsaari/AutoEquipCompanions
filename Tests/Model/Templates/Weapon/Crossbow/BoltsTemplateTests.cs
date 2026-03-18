@@ -1,21 +1,21 @@
-using AutoEquipCompanions.Model.Templates.Weapon.Bow;
+using AutoEquipCompanions.Model.Templates.Weapon.Crossbow;
 using TaleWorlds.Core;
 using Xunit;
 
-namespace AutoEquipCompanions.Test.Model.Templates.Weapon
+namespace AutoEquipCompanions.Test.Model.Templates.Weapon.Crossbow
 {
-   public class ArrowsTemplateTests
+   public class BoltsTemplateTests
    {
       [Fact]
-      public void ArrowsType_ReturnsTrue()
+      public void BoltsType_ReturnsTrue()
       {
-         var el = Helpers.MakeWeapon(ItemObject.ItemTypeEnum.Arrows);
+         var el = Helpers.MakeWeapon(ItemObject.ItemTypeEnum.Bolts);
          var hero = Helpers.MakeHero();
-         Assert.True(ArrowsTemplate.Instance.IsValidFor(el, EquipmentIndex.Weapon0, hero));
+         Assert.True(BoltsTemplate.Instance.IsValidFor(el, EquipmentIndex.Weapon0, hero));
       }
 
       [Theory]
-      [InlineData(ItemObject.ItemTypeEnum.Bolts)]
+      [InlineData(ItemObject.ItemTypeEnum.Arrows)]
       [InlineData(ItemObject.ItemTypeEnum.Bow)]
       [InlineData(ItemObject.ItemTypeEnum.Crossbow)]
       [InlineData(ItemObject.ItemTypeEnum.OneHandedWeapon)]
@@ -24,14 +24,14 @@ namespace AutoEquipCompanions.Test.Model.Templates.Weapon
       {
          var el = Helpers.MakeWeapon(type);
          var hero = Helpers.MakeHero();
-         Assert.False(ArrowsTemplate.Instance.IsValidFor(el, EquipmentIndex.Weapon0, hero));
+         Assert.False(BoltsTemplate.Instance.IsValidFor(el, EquipmentIndex.Weapon0, hero));
       }
 
       [Fact]
       public void EmptyCandidate_ReturnsFalse()
       {
          var hero = Helpers.MakeHero();
-         Assert.False(ArrowsTemplate.Instance.IsValidFor(default, EquipmentIndex.Weapon0, hero));
+         Assert.False(BoltsTemplate.Instance.IsValidFor(default, EquipmentIndex.Weapon0, hero));
       }
 
    }

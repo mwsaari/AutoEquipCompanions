@@ -1,7 +1,7 @@
 using TaleWorlds.Core;
 using Xunit;
 
-namespace AutoEquipCompanions.Test.Model.Templates.Weapon
+namespace AutoEquipCompanions.Test.Model.Templates.Weapon.Base
 {
    public class IsBastardSwordTests
    {

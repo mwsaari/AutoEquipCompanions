@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 
-namespace AutoEquipCompanions.Test.Model.Templates.Weapon
+namespace AutoEquipCompanions.Test.Model.Templates.Weapon.Base
 {
    // Exposes protected members of BaseWeaponTemplate for direct testing
    internal class ExposedWeaponTemplate : BaseWeaponTemplate

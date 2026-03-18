@@ -3,7 +3,7 @@ using AutoEquipCompanions.Model.Templates.Weapon.Polearm;
 using TaleWorlds.Core;
 using Xunit;
 
-namespace AutoEquipCompanions.Test.Model.Templates.Weapon
+namespace AutoEquipCompanions.Test.Model.Templates.Weapon.Polearm
 {
    public class CouchableLanceTemplateTests
    {
