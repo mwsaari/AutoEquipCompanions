@@ -1,31 +1,35 @@
-﻿using AutoEquipCompanions.Model.Saving;
-using HarmonyLib;
+using AutoEquipCompanions.Model.Saving;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
 namespace AutoEquipCompanions
 {
-    public class Main : MBSubModuleBase
-    {
-        protected override void OnSubModuleLoad()
-        {
-            base.OnSubModuleLoad();
-            new Harmony("top.boom.patch.autoequipcompanions").PatchAll();
-            Config.Initialize();
-        }
+   public class Main : MBSubModuleBase
+   {
 
-        protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
-        {
-            if (starterObject is CampaignGameStarter campaignGameStarter)
-            {
-                campaignGameStarter.AddBehavior(AutoEquipBehavior.Instance);
-            }
-        }
+      private AutoEquipBehavior _behavior;
+      public static GameSettings GameSettings { get; private set; } = new GameSettings();
 
-        public override void OnGameEnd(Game game)
-        {
-            AutoEquipBehavior.Instance.DeRegisterEvents();
-        }
-    }
+      protected override void OnSubModuleLoad()
+      {
+         base.OnSubModuleLoad();
+         GameSettings.Load();
+         CampaignSettings.Initialize();
+      }
+
+      protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
+      {
+         if (starterObject is CampaignGameStarter campaignGameStarter)
+         {
+            _behavior = new AutoEquipBehavior();
+            campaignGameStarter.AddBehavior(_behavior);
+         }
+      }
+
+      public override void OnGameEnd(Game game)
+      {
+         _behavior?.UnregisterEvents();
+      }
+   }
 }

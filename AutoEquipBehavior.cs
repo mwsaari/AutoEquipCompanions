@@ -1,9 +1,11 @@
-﻿using AutoEquipCompanions.Model;
+using AutoEquipCompanions.Model;
+using AutoEquipCompanions.Model.Debug;
 using AutoEquipCompanions.Model.Saving;
 using AutoEquipCompanions.ViewModel;
 using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameState;
+using TaleWorlds.CampaignSystem.Inventory;
 using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.Library;
@@ -12,106 +14,101 @@ using TaleWorlds.TwoDimension;
 
 namespace AutoEquipCompanions
 {
-    public class AutoEquipBehavior : CampaignBehaviorBase
-    {
-        private const string CharacterSettingsKey = "AECharacterToggles";
-        private const string PresetsKey = "AEPresets";
-        internal static AutoEquipBehavior Instance = new AutoEquipBehavior();
+   public class AutoEquipBehavior : CampaignBehaviorBase
+   {
+      private const string SaveKey = "AECharacterSettings";
 
-        GauntletLayer _layer;
-        GauntletMovieIdentifier _movie;
-        AutoEquipOverlayVM _overlayViewModel;
-        SpriteCategory _category;
+      private readonly InventoryStateListener _listener;
+      private GauntletLayer _overlayLayer;
+      private AutoEquipOverlayVM _overlayVM;
+      private AutoEquipOverlayVM_v2 _overlayVMV2;
 
-        internal AutoEquipOverlayVM OverlayViewModel => _overlayViewModel;
+      private SpriteCategory _spriteCategory;
 
-        public override void RegisterEvents()
-        {
-            ScreenManager.OnPushScreen += OnPushScreen;
-            ScreenManager.OnPopScreen += OnPopScreen;
-        }
+      public AutoEquipBehavior()
+      {
+         _listener = new InventoryStateListener(OnInventoryClosed);
+      }
 
-        public void DeRegisterEvents()
-        {
-            ScreenManager.OnPushScreen -= OnPushScreen;
-            ScreenManager.OnPopScreen -= OnPopScreen;
-        }
+      public override void RegisterEvents()
+      {
+         _listener.Register();
+         ScreenManager.OnPushScreen += OnScreenPushed;
+      }
 
-        private void OnPushScreen(ScreenBase pushedScreen)
-        {
-            if (pushedScreen is GauntletInventoryScreen inventoryScreen
-                && _layer is null)
-            {
-                OpenOverlay(inventoryScreen);
-            }
-        }
+      public void UnregisterEvents()
+      {
+         _listener.Unregister();
+         ScreenManager.OnPushScreen -= OnScreenPushed;
+      }
 
-        private void OnPopScreen(ScreenBase poppedScreen)
-        {
-            if (poppedScreen is GauntletInventoryScreen inventoryScreen
-                && _layer is not null)
-            {
-                if (_category is not null)
-                {
-                    _category.Unload();
-                }
-                if (_movie is not null)
-                {
-                    _layer.ReleaseMovie(_movie);
-                    _movie = null;
-                }
-                _layer = null;
-                _overlayViewModel = null;
-            }
-        }
+      private void OnScreenPushed(ScreenBase screen)
+      {
+         if (screen is not GauntletInventoryScreen inventoryScreen)
+            return;
 
-        private void OpenOverlay(GauntletInventoryScreen inventoryScreen)
-        {
-            LoadSprites();
-            var inventoryLogic = ((InventoryState)GameStateManager.Current.ActiveState).InventoryLogic;
-            var autoEquipModel = new AutoEquipModel(inventoryLogic);
-            _overlayViewModel = new AutoEquipOverlayVM(autoEquipModel, inventoryScreen);
-            _layer = new GauntletLayer("GauntletLayer", 200, true);
-            UIConfig.DoNotUseGeneratedPrefabs = true;
-            _movie = _layer.LoadMovie("AutoEquipOverlay", _overlayViewModel);
-            _layer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.All);
-            inventoryScreen.AddLayer(_layer);
-        }
+         var inventoryState = Game.Current.GameStateManager.ActiveState as InventoryState;
+         if (inventoryState == null)
+            return;
 
-        public override void SyncData(IDataStore dataStore)
-        {
-            if (dataStore.IsSaving)
-            {
-                var characterData = Config.CreateCharacterSaveData();
-                dataStore.SyncData(CharacterSettingsKey, ref characterData);
+         if (Main.GameSettings.DebugEnabled)
+            ItemDebugLogger.DumpAll(inventoryState.InventoryLogic);
 
-                var presetData = Config.CreatePresetSaveData();
-                dataStore.SyncData(PresetsKey, ref presetData);
-            }
-            if (dataStore.IsLoading)
-            {
-                var characterData = "";
-                var presetData = "";
-                if (dataStore.SyncData(CharacterSettingsKey, ref characterData)
-                    && dataStore.SyncData(PresetsKey, ref presetData))
-                {
-                    Config.ReadSaveData(characterData, presetData);
-                }
-                else
-                {
-                    Config.Initialize();
-                }
-            }
-        }
+         LoadSprites();
+         var model = new AutoEquipModel(inventoryState.InventoryLogic);
+         _overlayLayer = new GauntletLayer("AutoEquipOverlay", 16);
+         _overlayLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.Mouse);
 
-        private void LoadSprites()
-        {
-            var spriteData = UIResourceManager.SpriteData;
-            var resourceContext = UIResourceManager.ResourceContext;
-            var resourceDepot = UIResourceManager.ResourceDepot;
+         var useExperimentalUI = Main.GameSettings.UseTemplates;
+         if (useExperimentalUI)
+         {
+            _overlayVMV2 = new AutoEquipOverlayVM_v2(model, inventoryScreen);
+            _overlayLayer.LoadMovie("AutoEquipOverlay_v2", _overlayVMV2);
+         }
+         else
+         {
+            _overlayVM = new AutoEquipOverlayVM(model, inventoryScreen);
+            _overlayLayer.LoadMovie("AutoEquipOverlay", _overlayVM);
+         }
 
-            _category = spriteData.SpriteCategories["ui_partyscreen"]; // select which category to load, put your category name here
-            _category.Load(resourceContext, resourceDepot); // load the selected category
-        }
-    }
+         inventoryScreen.AddLayer(_overlayLayer);
+      }
+
+      private void LoadSprites()
+      {
+         var spriteData = UIResourceManager.SpriteData;
+         var resourceContext = UIResourceManager.ResourceContext;
+         var resourceDepot = UIResourceManager.ResourceDepot;
+         _spriteCategory = spriteData.SpriteCategories["ui_partyscreen"];
+         _spriteCategory.Load(resourceContext, resourceDepot);
+      }
+
+      private void OnInventoryClosed(InventoryLogic inventoryLogic)
+      {
+         _overlayVM?.OnExecuteCompleteTransactions();
+         _overlayVM?.OnFinalize();
+         _overlayVM = null;
+         _overlayVMV2?.OnExecuteCompleteTransactions();
+         _overlayVMV2?.OnFinalize();
+         _overlayVMV2 = null;
+         _overlayLayer = null;
+      }
+
+      public override void SyncData(IDataStore dataStore)
+      {
+         if (dataStore.IsSaving)
+         {
+            var json = CampaignSettings.Save();
+            dataStore.SyncData(SaveKey, ref json);
+         }
+         if (dataStore.IsLoading)
+         {
+            var json = "";
+            if (dataStore.SyncData(SaveKey, ref json))
+               CampaignSettings.Load(json);
+            else
+               CampaignSettings.Initialize();
+         }
+      }
+   }
 }

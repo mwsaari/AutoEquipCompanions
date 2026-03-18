@@ -1,18 +1,82 @@
-# AutoEquipCompanions
+# Auto Equip Companions
 
-:: REQUIREMENTS Template::
-Bannerlord up to date
+:: REQUIREMENTS ::
+Mount & Blade II: Bannerlord v1.3.15+
 
-:: FEATURES Template::
-Heros auto loot items
-Upgrade when closing inventor
-Will upgrade any slot with item to another item of same type
-Use tier + money value to determine whether to upgrade
+:: DESCRIPTION ::
+Automatically equips companions with the best available gear when closing the inventory screen.
+Per-character settings allow you to control which equipment slots are managed for each hero.
 
-:: KNOWN ISSUES Template::
-None, but I just started modding and this is my first one so be safe. 
+:: GAME SETTINGS (game_settings.json) ::
+  CanAutoEquipLocked      Allow auto equip to replace locked items (default: false)
+  DebugEnabled            Write item debug info to log on inventory open (default: false)
+  BastardSwordsAreOneHanded  Treat bastard swords as valid for one-handed slots (default: true)
+  ExperimentalUI          Use the v2 overlay with per-character template selection (default: false)
 
-:: CREDITS Template:: 
-Lesser Scholar for his tutorial on modding setup and basics. 
+:: FEATURES ::
+- Auto-equips companions on inventory close
+- Manual trigger button in the inventory screen
+- Per-character template selection (Default, Infantry Captain, Cavalry Captain, etc.)
+- Per-character toggle to enable/disable auto equip
+- Per-slot toggles for armor, weapons, horse, and harness
+- Settings are saved between sessions
+- Configurable behavior via game_settings.json
 
-I'd love to shoutout the warband mod that I used to use. But I can't find it in Nexus, I didn't directly copy anything though other than high level idea. 
+:: USAGE ::
+Open the inventory screen. A button will appear in the top-right area.
+- Left click: manually trigger auto equip
+- Right click: toggle the settings panel
+
+In the settings panel you can select a template for the current character, enable/disable auto equip
+per character, and toggle individual equipment slots.
+
+:: TEMPLATES ::
+Templates control what type of gear each slot looks for when auto-equipping.
+
+  Default
+    Armor:   Best available of any armor type for each slot
+    Horse:   Best available mount and harness
+    Weapons: Matches the same weapon type already in each slot
+
+  Infantry Captain
+    Armor:   Heavy armor in all slots
+    Horse:   Empty (dismounted)
+    Weapon0: One-handed weapon (includes bastard swords if enabled)
+    Weapon1: Shield
+    Weapon2: Polearm
+    Weapon3: Thrown weapon
+
+  Cavalry Captain
+    Armor:   Heavy armor in all slots
+    Horse:   Best available mount and harness
+    Weapon0: Cavalry/lance weapon
+    Weapon1: One-handed weapon
+    Weapon2: Shield
+    Weapon3: Thrown weapon
+
+  Horse Archer
+    Armor:   Light armor in all slots
+    Horse:   Fast mount and light harness
+    Weapon0: Bow
+    Weapon1: Arrows
+    Weapon2: One-handed weapon
+    Weapon3: Arrows (extra quiver)
+
+  Bow Captain
+    Armor:   Medium armor in all slots
+    Horse:   Empty (dismounted)
+    Weapon0: Bow
+    Weapon1: Arrows
+    Weapon2: Shield
+    Weapon3: One-handed weapon
+
+  Crossbow Captain
+    Armor:   Medium armor in all slots
+    Horse:   Empty (dismounted)
+    Weapon0: Crossbow
+    Weapon1: Bolts
+    Weapon2: Shield
+    Weapon3: One-handed weapon
+
+:: KNOWN ISSUES ::
+None at the moment but. Templates is a full rewrite though so be safe with save data.

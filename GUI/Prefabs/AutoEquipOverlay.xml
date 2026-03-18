@@ -1,173 +1,161 @@
 ﻿<Prefab>
-  <Constants>
-  </Constants>
-  <VisualDefinitions>
-    <VisualDefinition Name="TopMenu"
-                      TransitionDuration="0.2">
-      <VisualState PositionYOffset="0"
-                   State="Default" />
-    </VisualDefinition>
-  </VisualDefinitions>
-  <Window>
-    <Widget Id="AutoEquipOverlay"
-            VisualDefinition="TopMenu"
-            MarginTop="30"
-            DoNotAcceptEvents="true"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            WidthSizePolicy="StretchToParent"
-            HeightSizePolicy="StretchToParent">
-      <Children>
-        <Widget SuggestedWidth="362"
-                SuggestedHeight="42"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                IsVisible="@IsPresetsVisible">
-          <Children>
-            <Standard.DropdownWithHorizontalControl VerticalAlignment="Center"
-                                                    HorizontalAlignment="Center"
-                                                    Parameter.SelectorDataSource="{PresetOptions}" />
-          </Children>
-        </Widget>
-        
-        <ButtonWidget Id="RunAutoEquipButton"
-                      Command.Click="RunAutoEquip"
-                      Command.AlternateClick="ToggleSettings"
-                      IsSelected="@SettingsToggle"
-                      SuggestedWidth="50"
-                      SuggestedHeight="50"
-                      MarginTop="15"
-                      MarginRight="250"
-                      HorizontalAlignment="Right"
-                      VerticalAlignment="Top"
-                      Brush="Inventory.AutoEquipCompanions.Button"
-                      DoNotPassEventsToChildren="true"
-                      WidthSizePolicy="Fixed"
-                      HeightSizePolicy="Fixed">
-          <Children>
-            <BrushWidget SuggestedWidth="40"
-                         SuggestedHeight="40"
-                         MarginTop="-5"
-                         VerticalAlignment="Center"
-                         HorizontalAlignment="Center"
-                         WidthSizePolicy="Fixed"
-                         HeightSizePolicy="Fixed"
-                         Brush="Inventory.AutoEquipCompanions.RecruitPrisoners"
-                         DoNotAcceptEvents="true"/>
-            <HintWidget DataSource="{SettingsHint}"
-                        Command.HoverBegin="ExecuteBeginHint"
-                        Command.HoverEnd="ExecuteEndHint"/>
-          </Children>
-        </ButtonWidget>
-        <Widget Id="Settings"
-                IsVisible="@SettingsToggle"
+    <Constants>
+    </Constants>
+    <VisualDefinitions>
+        <VisualDefinition Name="TopMenu"
+                          TransitionDuration="0.2">
+            <VisualState PositionYOffset="0"
+                         State="Default"/>
+        </VisualDefinition>
+    </VisualDefinitions>
+    <Window>
+        <Widget Id="AutoEquipOverlay"
+                VisualDefinition="TopMenu"
+                MarginTop="30"
                 DoNotAcceptEvents="true"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
                 WidthSizePolicy="StretchToParent"
                 HeightSizePolicy="StretchToParent">
-          <Children>
-            <ButtonWidget Id="SettingsWindowButton"
-                          SuggestedWidth="50"
-                          SuggestedHeight="50"
-                          MarginTop="15"
-                          MarginRight="140"/>
-            
-            <ButtonWidget Id="CharacterToggleButton"
-                          Command.Click="ToggleCharacter"
-                          IsSelected="@CharacterToggle"
-                          SuggestedWidth="150"
-                          SuggestedHeight="45"
-                          MarginTop="700"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Top"
-                          DoNotPassEventsToChildren="true"
-                          Brush="Header.Tab.Center"
-                          WidthSizePolicy="Fixed"
-                          HeightSizePolicy="Fixed">
-              <Children>
-                <TextWidget Text="Enable AEC"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Brush="Party.Text.UpgradeAmount"
-                            Brush.FontSize="24"
-                            Brush.TextHorizontalAlignment="Center"
-                            Brush.TextVerticalAlignment="Center"
-                            WidthSizePolicy="CoverChildren"
-                            HeightSizePolicy="Fixed" />
-                <HintWidget DataSource="{CharacterToggleHint}"
-                            Command.HoverBegin="ExecuteBeginHint"
-                            Command.HoverEnd="ExecuteEndHint"/>
-              </Children>
-            </ButtonWidget>
+            <Children>
+                <ButtonWidget Id="RunAutoEquipButton"
+                              Command.Click="RunAutoEquip"
+                              Command.AlternateClick="ToggleSettings"
+                              IsSelected="@SettingsToggle"
+                              SuggestedWidth="50"
+                              SuggestedHeight="50"
+                              MarginTop="15"
+                              MarginRight="250"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Top"
+                              Brush="Inventory.AutoEquipCompanions.Button"
+                              DoNotPassEventsToChildren="true"
+                              WidthSizePolicy="Fixed"
+                              HeightSizePolicy="Fixed">
+                    <Children>
+                        <BrushWidget SuggestedWidth="40"
+                                     SuggestedHeight="40"
+                                     MarginTop="-5"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"
+                                     WidthSizePolicy="Fixed"
+                                     HeightSizePolicy="Fixed"
+                                     Brush="Inventory.AutoEquipCompanions.RecruitPrisoners"
+                                     DoNotAcceptEvents="true"/>
+                        <HintWidget DataSource="{SettingsHint}"
+                                    Command.HoverBegin="ExecuteBeginHint"
+                                    Command.HoverEnd="ExecuteEndHint"/>
+                    </Children>
+                </ButtonWidget>
+                <Widget Id="Settings"
+                        IsVisible="@SettingsToggle"
+                        DoNotAcceptEvents="true"
+                        WidthSizePolicy="StretchToParent"
+                        HeightSizePolicy="StretchToParent">
+                    <Children>
+                        <ButtonWidget Id="SettingsWindowButton"
+                                      SuggestedWidth="50"
+                                      SuggestedHeight="50"
+                                      MarginTop="15"
+                                      MarginRight="140"/>
 
-            <Widget Id="EquipmentToggles"
-                    IsVisible="@CharacterToggle"
-                    DoNotAcceptEvents="true"
-                    WidthSizePolicy="StretchToParent"
-                    HeightSizePolicy="StretchToParent">
-              <Children>
-                <!-- Armor -->
-                <AutoEquipWidget Command.Click="ToggleHead"
-                                 IsSelected="@HeadToggle"
-                                 MarginTop="182"
-                                 MarginLeft="585"
-                                 HorizontalAlignment="Left"/>
-                <AutoEquipWidget Command.Click="ToggleCape"
-                                 IsSelected="@CapeToggle"
-                                 MarginTop="282"
-                                 MarginLeft="585"
-                                 HorizontalAlignment="Left"/>
-                <AutoEquipWidget Command.Click="ToggleBody"
-                                 IsSelected="@BodyToggle"
-                                 MarginTop="382"
-                                 MarginLeft="585"
-                                 HorizontalAlignment="Left"/>
-                <AutoEquipWidget Command.Click="ToggleGloves"
-                                 IsSelected="@GlovesToggle"
-                                 MarginTop="482"
-                                 MarginLeft="585"
-                                 HorizontalAlignment="Left"/>
-                <AutoEquipWidget Command.Click="ToggleLeg"
-                                 IsSelected="@LegToggle"
-                                 MarginTop="582"
-                                 MarginLeft="585"
-                                 HorizontalAlignment="Left"/>
-                <!-- Horse -->
-                <AutoEquipWidget Command.Click="ToggleHorse"
-                                 IsSelected="@HorseToggle"
-                                 MarginTop="732"
-                                 MarginLeft="585"
-                                 HorizontalAlignment="Left"/>
-                <AutoEquipWidget Command.Click="ToggleHarness"
-                                 IsSelected="@HarnessToggle"
-                                 MarginTop="832"
-                                 MarginLeft="585"
-                                 HorizontalAlignment="Left"/>
-                <!-- Weapons -->
-                <AutoEquipWidget Command.Click="ToggleWeapon0"
-                                 IsSelected="@Weapon0Toggle"
-                                 MarginTop="182"
-                                 MarginRight="585"
-                                 HorizontalAlignment="Right"/>
-                <AutoEquipWidget Command.Click="ToggleWeapon1"
-                                 IsSelected="@Weapon1Toggle"
-                                 MarginTop="282"
-                                 MarginRight="585"
-                                 HorizontalAlignment="Right"/>
-                <AutoEquipWidget Command.Click="ToggleWeapon2"
-                                 IsSelected="@Weapon2Toggle"
-                                 MarginTop="382"
-                                 MarginRight="585"
-                                 HorizontalAlignment="Right"/>
-                <AutoEquipWidget Command.Click="ToggleWeapon3"
-                                 IsSelected="@Weapon3Toggle"
-                                 MarginTop="482"
-                                 MarginRight="585"
-                                 HorizontalAlignment="Right"/>
-              </Children>
-            </Widget>
-          </Children>
+                        <ButtonWidget Id="CharacterToggleButton"
+                                      Command.Click="ToggleCharacter"
+                                      IsSelected="@CharacterToggle"
+                                      SuggestedWidth="150"
+                                      SuggestedHeight="45"
+                                      MarginTop="700"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Top"
+                                      DoNotPassEventsToChildren="true"
+                                      Brush="Header.Tab.Center"
+                                      WidthSizePolicy="Fixed"
+                                      HeightSizePolicy="Fixed">
+                            <Children>
+                                <TextWidget Text="Enable AEC"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Brush="Party.Text.UpgradeAmount"
+                                            Brush.FontSize="24"
+                                            Brush.TextHorizontalAlignment="Center"
+                                            Brush.TextVerticalAlignment="Center"
+                                            WidthSizePolicy="CoverChildren"
+                                            HeightSizePolicy="Fixed"/>
+                                <HintWidget DataSource="{CharacterToggleHint}"
+                                            Command.HoverBegin="ExecuteBeginHint"
+                                            Command.HoverEnd="ExecuteEndHint"/>
+                            </Children>
+                        </ButtonWidget>
+
+                        <Widget Id="EquipmentToggles"
+                                IsVisible="@CharacterToggle"
+                                DoNotAcceptEvents="true"
+                                WidthSizePolicy="StretchToParent"
+                                HeightSizePolicy="StretchToParent">
+                            <Children>
+                                <!-- Armor -->
+                                <AutoEquipWidget Command.Click="ToggleHead"
+                                                 IsSelected="@HeadToggle"
+                                                 MarginTop="182"
+                                                 MarginLeft="585"
+                                                 HorizontalAlignment="Left"/>
+                                <AutoEquipWidget Command.Click="ToggleCape"
+                                                 IsSelected="@CapeToggle"
+                                                 MarginTop="282"
+                                                 MarginLeft="585"
+                                                 HorizontalAlignment="Left"/>
+                                <AutoEquipWidget Command.Click="ToggleBody"
+                                                 IsSelected="@BodyToggle"
+                                                 MarginTop="382"
+                                                 MarginLeft="585"
+                                                 HorizontalAlignment="Left"/>
+                                <AutoEquipWidget Command.Click="ToggleGloves"
+                                                 IsSelected="@GlovesToggle"
+                                                 MarginTop="482"
+                                                 MarginLeft="585"
+                                                 HorizontalAlignment="Left"/>
+                                <AutoEquipWidget Command.Click="ToggleLeg"
+                                                 IsSelected="@LegToggle"
+                                                 MarginTop="582"
+                                                 MarginLeft="585"
+                                                 HorizontalAlignment="Left"/>
+                                <!-- Horse -->
+                                <AutoEquipWidget Command.Click="ToggleHorse"
+                                                 IsSelected="@HorseToggle"
+                                                 MarginTop="732"
+                                                 MarginLeft="585"
+                                                 HorizontalAlignment="Left"/>
+                                <AutoEquipWidget Command.Click="ToggleHarness"
+                                                 IsSelected="@HarnessToggle"
+                                                 MarginTop="832"
+                                                 MarginLeft="585"
+                                                 HorizontalAlignment="Left"/>
+                                <!-- Weapons -->
+                                <AutoEquipWidget Command.Click="ToggleWeapon0"
+                                                 IsSelected="@Weapon0Toggle"
+                                                 MarginTop="182"
+                                                 MarginRight="585"
+                                                 HorizontalAlignment="Right"/>
+                                <AutoEquipWidget Command.Click="ToggleWeapon1"
+                                                 IsSelected="@Weapon1Toggle"
+                                                 MarginTop="282"
+                                                 MarginRight="585"
+                                                 HorizontalAlignment="Right"/>
+                                <AutoEquipWidget Command.Click="ToggleWeapon2"
+                                                 IsSelected="@Weapon2Toggle"
+                                                 MarginTop="382"
+                                                 MarginRight="585"
+                                                 HorizontalAlignment="Right"/>
+                                <AutoEquipWidget Command.Click="ToggleWeapon3"
+                                                 IsSelected="@Weapon3Toggle"
+                                                 MarginTop="482"
+                                                 MarginRight="585"
+                                                 HorizontalAlignment="Right"/>
+                            </Children>
+                        </Widget>
+                    </Children>
+                </Widget>
+            </Children>
         </Widget>
-      </Children>
-    </Widget>
-  </Window>
+    </Window>
 </Prefab>
