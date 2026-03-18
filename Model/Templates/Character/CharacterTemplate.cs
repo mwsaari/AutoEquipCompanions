@@ -14,7 +14,7 @@ namespace AutoEquipCompanions.Model.Templates.Character
       private CharacterTemplate() : base(CreateSlots()) { }
 
       public override string Name => "default";
-      public override string DisplayName => "Adaptive";
+      public override string DisplayName => "Default";
 
       private static List<(EquipmentIndex, ISlotTemplate)> CreateSlots()
       {

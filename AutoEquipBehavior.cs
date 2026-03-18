@@ -21,6 +21,7 @@ namespace AutoEquipCompanions
       private readonly InventoryStateListener _listener;
       private GauntletLayer _overlayLayer;
       private AutoEquipOverlayVM _overlayVM;
+      private AutoEquipOverlayVM_v2 _overlayVMV2;
 
       private SpriteCategory _spriteCategory;
 
@@ -55,10 +56,21 @@ namespace AutoEquipCompanions
 
          LoadSprites();
          var model = new AutoEquipModel(inventoryState.InventoryLogic);
-         _overlayVM = new AutoEquipOverlayVM(model, inventoryScreen);
          _overlayLayer = new GauntletLayer("AutoEquipOverlay", 16);
          _overlayLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.Mouse);
-         _overlayLayer.LoadMovie("AutoEquipOverlay", _overlayVM);
+
+         var useExperimentalUI = Main.GameSettings.UseTemplates;
+         if (useExperimentalUI)
+         {
+            _overlayVMV2 = new AutoEquipOverlayVM_v2(model, inventoryScreen);
+            _overlayLayer.LoadMovie("AutoEquipOverlay_v2", _overlayVMV2);
+         }
+         else
+         {
+            _overlayVM = new AutoEquipOverlayVM(model, inventoryScreen);
+            _overlayLayer.LoadMovie("AutoEquipOverlay", _overlayVM);
+         }
+
          inventoryScreen.AddLayer(_overlayLayer);
       }
 
@@ -76,6 +88,9 @@ namespace AutoEquipCompanions
          _overlayVM?.OnExecuteCompleteTransactions();
          _overlayVM?.OnFinalize();
          _overlayVM = null;
+         _overlayVMV2?.OnExecuteCompleteTransactions();
+         _overlayVMV2?.OnFinalize();
+         _overlayVMV2 = null;
          _overlayLayer = null;
       }
 

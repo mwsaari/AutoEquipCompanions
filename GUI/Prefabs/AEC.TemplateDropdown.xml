@@ -1,0 +1,66 @@
+<Prefab>
+    <Constants>
+    </Constants>
+    <Window>
+        <Widget DoNotAcceptEvents="true"
+                WidthSizePolicy="Fixed"
+                SuggestedWidth="200"
+                HeightSizePolicy="CoverChildren">
+            <Children>
+                <ButtonWidget Command.Click="ToggleTemplateList"
+                              VerticalAlignment="Top"
+                              SuggestedWidth="200"
+                              SuggestedHeight="35"
+                              WidthSizePolicy="Fixed"
+                              HeightSizePolicy="Fixed"
+                              DoNotPassEventsToChildren="true"
+                              Brush="Header.Tab.Center">
+                    <Children>
+                        <TextWidget Text="@CurrentTemplateName"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Brush="Party.Text.UpgradeAmount"
+                                    Brush.FontSize="20"
+                                    WidthSizePolicy="StretchToParent"
+                                    HeightSizePolicy="StretchToParent"/>
+                    </Children>
+                </ButtonWidget>
+                <Widget IsVisible="@IsTemplateListOpen"
+                        DoNotAcceptEvents="true"
+                        VerticalAlignment="Top"
+                        MarginTop="35"
+                        WidthSizePolicy="Fixed"
+                        SuggestedWidth="200"
+                        HeightSizePolicy="CoverChildren">
+                    <Children>
+                        <ListPanel DataSource="{TemplateItems}"
+                                   WidthSizePolicy="Fixed"
+                                   SuggestedWidth="200"
+                                   HeightSizePolicy="CoverChildren"
+                                   StackLayout.LayoutMethod="VerticalBottomToTop">
+                            <ItemTemplate>
+                                <ButtonWidget Command.Click="ExecuteSelect"
+                                              IsSelected="@IsSelected"
+                                              SuggestedHeight="35"
+                                              WidthSizePolicy="StretchToParent"
+                                              HeightSizePolicy="Fixed"
+                                              DoNotPassEventsToChildren="true"
+                                              Brush="Header.Tab.Center">
+                                    <Children>
+                                        <TextWidget Text="@Name"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Brush="Party.Text.UpgradeAmount"
+                                                    Brush.FontSize="18"
+                                                    WidthSizePolicy="StretchToParent"
+                                                    HeightSizePolicy="StretchToParent"/>
+                                    </Children>
+                                </ButtonWidget>
+                            </ItemTemplate>
+                        </ListPanel>
+                    </Children>
+                </Widget>
+            </Children>
+        </Widget>
+    </Window>
+</Prefab>

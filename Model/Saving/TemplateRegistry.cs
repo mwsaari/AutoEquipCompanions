@@ -10,6 +10,7 @@ using AutoEquipCompanions.Model.Templates.Weapon.OneHanded;
 using AutoEquipCompanions.Model.Templates.Weapon.Polearm;
 using AutoEquipCompanions.Model.Templates.Weapon.Thrown;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AutoEquipCompanions.Model.Saving
 {
@@ -17,16 +18,19 @@ namespace AutoEquipCompanions.Model.Saving
    {
       public static readonly ICharacterTemplate Null = DisabledCharacterTemplate.Instance;
 
-      private static readonly Dictionary<string, ICharacterTemplate> _characterTemplates =
-         new Dictionary<string, ICharacterTemplate>
+      public static readonly List<ICharacterTemplate> CharacterTemplates =
+         new List<ICharacterTemplate>
          {
-            { CharacterTemplate.Instance.Name, CharacterTemplate.Instance },
-            { InfantryCaptainTemplate.Instance.Name, InfantryCaptainTemplate.Instance },
-            { CavalryCaptainTemplate.Instance.Name, CavalryCaptainTemplate.Instance },
-            { HorseArcherTemplate.Instance.Name, HorseArcherTemplate.Instance },
-            { BowCaptainTemplate.Instance.Name, BowCaptainTemplate.Instance },
-            { CrossbowCaptainTemplate.Instance.Name, CrossbowCaptainTemplate.Instance },
+            CharacterTemplate.Instance,
+            InfantryCaptainTemplate.Instance,
+            CavalryCaptainTemplate.Instance,
+            HorseArcherTemplate.Instance,
+            BowCaptainTemplate.Instance,
+            CrossbowCaptainTemplate.Instance,
          };
+
+      private static readonly Dictionary<string, ICharacterTemplate> _characterTemplates =
+         CharacterTemplates.ToDictionary(t => t.Name);
 
       private static readonly Dictionary<string, ISlotTemplate> _slotTemplates =
          new Dictionary<string, ISlotTemplate>

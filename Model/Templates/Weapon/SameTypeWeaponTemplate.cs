@@ -27,6 +27,16 @@ namespace AutoEquipCompanions.Model.Templates.Weapon
          if (!IsSameEffectiveType(candidate, current))
             return false;
 
+         var heroIsMounted = !hero.BattleEquipment[EquipmentIndex.Horse].IsEmpty;
+         if (heroIsMounted)
+         {
+            if (!WeaponHelpers.RequiresNoMount(current) && WeaponHelpers.RequiresNoMount(candidate))
+               return false;
+
+            if (WeaponHelpers.IsCouchable(current) && !WeaponHelpers.IsCouchable(candidate))
+               return false;
+         }
+
          return MeetsDifficultyRequirement(candidate, hero);
       }
 

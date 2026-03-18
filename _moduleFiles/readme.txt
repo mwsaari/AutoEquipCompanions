@@ -7,22 +7,76 @@ Mount & Blade II: Bannerlord v1.3.15+
 Automatically equips companions with the best available gear when closing the inventory screen.
 Per-character settings allow you to control which equipment slots are managed for each hero.
 
+:: GAME SETTINGS (game_settings.json) ::
+  CanAutoEquipLocked      Allow auto equip to replace locked items (default: false)
+  DebugEnabled            Write item debug info to log on inventory open (default: false)
+  BastardSwordsAreOneHanded  Treat bastard swords as valid for one-handed slots (default: true)
+  ExperimentalUI          Use the v2 overlay with per-character template selection (default: false)
+
 :: FEATURES ::
 - Auto-equips companions on inventory close
+- Manual trigger button in the inventory screen
+- Per-character template selection (Default, Infantry Captain, Cavalry Captain, etc.)
 - Per-character toggle to enable/disable auto equip
 - Per-slot toggles for armor, weapons, horse, and harness
 - Settings are saved between sessions
-- Manual trigger button in the inventory screen
+- Configurable behavior via game_settings.json
 
 :: USAGE ::
 Open the inventory screen. A button will appear in the top-right area.
 - Left click: manually trigger auto equip
 - Right click: toggle the settings panel
 
-In the settings panel you can enable/disable auto equip per character and toggle individual equipment slots.
+In the settings panel you can select a template for the current character, enable/disable auto equip
+per character, and toggle individual equipment slots.
+
+:: TEMPLATES ::
+Templates control what type of gear each slot looks for when auto-equipping.
+
+  Default
+    Armor:   Best available of any armor type for each slot
+    Horse:   Best available mount and harness
+    Weapons: Matches the same weapon type already in each slot
+
+  Infantry Captain
+    Armor:   Heavy armor in all slots
+    Horse:   Empty (dismounted)
+    Weapon0: One-handed weapon (includes bastard swords if enabled)
+    Weapon1: Shield
+    Weapon2: Polearm
+    Weapon3: Thrown weapon
+
+  Cavalry Captain
+    Armor:   Heavy armor in all slots
+    Horse:   Best available mount and harness
+    Weapon0: Cavalry/lance weapon
+    Weapon1: One-handed weapon
+    Weapon2: Shield
+    Weapon3: Thrown weapon
+
+  Horse Archer
+    Armor:   Light armor in all slots
+    Horse:   Fast mount and light harness
+    Weapon0: Bow
+    Weapon1: Arrows
+    Weapon2: One-handed weapon
+    Weapon3: Arrows (extra quiver)
+
+  Bow Captain
+    Armor:   Medium armor in all slots
+    Horse:   Empty (dismounted)
+    Weapon0: Bow
+    Weapon1: Arrows
+    Weapon2: Shield
+    Weapon3: One-handed weapon
+
+  Crossbow Captain
+    Armor:   Medium armor in all slots
+    Horse:   Empty (dismounted)
+    Weapon0: Crossbow
+    Weapon1: Bolts
+    Weapon2: Shield
+    Weapon3: One-handed weapon
 
 :: KNOWN ISSUES ::
-None known.
-
-:: CREDITS ::
-Lesser Scholar for his tutorial on modding setup and basics.
+None at the moment but. Templates is a full rewrite though so be safe with save data.

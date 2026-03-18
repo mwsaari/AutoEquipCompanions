@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 
@@ -17,8 +15,7 @@ namespace AutoEquipCompanions.Model.Templates.Weapon.Polearm
          if (!base.IsValidFor(candidate, slot, hero))
             return false;
 
-         return candidate.Item.Weapons.Any(x =>
-            x.WeaponDescriptionId != null && x.WeaponDescriptionId.IndexOf("couch", StringComparison.OrdinalIgnoreCase) >= 0);
+         return WeaponHelpers.IsCouchable(candidate);
       }
    }
 }

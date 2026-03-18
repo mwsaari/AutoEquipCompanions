@@ -1,9 +1,12 @@
 <Tasks>
-	<CreateItem/>
+    <GetItem>
+        <ItemId Value="3457590233"/>
+        <!--  Can be found in the URL of your workshop item  -->
+    </GetItem>
 	<UpdateItem>
-		<ModuleFolder Value="E:\Program Files\steamapps\common\Mount & Blade II Bannerlord\Modules\AutoEquipCompanions"/>
+		<ModuleFolder Value="/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions/"/>
 		<!--  A direct path of your module  -->
-		<ItemDescription Value="A Bannerlord Mod"/>
+		<ChangeNotes Value="Updating and adding Experimental Templates if you want to try."/>
 		<!--  A description that will be displayed on Steam Workshop, can be edited via the Steam UI  -->
 		<Tags>
 			<!--  You can use the following tags:  -->
@@ -14,11 +17,7 @@
 			<Tag Value="Utility"/>
 			<Tag Value="Native"/>
 			<Tag Value="Singleplayer"/>
-			<Tag Value="e1.9.0"/>
+			<Tag Value="v1.3.15"/>
 		</Tags>
-		<Image Value="‪C:\Users\saari\Pictures\Icon.png"/>
-		<!--  Determines the featured image displayed on Steam Workshop, a direct path to it must be inserted here (the image should be smaller than 1 MB)  -->
-		<Visibility Value="Public"/>
-		<!--  Determines visibility on Steam Workshop. Can be: Public, FriendsOnly, Private  -->
 	</UpdateItem>
-</Tasks>
+</Tasks> 

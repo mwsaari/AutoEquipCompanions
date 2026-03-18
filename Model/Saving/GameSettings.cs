@@ -5,9 +5,10 @@ namespace AutoEquipCompanions.Model.Saving
 {
    public class GameSettings
    {
-      public bool CanAutoEquipLocked { get; set; } = false;
+      public bool CanAutoEquipLocked { get; set; } = true;
       public bool DebugEnabled { get; set; } = false;
       public bool BastardSwordsAreOneHanded { get; set; } = true;
+      public bool UseTemplates { get; set; } = false;
 
 
       public void Load()
