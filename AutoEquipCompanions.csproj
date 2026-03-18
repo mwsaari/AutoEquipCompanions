@@ -190,7 +190,6 @@
         <Compile Include="Model\Saving\TemplateRegistry.cs"/>
         <Compile Include="Model\Debug\Logger.cs"/>
         <Compile Include="Model\Debug\ItemDebugLogger.cs"/>
-        <Compile Include="Utilities.cs"/>
     </ItemGroup>
     <ItemGroup>
         <None Include="app.config"/>

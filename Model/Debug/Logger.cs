@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 
 namespace AutoEquipCompanions.Model.Debug
@@ -12,11 +11,6 @@ namespace AutoEquipCompanions.Model.Debug
             var assemblyDir = Path.GetDirectoryName(typeof(Logger).Assembly.Location);
             return Path.GetFullPath(Path.Combine(assemblyDir, "..", ".."));
          }
-      }
-
-      public static void WriteToLog(string message)
-      {
-         WriteToFile("aec_log.txt", $"[{DateTime.Now:HH:mm:ss}] {message}");
       }
 
       public static void WriteToItemDebug(string content)
