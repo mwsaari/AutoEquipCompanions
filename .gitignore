@@ -8,3 +8,6 @@ obj/
 /packages/Newtonsoft.Json.13.0.1
 /bin
 /.vs
+_publishFiles/
+*.csproj.user
+*.DotSettings
