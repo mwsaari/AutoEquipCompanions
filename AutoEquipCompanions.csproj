@@ -192,7 +192,6 @@
         <Compile Include="Model\Debug\ItemDebugLogger.cs"/>
     </ItemGroup>
     <ItemGroup>
-        <None Include="app.config"/>
         <None Include="packages.config"/>
         <None Include="_moduleFiles\LICENSE"/>
         <None Include="_moduleFiles\game_settings.json"/>
@@ -204,7 +203,6 @@
         <Content Include="GUI\Prefabs\AEC.TemplateDropdown.xml"/>
         <Content Include="_moduleFiles\readme.txt"/>
         <Content Include="_moduleFiles\Submodule.xml"/>
-        <Content Include="_publishFiles\Workshop.xml" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <PropertyGroup>
