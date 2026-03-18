@@ -11,3 +11,4 @@ obj/
 _publishFiles/
 *.csproj.user
 *.DotSettings
+app.config
