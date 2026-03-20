@@ -78,7 +78,9 @@
     <ItemGroup>
         <Compile Include="Tests\TestHelpers.cs"/>
         <Compile Include="Tests\EquipmentIntegrationTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Armor\BaseArmorTemplateTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Armor\DefaultArmorTemplateTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Armor\LightArmorTemplateTests.cs"/>
+        <Compile Include="Tests\Model\Templates\Armor\MediumArmorTemplateTests.cs"/>
         <Compile Include="Tests\Model\Templates\Mount\BaseMountTemplateTests.cs"/>
         <Compile Include="Tests\Model\Templates\Shield\BaseShieldTemplateTests.cs"/>
         <Compile Include="Tests\Model\Templates\Character\CharacterTemplateTests.cs"/>

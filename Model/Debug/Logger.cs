@@ -13,9 +13,9 @@ namespace AutoEquipCompanions.Model.Debug
          }
       }
 
-      public static void WriteToItemDebug(string content)
+      public static void WriteToItemDebug(string filename, string content)
       {
-         WriteToFile("debug_items.txt", content);
+         WriteToFile(filename, content);
       }
 
       private static void WriteToFile(string filename, string content)

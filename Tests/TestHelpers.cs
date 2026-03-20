@@ -82,11 +82,14 @@ namespace AutoEquipCompanions.Test
          return new EquipmentElement(item);
       }
 
-      public static EquipmentElement MakeArmor(ItemObject.ItemTypeEnum type)
+      public static EquipmentElement MakeArmor(
+         ItemObject.ItemTypeEnum type,
+         ItemObject.ItemTiers tier = ItemObject.ItemTiers.Tier1)
       {
          var item = new ItemObject();
          item.Type = type;
          SetProperty(item, "ItemComponent", new ArmorComponent(item));
+         SetProperty(item, "Tier", tier);
          return new EquipmentElement(item);
       }
 

@@ -146,7 +146,6 @@
         <Compile Include="Model\Templates\Armor\BaseArmorTemplate.cs"/>
         <Compile Include="Model\Templates\Armor\LightArmorTemplate.cs"/>
         <Compile Include="Model\Templates\Armor\MediumArmorTemplate.cs"/>
-        <Compile Include="Model\Templates\Armor\HeavyArmorTemplate.cs"/>
         <Compile Include="Model\Templates\Armor\DefaultArmorTemplate.cs"/>
         <Compile Include="Model\Templates\Weapon\BaseWeaponTemplate.cs"/>
         <Compile Include="Model\Templates\Weapon\OneHanded\OneHandedWeaponTemplate.cs"/>

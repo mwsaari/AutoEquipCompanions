@@ -63,7 +63,6 @@ namespace AutoEquipCompanions.Model.Saving
             // Armor
             { LightArmorTemplate.Instance.Name, LightArmorTemplate.Instance },
             { MediumArmorTemplate.Instance.Name, MediumArmorTemplate.Instance },
-            { HeavyArmorTemplate.Instance.Name, HeavyArmorTemplate.Instance },
             { DefaultArmorTemplate.Instance.Name, DefaultArmorTemplate.Instance },
 
             // Mount

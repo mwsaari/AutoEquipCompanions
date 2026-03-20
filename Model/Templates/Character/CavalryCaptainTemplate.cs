@@ -23,11 +23,11 @@ namespace AutoEquipCompanions.Model.Templates.Character
       {
          return new List<(EquipmentIndex, ISlotTemplate)>
          {
-            (EquipmentIndex.Head,         HeavyArmorTemplate.Instance),
-            (EquipmentIndex.Cape,         HeavyArmorTemplate.Instance),
-            (EquipmentIndex.Body,         HeavyArmorTemplate.Instance),
-            (EquipmentIndex.Gloves,       HeavyArmorTemplate.Instance),
-            (EquipmentIndex.Leg,          HeavyArmorTemplate.Instance),
+            (EquipmentIndex.Head,         DefaultArmorTemplate.Instance),
+            (EquipmentIndex.Cape,         DefaultArmorTemplate.Instance),
+            (EquipmentIndex.Body,         DefaultArmorTemplate.Instance),
+            (EquipmentIndex.Gloves,       DefaultArmorTemplate.Instance),
+            (EquipmentIndex.Leg,          DefaultArmorTemplate.Instance),
             (EquipmentIndex.Horse,        DefaultMountTemplate.Instance),
             (EquipmentIndex.HorseHarness, DefaultMountTemplate.Instance),
             (EquipmentIndex.Weapon0,      MountWeaponTemplate.Instance),

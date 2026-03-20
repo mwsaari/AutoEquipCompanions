@@ -1,6 +1,6 @@
 {
   "CanAutoEquipLocked": true,
-  "DebugEnabled": false,
+  "DebugEnabled": true,
   "BastardSwordsAreOneHanded": true,
   "UseTemplates": false
 }

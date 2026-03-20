@@ -4,7 +4,7 @@ using Xunit;
 
 namespace AutoEquipCompanions.Test.Model.Templates.Armor
 {
-   public class BaseArmorTemplateTests
+   public class DefaultArmorTemplateTests
    {
       [Theory]
       [InlineData(EquipmentIndex.Head, ItemObject.ItemTypeEnum.HeadArmor)]
@@ -65,5 +65,18 @@ namespace AutoEquipCompanions.Test.Model.Templates.Armor
          Assert.False(DefaultArmorTemplate.Instance.IsValidFor(el, EquipmentIndex.Head, hero));
       }
 
+      [Theory]
+      [InlineData(ItemObject.ItemTiers.Tier1)]
+      [InlineData(ItemObject.ItemTiers.Tier2)]
+      [InlineData(ItemObject.ItemTiers.Tier3)]
+      [InlineData(ItemObject.ItemTiers.Tier4)]
+      [InlineData(ItemObject.ItemTiers.Tier5)]
+      [InlineData(ItemObject.ItemTiers.Tier6)]
+      public void AnyTier_ReturnsTrue(ItemObject.ItemTiers tier)
+      {
+         var el = Helpers.MakeArmor(ItemObject.ItemTypeEnum.HeadArmor, tier);
+         var hero = Helpers.MakeHero();
+         Assert.True(DefaultArmorTemplate.Instance.IsValidFor(el, EquipmentIndex.Head, hero));
+      }
    }
 }
