@@ -20,14 +20,17 @@ namespace AutoEquipCompanions.Model.Saving
          set => _slotToggles[index] = value;
       }
 
-      public CharacterSettings Initialize()
+      public CharacterSettings Initialize(bool allSlotsEnabled = false)
       {
          Template = CharacterTemplate.Instance;
          CharacterToggle = Template.DefaultEnabled;
          for (var i = 0; i < (int)EquipmentIndex.NumEquipmentSetSlots; i++)
             _slotToggles[(EquipmentIndex)i] = true;
-         this[EquipmentIndex.Horse] = false;
-         this[EquipmentIndex.HorseHarness] = false;
+         if (!allSlotsEnabled)
+         {
+            this[EquipmentIndex.Horse] = false;
+            this[EquipmentIndex.HorseHarness] = false;
+         }
          return this;
       }
 

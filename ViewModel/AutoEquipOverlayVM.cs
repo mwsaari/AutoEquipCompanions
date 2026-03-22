@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoEquipCompanions.Model;
 using AutoEquipCompanions.Model.Saving;
+using AutoEquipCompanions.Model.Templates;
+using AutoEquipCompanions.Model.Templates.Character;
 using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Inventory;
 using TaleWorlds.Core;
@@ -28,8 +30,10 @@ namespace AutoEquipCompanions.ViewModel
          if (_inventoryViewModel == null)
             return;
 
+         ShowTemplateDropdown = Main.GameSettings.UIVersion >= 2;
          SettingsToggle = CampaignSettings.SettingsVisible;
          _heroToggles = CampaignSettings.CharacterSettings;
+         TemplateDropdown = new TemplateDropdownVM(GetCurrentTemplate, SetCurrentTemplate);
          _inventoryViewModel.CharacterList.PropertyChangedWithValue += SelectedCharacterChanged;
          RefreshValues();
       }
@@ -54,6 +58,12 @@ namespace AutoEquipCompanions.ViewModel
 
       [DataSourceProperty]
       public string SettingsToggleText => SettingsToggle ? "Hide AEC" : "Show AEC";
+
+      [DataSourceProperty]
+      public bool ShowTemplateDropdown { get; }
+
+      [DataSourceProperty]
+      public TemplateDropdownVM TemplateDropdown { get; private set; }
 
       [DataSourceProperty]
       public bool CharacterToggle
@@ -136,102 +146,126 @@ namespace AutoEquipCompanions.ViewModel
             ? s[index] : _defaultSettings[index];
       }
 
-      public override sealed void RefreshValues()
+      private ICharacterTemplate GetCurrentTemplate()
+      {
+         if (!HasCurrentHero)
+            return CharacterTemplate.Instance;
+         return _heroToggles.TryGetValue(CurrentHero, out var s) ? s.Template : _defaultSettings.Template;
+      }
+
+      private void SetCurrentTemplate(ICharacterTemplate template)
+      {
+         if (!HasCurrentHero)
+            return;
+         if (_heroToggles.TryGetValue(CurrentHero, out var settings))
+            settings.Template = template;
+         else
+         {
+            settings = new CharacterSettings().Initialize();
+            settings.Template = template;
+            _heroToggles.Add(CurrentHero, settings);
+         }
+      }
+
+      public override void RefreshValues()
       {
          base.RefreshValues();
-         OnPropertyChanged(nameof (SettingsToggle));
-         OnPropertyChanged(nameof (SettingsToggleText));
-         OnPropertyChanged(nameof (CharacterToggle));
-         OnPropertyChanged(nameof (HeadToggle));
-         OnPropertyChanged(nameof (CapeToggle));
-         OnPropertyChanged(nameof (BodyToggle));
-         OnPropertyChanged(nameof (GlovesToggle));
-         OnPropertyChanged(nameof (LegToggle));
-         OnPropertyChanged(nameof (HorseToggle));
-         OnPropertyChanged(nameof (HarnessToggle));
-         OnPropertyChanged(nameof (Weapon0Toggle));
-         OnPropertyChanged(nameof (Weapon1Toggle));
-         OnPropertyChanged(nameof (Weapon2Toggle));
-         OnPropertyChanged(nameof (Weapon3Toggle));
+         TemplateDropdown?.Refresh();
+         OnPropertyChanged(nameof(SettingsToggle));
+         OnPropertyChanged(nameof(SettingsToggleText));
+         OnPropertyChanged(nameof(CharacterToggle));
+         OnPropertyChanged(nameof(HeadToggle));
+         OnPropertyChanged(nameof(CapeToggle));
+         OnPropertyChanged(nameof(BodyToggle));
+         OnPropertyChanged(nameof(GlovesToggle));
+         OnPropertyChanged(nameof(LegToggle));
+         OnPropertyChanged(nameof(HorseToggle));
+         OnPropertyChanged(nameof(HarnessToggle));
+         OnPropertyChanged(nameof(Weapon0Toggle));
+         OnPropertyChanged(nameof(Weapon1Toggle));
+         OnPropertyChanged(nameof(Weapon2Toggle));
+         OnPropertyChanged(nameof(Weapon3Toggle));
       }
 
       public void ToggleSettings()
       {
          SettingsToggle = !SettingsToggle;
-         OnPropertyChanged(nameof (SettingsToggle));
-         OnPropertyChanged(nameof (SettingsToggleText));
+         TemplateDropdown?.Refresh();
+         OnPropertyChanged(nameof(SettingsToggle));
+         OnPropertyChanged(nameof(SettingsToggleText));
       }
 
       public void ToggleCharacter()
       {
          CharacterToggle = !CharacterToggle;
-         OnPropertyChanged(nameof (CharacterToggle));
+         TemplateDropdown?.Refresh();
+         OnPropertyChanged(nameof(CharacterToggle));
       }
 
       public void ToggleHead()
       {
          ToggleEquipment(EquipmentIndex.Head);
-         OnPropertyChanged(nameof (HeadToggle));
+         OnPropertyChanged(nameof(HeadToggle));
       }
 
       public void ToggleCape()
       {
          ToggleEquipment(EquipmentIndex.Cape);
-         OnPropertyChanged(nameof (CapeToggle));
+         OnPropertyChanged(nameof(CapeToggle));
       }
 
       public void ToggleBody()
       {
          ToggleEquipment(EquipmentIndex.Body);
-         OnPropertyChanged(nameof (BodyToggle));
+         OnPropertyChanged(nameof(BodyToggle));
       }
 
       public void ToggleGloves()
       {
          ToggleEquipment(EquipmentIndex.Gloves);
-         OnPropertyChanged(nameof (GlovesToggle));
+         OnPropertyChanged(nameof(GlovesToggle));
       }
 
       public void ToggleLeg()
       {
          ToggleEquipment(EquipmentIndex.Leg);
-         OnPropertyChanged(nameof (LegToggle));
+         OnPropertyChanged(nameof(LegToggle));
       }
 
       public void ToggleHorse()
       {
          ToggleEquipment(EquipmentIndex.Horse);
-         OnPropertyChanged(nameof (HorseToggle));
+         OnPropertyChanged(nameof(HorseToggle));
       }
 
       public void ToggleHarness()
       {
          ToggleEquipment(EquipmentIndex.HorseHarness);
-         OnPropertyChanged(nameof (HarnessToggle));
+         OnPropertyChanged(nameof(HarnessToggle));
       }
 
       public void ToggleWeapon0()
       {
          ToggleEquipment(EquipmentIndex.Weapon0);
-         OnPropertyChanged(nameof (Weapon0Toggle));
+         OnPropertyChanged(nameof(Weapon0Toggle));
       }
 
       public void ToggleWeapon1()
       {
          ToggleEquipment(EquipmentIndex.Weapon1);
-         OnPropertyChanged(nameof (Weapon1Toggle));
+         OnPropertyChanged(nameof(Weapon1Toggle));
       }
 
       public void ToggleWeapon2()
       {
          ToggleEquipment(EquipmentIndex.Weapon2);
-         OnPropertyChanged(nameof (Weapon2Toggle));
+         OnPropertyChanged(nameof(Weapon2Toggle));
       }
 
       public void ToggleWeapon3()
       {
          ToggleEquipment(EquipmentIndex.Weapon3);
-         OnPropertyChanged(nameof (Weapon3Toggle));
+         OnPropertyChanged(nameof(Weapon3Toggle));
       }
 
       private void ToggleEquipment(EquipmentIndex index)
@@ -252,7 +286,8 @@ namespace AutoEquipCompanions.ViewModel
 
       public void RunAutoEquip()
       {
-         if (!Main.GameSettings.CanAutoEquipLocked)
+         var isAutoEquipLocked = !Main.GameSettings.CanAutoEquipLocked;
+         if (isAutoEquipLocked)
             return;
          _autoEquipModel.AutoEquipCompanions(_heroToggles);
          _inventoryViewModel.RefreshValues();

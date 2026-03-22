@@ -8,7 +8,7 @@ namespace AutoEquipCompanions.Model.Saving
       public bool CanAutoEquipLocked { get; set; } = true;
       public bool DebugEnabled { get; set; } = false;
       public bool BastardSwordsAreOneHanded { get; set; } = true;
-      public bool UseTemplates { get; set; } = false;
+      public int UIVersion { get; set; } = 1;
 
 
       public void Load()
@@ -39,7 +39,7 @@ namespace AutoEquipCompanions.Model.Saving
       {
          var assemblyDir = Path.GetDirectoryName(typeof (GameSettings).Assembly.Location);
          var moduleRoot = Path.GetFullPath(Path.Combine(assemblyDir, "..", ".."));
-         return Path.Combine(moduleRoot, "game_settings.json");
+         return Path.Combine(moduleRoot, "ModuleData", "game_settings.json");
       }
    }
 }

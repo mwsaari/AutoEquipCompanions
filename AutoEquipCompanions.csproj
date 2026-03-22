@@ -178,7 +178,6 @@
         <Compile Include="Model\Templates\Character\BowCaptainTemplate.cs"/>
         <Compile Include="Model\Templates\Character\CrossbowCaptainTemplate.cs"/>
         <Compile Include="ViewModel\AutoEquipOverlayVM.cs"/>
-        <Compile Include="ViewModel\AutoEquipOverlayVM_v2.cs"/>
         <Compile Include="ViewModel\TemplateDropdownVM.cs"/>
         <Compile Include="ViewModel\TemplateItemVM.cs"/>
         <Compile Include="ViewModel\AutoEquipWidget.cs"/>
@@ -193,15 +192,14 @@
     <ItemGroup>
         <None Include="packages.config"/>
         <None Include="_moduleFiles\LICENSE"/>
-        <None Include="_moduleFiles\game_settings.json"/>
+        <None Include="_moduleFiles\ModuleData\game_settings.json"/>
     </ItemGroup>
     <ItemGroup>
         <Content Include="GUI\Brushes\AutoEquipCompanionsBrush.xml"/>
         <Content Include="GUI\Prefabs\AutoEquipOverlay.xml"/>
-        <Content Include="GUI\Prefabs\AutoEquipOverlay_v2.xml"/>
         <Content Include="GUI\Prefabs\AEC.TemplateDropdown.xml"/>
         <Content Include="_moduleFiles\readme.txt"/>
-        <Content Include="_moduleFiles\Submodule.xml"/>
+        <Content Include="_moduleFiles\SubModule.xml"/>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <PropertyGroup>

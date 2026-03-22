@@ -27,7 +27,8 @@ namespace AutoEquipCompanions.Model
       private IEnumerable<ItemRosterElement> Items => MobileParty.MainParty.ItemRoster
          .Where(x => !_lockedItems.Contains(CampaignUIHelper.GetItemLockStringID(x.EquipmentElement)));
 
-      public void AutoEquipCompanions(Dictionary<string, CharacterSettings> characterSettings)
+      public void AutoEquipCompanions(Dictionary<string, CharacterSettings> characterSettings,
+         bool allSlotsEnabled = false)
       {
          var heroes = MobileParty.MainParty.MemberRoster
             .GetTroopRoster()
@@ -41,7 +42,7 @@ namespace AutoEquipCompanions.Model
             {
                var heroSettings = characterSettings.TryGetValue(hero.StringId, out var setting)
                   ? setting
-                  : new CharacterSettings().Initialize();
+                  : new CharacterSettings().Initialize(allSlotsEnabled);
                foreach (var (slot, template) in heroSettings.Template.Slots.Where(x => heroSettings[x.Slot]))
                {
                   var current = hero.BattleEquipment.GetEquipmentFromSlot(slot);

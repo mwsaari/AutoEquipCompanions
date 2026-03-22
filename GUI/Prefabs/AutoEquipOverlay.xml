@@ -1,4 +1,4 @@
-﻿<Prefab>
+<Prefab>
     <Constants>
     </Constants>
     <VisualDefinitions>
@@ -86,6 +86,26 @@
                                             Command.HoverEnd="ExecuteEndHint"/>
                             </Children>
                         </ButtonWidget>
+
+                        <Widget IsVisible="@ShowTemplateDropdown"
+                                DoNotAcceptEvents="true"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                MarginTop="755"
+                                WidthSizePolicy="Fixed"
+                                SuggestedWidth="200"
+                                HeightSizePolicy="CoverChildren">
+                            <Children>
+                                <Widget DataSource="{TemplateDropdown}"
+                                        DoNotAcceptEvents="true"
+                                        WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="CoverChildren">
+                                    <Children>
+                                        <AEC.TemplateDropdown/>
+                                    </Children>
+                                </Widget>
+                            </Children>
+                        </Widget>
 
                         <Widget Id="EquipmentToggles"
                                 IsVisible="@CharacterToggle"

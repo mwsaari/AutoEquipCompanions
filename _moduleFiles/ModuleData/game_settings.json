@@ -1,6 +1,6 @@
 {
   "CanAutoEquipLocked": true,
-  "DebugEnabled": true,
+  "DebugEnabled": false,
   "BastardSwordsAreOneHanded": true,
-  "UseTemplates": false
+  "UIVersion": 1
 }
