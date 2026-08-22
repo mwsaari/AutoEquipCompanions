@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoEquipCompanions", "AutoEquipCompanions\AutoEquipCompanions.csproj", "{E577663D-D945-49EA-BF4C-85B52BF19813}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{847521DF-7D4D-4E0B-8AF7-C752B1AB5AE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoEquipCompanions", "AutoEquipCompanions.csproj", "{E577663D-D945-49EA-BF4C-85B52BF19813}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoEquipCompanions.Test", "AutoEquipCompanions.Test.csproj", "{D9CE719D-2284-4918-891A-F40C9F5ACA2B}"
 EndProject
@@ -40,10 +38,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{E577663D-D945-49EA-BF4C-85B52BF19813} = {847521DF-7D4D-4E0B-8AF7-C752B1AB5AE0}
-		{D9CE719D-2284-4918-891A-F40C9F5ACA2B} = {847521DF-7D4D-4E0B-8AF7-C752B1AB5AE0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {713A3E77-154D-4B0A-A3B6-7E0D6D6348C9}

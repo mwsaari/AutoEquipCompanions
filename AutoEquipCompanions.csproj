@@ -1,5 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <!-- Both .csproj files sit in this same directory; without this they'd default to the same
+         shared obj\Debug\ intermediate folder, which is fragile under incremental/IDE builds
+         (Rider) even though sequential CLI builds tolerate it. -->
+    <PropertyGroup>
+        <BaseIntermediateOutputPath>obj\AutoEquipCompanions\</BaseIntermediateOutputPath>
+    </PropertyGroup>
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -14,6 +20,19 @@
         <FileAlignment>512</FileAlignment>
         <Deterministic>true</Deterministic>
         <TargetFrameworkProfile/>
+    </PropertyGroup>
+    <!-- Linux/mono dev-only: lets MSBuild find .NETFramework v4.8 reference assemblies where no
+         Windows targeting pack is installed (e.g. Rider or `dotnet build` on Linux). Checks both
+         the plain host path and the Flatpak-sandboxed path (Flatpak keeps /usr as the runtime's
+         own, remapping the real host /usr under /run/host/usr, even with full host filesystem
+         access granted) so it resolves whether MSBuild runs directly on the host or inside
+         Rider's Flatpak sandbox. No-op on Windows/Visual Studio since neither path exists there. -->
+    <PropertyGroup>
+        <MonoFrameworkPath Condition="Exists('/usr/lib/mono/4.8-api')">/usr/lib/mono/4.8-api</MonoFrameworkPath>
+        <MonoFrameworkPath Condition="'$(MonoFrameworkPath)' == '' and Exists('/run/host/usr/lib/mono/4.8-api')">/run/host/usr/lib/mono/4.8-api</MonoFrameworkPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(MonoFrameworkPath)' != ''">
+        <FrameworkPathOverride>$(MonoFrameworkPath)</FrameworkPathOverride>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <DebugSymbols>true</DebugSymbols>
@@ -51,79 +70,88 @@
         <ErrorReport>prompt</ErrorReport>
     </PropertyGroup>
     <ItemGroup>
+        <!-- Linux/mono dev-only: Roslyn (unlike the real .NETFramework targeting pack) needs these
+             facades referenced explicitly to resolve types forwarded from mscorlib/System.*.
+             No-op on Windows/Visual Studio since $(MonoFrameworkPath) is empty there. -->
+        <Reference Include="netstandard" Condition="'$(MonoFrameworkPath)' != ''">
+            <HintPath>$(MonoFrameworkPath)/Facades/netstandard.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Runtime" Condition="'$(MonoFrameworkPath)' != ''">
+            <HintPath>$(MonoFrameworkPath)/Facades/System.Runtime.dll</HintPath>
+        </Reference>
         <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-            <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+            <HintPath>packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
         </Reference>
         <Reference Include="SandBox">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/SandBox/bin/Win64_Shipping_Client/SandBox.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/SandBox/bin/Win64_Shipping_Client/SandBox.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="SandBox.GauntletUI">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/SandBox/bin/Win64_Shipping_Client/SandBox.GauntletUI.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/SandBox/bin/Win64_Shipping_Client/SandBox.GauntletUI.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.CampaignSystem">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.CampaignSystem.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.CampaignSystem.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.CampaignSystem.ViewModelCollection">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.CampaignSystem.ViewModelCollection.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.CampaignSystem.ViewModelCollection.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.Core">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Core.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Core.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.Core.ViewModelCollection">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Core.ViewModelCollection.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Core.ViewModelCollection.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.Library">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Library.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Library.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.MountAndBlade">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.MountAndBlade.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.MountAndBlade.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.GauntletUI">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.GauntletUI.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.GauntletUI.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.Engine.GauntletUI">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Engine.GauntletUI.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Engine.GauntletUI.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.ScreenSystem">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.ScreenSystem.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.ScreenSystem.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.TwoDimension">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.TwoDimension.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.TwoDimension.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.Localization">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Localization.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Localization.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.ObjectSystem">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.ObjectSystem.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.ObjectSystem.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.InputSystem">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.InputSystem.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.InputSystem.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.SaveSystem">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.SaveSystem.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.SaveSystem.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.Engine">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Engine.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Engine.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="TaleWorlds.NavigationSystem">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.NavigationSystem.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.NavigationSystem.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="System"/>
@@ -139,6 +167,7 @@
         <Compile Include="AutoEquipBehavior.cs"/>
         <Compile Include="InventoryStateListener.cs"/>
         <Compile Include="Model\AutoEquipModel.cs"/>
+        <Compile Include="Model\HeroToggleController.cs"/>
         <Compile Include="Main.cs"/>
         <Compile Include="Model\Templates\ISlotTemplate.cs"/>
         <Compile Include="Model\Templates\ICharacterTemplate.cs"/>
@@ -208,12 +237,16 @@
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <PropertyGroup>
-        <PostBuildEvent>MODULE="/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions"
+        <!-- cp -r (not rsync) so this also works inside Rider's Flatpak sandbox, which doesn't
+             have rsync on PATH. The "/." source suffix makes cp merge directory contents, same
+             as rsync's trailing-slash-source behavior, rather than nesting the folder itself. -->
+        <PostBuildEvent>MODULE="/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/Modules/AutoEquipCompanions"
             mkdir -p "$MODULE/bin/Win64_Shipping_Client"
             cp "$(TargetPath)" "$MODULE/bin/Win64_Shipping_Client/$(TargetFileName)"
             cp "$(TargetDir)$(TargetName).pdb" "$MODULE/bin/Win64_Shipping_Client/$(TargetName).pdb"
-            rsync -a "$(ProjectDir)GUI/" "$MODULE/GUI/"
-            rsync -a "$(ProjectDir)_moduleFiles/" "$MODULE/"
+            mkdir -p "$MODULE/GUI"
+            cp -r "$(ProjectDir)GUI/." "$MODULE/GUI/"
+            cp -r "$(ProjectDir)_moduleFiles/." "$MODULE/"
         </PostBuildEvent>
     </PropertyGroup>
 </Project>

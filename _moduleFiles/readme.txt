@@ -8,7 +8,7 @@ Automatically equips companions with the best available gear when closing the in
 Per-character settings allow you to control which equipment slots are managed for each hero.
 
 :: GAME SETTINGS (game_settings.json) ::
-  CanAutoEquipLocked      Allow auto equip to replace locked items (default: false)
+  CanAutoEquipLockedItems Allow auto equip to replace locked items (default: false)
   DebugEnabled            Write item debug info to log on inventory open (default: false)
   BastardSwordsAreOneHanded  Treat bastard swords as valid for one-handed slots (default: true)
   ExperimentalUI          Use the v2 overlay with per-character template selection (default: false)

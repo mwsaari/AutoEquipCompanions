@@ -17,15 +17,25 @@ namespace AutoEquipCompanions.Model
       private readonly InventoryLogic _inventoryLogic;
       private readonly HashSet<string> _lockedItems;
 
-      public AutoEquipModel(InventoryLogic inventoryLogic)
+      public AutoEquipModel(InventoryLogic inventoryLogic) : this(inventoryLogic, GetLockedItemIds())
+      {
+      }
+
+      internal AutoEquipModel(InventoryLogic inventoryLogic, HashSet<string> lockedItemIds)
       {
          _inventoryLogic = inventoryLogic;
+         _lockedItems = lockedItemIds;
+      }
+
+      private static HashSet<string> GetLockedItemIds()
+      {
          var tracker = Campaign.Current.GetCampaignBehavior<IViewDataTracker>();
-         _lockedItems = new HashSet<string>(tracker.GetInventoryLocks());
+         return new HashSet<string>(tracker.GetInventoryLocks());
       }
 
       private IEnumerable<ItemRosterElement> Items => MobileParty.MainParty.ItemRoster
-         .Where(x => !_lockedItems.Contains(CampaignUIHelper.GetItemLockStringID(x.EquipmentElement)));
+         .Where(x => Main.GameSettings.CanAutoEquipLockedItems
+            || !_lockedItems.Contains(CampaignUIHelper.GetItemLockStringID(x.EquipmentElement)));
 
       public void AutoEquipCompanions(Dictionary<string, CharacterSettings> characterSettings)
       {
@@ -42,20 +52,13 @@ namespace AutoEquipCompanions.Model
                var heroSettings = characterSettings.TryGetValue(hero.StringId, out var setting)
                   ? setting
                   : new CharacterSettings().Initialize();
-               foreach (var (slot, template) in heroSettings.Template.Slots.Where(x => heroSettings[x.Slot]))
+               foreach (var decision in DetermineSlotChanges(hero, heroSettings, Items))
                {
-                  var current = hero.BattleEquipment.GetEquipmentFromSlot(slot);
-                  var replacement = GetBestReplacement(hero, slot, template, current);
-                  if (replacement != null)
-                  {
-                     DoEquip(hero, slot, replacement.Value);
-                     hasUpgraded = true;
-                  }
-                  else if (!current.IsEmpty && !template.IsValidFor(current, slot, hero))
-                  {
-                     DoUnequip(hero, slot, current);
-                     hasUpgraded = true;
-                  }
+                  if (decision.Replacement != null)
+                     DoEquip(hero, decision.Slot, decision.Replacement.Value);
+                  else
+                     DoUnequip(hero, decision.Slot, decision.CurrentToUnequip);
+                  hasUpgraded = true;
                }
             }
             catch (Exception ex)
@@ -73,9 +76,25 @@ namespace AutoEquipCompanions.Model
          }
       }
 
-      private ItemRosterElement? GetBestReplacement(Hero hero, EquipmentIndex slot, ISlotTemplate template, EquipmentElement current)
+      internal IEnumerable<SlotDecision> DetermineSlotChanges(
+         Hero hero, CharacterSettings heroSettings, IEnumerable<ItemRosterElement> itemPool)
       {
-         return Items
+         var candidates = itemPool.ToList();
+         foreach (var (slot, template) in heroSettings.Template.Slots.Where(x => heroSettings[x.Slot]))
+         {
+            var current = hero.BattleEquipment.GetEquipmentFromSlot(slot);
+            var replacement = GetBestReplacement(candidates, hero, slot, template, current);
+            if (replacement != null)
+               yield return SlotDecision.Equip(slot, replacement.Value);
+            else if (!current.IsEmpty && !template.IsValidFor(current, slot, hero))
+               yield return SlotDecision.Unequip(slot, current);
+         }
+      }
+
+      internal ItemRosterElement? GetBestReplacement(
+         IEnumerable<ItemRosterElement> candidates, Hero hero, EquipmentIndex slot, ISlotTemplate template, EquipmentElement current)
+      {
+         return candidates
             .Where(x => template.IsValidFor(x.EquipmentElement, slot, hero))
             .OrderByDescending(x => template.GetScore(x.EquipmentElement))
             .TakeWhile(x => template.IsBetterThan(x.EquipmentElement, current))
@@ -108,5 +127,25 @@ namespace AutoEquipCompanions.Model
                EquipmentIndex.None,
                character.CharacterObject));
       }
+   }
+
+   internal readonly struct SlotDecision
+   {
+      public EquipmentIndex Slot { get; }
+      public ItemRosterElement? Replacement { get; }
+      public EquipmentElement CurrentToUnequip { get; }
+
+      private SlotDecision(EquipmentIndex slot, ItemRosterElement? replacement, EquipmentElement currentToUnequip)
+      {
+         Slot = slot;
+         Replacement = replacement;
+         CurrentToUnequip = currentToUnequip;
+      }
+
+      public static SlotDecision Equip(EquipmentIndex slot, ItemRosterElement replacement) =>
+         new SlotDecision(slot, replacement, default);
+
+      public static SlotDecision Unequip(EquipmentIndex slot, EquipmentElement current) =>
+         new SlotDecision(slot, null, current);
    }
 }

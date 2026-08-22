@@ -5,15 +5,16 @@ namespace AutoEquipCompanions.Model.Saving
 {
    public class GameSettings
    {
-      public bool CanAutoEquipLocked { get; set; } = true;
+      public bool CanAutoEquipLockedItems { get; set; } = false;
       public bool DebugEnabled { get; set; } = false;
       public bool BastardSwordsAreOneHanded { get; set; } = true;
       public bool UseTemplates { get; set; } = false;
 
 
-      public void Load()
+      public void Load() => Load(GetPath());
+
+      public void Load(string path)
       {
-         var path = GetPath();
          if (!File.Exists(path))
             return;
 
@@ -25,9 +26,10 @@ namespace AutoEquipCompanions.Model.Saving
          catch { }
       }
 
-      public void Save()
+      public void Save() => Save(GetPath());
+
+      public void Save(string path)
       {
-         var path = GetPath();
          try
          {
             File.WriteAllText(path, JsonConvert.SerializeObject(this, Formatting.Indented));

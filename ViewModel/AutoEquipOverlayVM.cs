@@ -19,6 +19,7 @@ namespace AutoEquipCompanions.ViewModel
       private readonly Dictionary<string, CharacterSettings> _heroToggles;
       private readonly GauntletInventoryScreen _inventoryScreen;
       private readonly SPInventoryVM _inventoryViewModel;
+      private readonly HeroToggleController _toggles;
 
       public AutoEquipOverlayVM(AutoEquipModel autoEquipModel, GauntletInventoryScreen inventoryScreen)
       {
@@ -30,12 +31,12 @@ namespace AutoEquipCompanions.ViewModel
 
          SettingsToggle = CampaignSettings.SettingsVisible;
          _heroToggles = CampaignSettings.CharacterSettings;
+         _toggles = new HeroToggleController(() => CurrentHero, _heroToggles, _defaultSettings);
          _inventoryViewModel.CharacterList.PropertyChangedWithValue += SelectedCharacterChanged;
          RefreshValues();
       }
 
       private string CurrentHero => _inventoryViewModel?.CharacterList.SelectedItem?.CharacterID;
-      private bool HasCurrentHero => CurrentHero != null;
 
       [DataSourceProperty]
       public HintViewModel SettingsHint { get; private set; } = new HintViewModel
@@ -58,27 +59,8 @@ namespace AutoEquipCompanions.ViewModel
       [DataSourceProperty]
       public bool CharacterToggle
       {
-         get
-         {
-            if (!HasCurrentHero)
-               return true;
-            return !_heroToggles.TryGetValue(CurrentHero, out var value) || value.CharacterToggle;
-         }
-         set
-         {
-            if (!HasCurrentHero)
-               return;
-            if (_heroToggles.ContainsKey(CurrentHero))
-            {
-               _heroToggles[CurrentHero].CharacterToggle = value;
-            }
-            else
-            {
-               var characterSettings = new CharacterSettings().Initialize();
-               characterSettings.CharacterToggle = value;
-               _heroToggles.Add(CurrentHero, characterSettings);
-            }
-         }
+         get => _toggles.CharacterToggle;
+         set => _toggles.CharacterToggle = value;
       }
 
       [DataSourceProperty]
@@ -130,11 +112,7 @@ namespace AutoEquipCompanions.ViewModel
          RefreshValues();
       }
 
-      private bool GetSlotToggle(EquipmentIndex index)
-      {
-         return HasCurrentHero && _heroToggles.TryGetValue(CurrentHero, out var s)
-            ? s[index] : _defaultSettings[index];
-      }
+      private bool GetSlotToggle(EquipmentIndex index) => _toggles.GetSlotToggle(index);
 
       public override sealed void RefreshValues()
       {
@@ -234,26 +212,10 @@ namespace AutoEquipCompanions.ViewModel
          OnPropertyChanged(nameof (Weapon3Toggle));
       }
 
-      private void ToggleEquipment(EquipmentIndex index)
-      {
-         if (!HasCurrentHero)
-            return;
-         if (_heroToggles.TryGetValue(CurrentHero, out var characterSettings))
-         {
-            characterSettings[index] = !characterSettings[index];
-         }
-         else
-         {
-            characterSettings = new CharacterSettings().Initialize();
-            characterSettings[index] = !characterSettings[index];
-            _heroToggles.Add(CurrentHero, characterSettings);
-         }
-      }
+      private void ToggleEquipment(EquipmentIndex index) => _toggles.ToggleEquipment(index);
 
       public void RunAutoEquip()
       {
-         if (!Main.GameSettings.CanAutoEquipLocked)
-            return;
          _autoEquipModel.AutoEquipCompanions(_heroToggles);
          _inventoryViewModel.RefreshValues();
       }

@@ -16,15 +16,32 @@ namespace AutoEquipCompanions.Model.Saving
 
       public static string Save()
       {
-         var characterSettingsJson = new JObject();
-         foreach (var kv in CharacterSettings)
-            characterSettingsJson[kv.Key] = kv.Value.ToJson();
-
-         return new JObject
+         try
          {
-            ["SettingsVisible"] = SettingsVisible,
-            ["CharacterSettings"] = characterSettingsJson
-         }.ToString();
+            var characterSettingsJson = new JObject();
+            foreach (var kv in CharacterSettings)
+            {
+               try
+               {
+                  characterSettingsJson[kv.Key] = kv.Value.ToJson();
+               }
+               catch
+               {
+                  // Skip this hero's entry rather than fail the whole save.
+               }
+            }
+
+            return new JObject
+            {
+               ["SettingsVisible"] = SettingsVisible,
+               ["CharacterSettings"] = characterSettingsJson
+            }.ToString();
+         }
+         catch
+         {
+            // Never let a save-serialization failure escape into the game's save pipeline.
+            return string.Empty;
+         }
       }
 
       public static void Load(string json)
@@ -37,13 +54,23 @@ namespace AutoEquipCompanions.Model.Saving
             var obj = JObject.Parse(json);
             SettingsVisible = obj["SettingsVisible"]?.Value<bool>() ?? true;
 
-            CharacterSettings = new Dictionary<string, CharacterSettings>();
-            var characterSettingsObj = (JObject)obj["CharacterSettings"];
-            if (characterSettingsObj != null)
+            var characterSettings = new Dictionary<string, CharacterSettings>();
+            if (obj["CharacterSettings"] is JObject characterSettingsObj)
             {
                foreach (var prop in characterSettingsObj.Properties())
-                  CharacterSettings[prop.Name] = Saving.CharacterSettings.FromJson((JObject)prop.Value);
+               {
+                  try
+                  {
+                     if (prop.Value is JObject characterObj)
+                        characterSettings[prop.Name] = Saving.CharacterSettings.FromJson(characterObj);
+                  }
+                  catch
+                  {
+                     // Skip this hero's corrupted entry; the rest of the save still loads.
+                  }
+               }
             }
+            CharacterSettings = characterSettings;
          }
          catch
          {

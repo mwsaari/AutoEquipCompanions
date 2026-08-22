@@ -5,10 +5,16 @@
 temp/
 obj/
 /Modules/AutoEquipCompanions/bin/Win64_Shipping_Client
-/packages/Newtonsoft.Json.13.0.1
+/packages/
 /bin
 /.vs
 _publishFiles/
 *.csproj.user
 *.DotSettings
 app.config
+
+# decompiled TaleWorlds reference sources (ilspycmd) -- reference only, not ours to track
+/.tw-decompiled
+
+# local Obsidian design-log vault -- not for git
+/AutoEquipCompanions/
