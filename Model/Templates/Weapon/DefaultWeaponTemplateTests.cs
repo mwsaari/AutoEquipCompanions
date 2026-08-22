@@ -1,0 +1,87 @@
+using AutoEquipCompanions.Model.Templates;
+using AutoEquipCompanions.Model.Templates.Weapon;
+using TaleWorlds.Core;
+using Xunit;
+
+namespace AutoEquipCompanions.Test.Model.Templates.Weapon
+{
+   public class DefaultWeaponTemplateTests
+   {
+      [Theory]
+      [InlineData(ItemObject.ItemTypeEnum.OneHandedWeapon)]
+      [InlineData(ItemObject.ItemTypeEnum.TwoHandedWeapon)]
+      [InlineData(ItemObject.ItemTypeEnum.Polearm)]
+      [InlineData(ItemObject.ItemTypeEnum.Thrown)]
+      [InlineData(ItemObject.ItemTypeEnum.Bow)]
+      [InlineData(ItemObject.ItemTypeEnum.Crossbow)]
+      public void AllowedTypes_ReturnsTrue(ItemObject.ItemTypeEnum type)
+      {
+         var el = Helpers.MakeWeapon(type);
+         var hero = Helpers.MakeHero();
+         Assert.True(DefaultWeaponTemplate.Instance.IsValidFor(el, EquipmentIndex.Weapon0, hero));
+      }
+
+      [Theory]
+      [InlineData(ItemObject.ItemTypeEnum.Arrows)]
+      [InlineData(ItemObject.ItemTypeEnum.Bolts)]
+      [InlineData(ItemObject.ItemTypeEnum.Shield)]
+      public void DisallowedTypes_ReturnsFalse(ItemObject.ItemTypeEnum type)
+      {
+         var item = new ItemObject();
+         item.Type = type;
+         var hero = Helpers.MakeHero();
+         Assert.False(DefaultWeaponTemplate.Instance.IsValidFor(
+            new EquipmentElement(item), EquipmentIndex.Weapon0, hero));
+      }
+
+      [Fact]
+      public void EmptyCandidate_ReturnsFalse()
+      {
+         var hero = Helpers.MakeHero();
+         Assert.False(DefaultWeaponTemplate.Instance.IsValidFor(default, EquipmentIndex.Weapon0, hero));
+      }
+
+      [Fact]
+      public void DifficultyNotMet_ReturnsFalse()
+      {
+         var el = Helpers.MakeWeapon(ItemObject.ItemTypeEnum.OneHandedWeapon,
+            WeaponClass.OneHandedSword, difficulty: 80);
+         var hero = Helpers.MakeHero(oneHandedSkill: 20);
+         Assert.False(DefaultWeaponTemplate.Instance.IsValidFor(el, EquipmentIndex.Weapon0, hero));
+      }
+
+      [Fact]
+      public void TwoHandedDifficulty_OneHandedSkillAlone_ReturnsFalse()
+      {
+         // No bastard-sword exception here: difficulty is gated on the item's own RelevantSkill
+         var el = Helpers.MakeWeapon(ItemObject.ItemTypeEnum.TwoHandedWeapon,
+            WeaponClass.TwoHandedSword, difficulty: 60);
+         var hero = Helpers.MakeHero(oneHandedSkill: 200, twoHandedSkill: 0);
+         Assert.False(DefaultWeaponTemplate.Instance.IsValidFor(el, EquipmentIndex.Weapon0, hero));
+      }
+
+      // ── GetScore ────────────────────────────────────────────────────────────
+
+      [Fact]
+      public void GetScore_ReturnsItemValue()
+      {
+         var el = Helpers.MakeWeapon(ItemObject.ItemTypeEnum.OneHandedWeapon);
+         Assert.Equal(el.ItemValue, DefaultWeaponTemplate.Instance.GetScore(el));
+      }
+
+      // ── IsBetterThan ────────────────────────────────────────────────────────
+
+      [Fact]
+      public void IsBetterThan_EqualScore_ReturnsFalse()
+      {
+         var el = Helpers.MakeWeapon(ItemObject.ItemTypeEnum.OneHandedWeapon);
+         Assert.False(DefaultWeaponTemplate.Instance.IsBetterThan(el, el));
+      }
+
+      [Fact]
+      public void IsBetterThan_BothEmpty_ReturnsFalse()
+      {
+         Assert.False(DefaultWeaponTemplate.Instance.IsBetterThan(default, default));
+      }
+   }
+}

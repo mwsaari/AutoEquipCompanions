@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <!-- Both .csproj files sit in this same directory; without this they'd default to the same
+         shared obj\Debug\ intermediate folder, which is fragile under incremental/IDE builds
+         (Rider) even though sequential CLI builds tolerate it. -->
+    <PropertyGroup>
+        <BaseIntermediateOutputPath>obj\AutoEquipCompanions.Test\</BaseIntermediateOutputPath>
+    </PropertyGroup>
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
             Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
     <PropertyGroup>
@@ -13,6 +19,19 @@
         <AssemblyName>AutoEquipCompanions.Test</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
+    </PropertyGroup>
+    <!-- Linux/mono dev-only: lets MSBuild find .NETFramework v4.8 reference assemblies where no
+         Windows targeting pack is installed (e.g. Rider or `dotnet build` on Linux). Checks both
+         the plain host path and the Flatpak-sandboxed path (Flatpak keeps /usr as the runtime's
+         own, remapping the real host /usr under /run/host/usr, even with full host filesystem
+         access granted) so it resolves whether MSBuild runs directly on the host or inside
+         Rider's Flatpak sandbox. No-op on Windows/Visual Studio since neither path exists there. -->
+    <PropertyGroup>
+        <MonoFrameworkPath Condition="Exists('/usr/lib/mono/4.8-api')">/usr/lib/mono/4.8-api</MonoFrameworkPath>
+        <MonoFrameworkPath Condition="'$(MonoFrameworkPath)' == '' and Exists('/run/host/usr/lib/mono/4.8-api')">/run/host/usr/lib/mono/4.8-api</MonoFrameworkPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(MonoFrameworkPath)' != ''">
+        <FrameworkPathOverride>$(MonoFrameworkPath)</FrameworkPathOverride>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,39 +53,48 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <!-- Linux/mono dev-only: Roslyn (unlike the real .NETFramework targeting pack) needs these
+             facades referenced explicitly to resolve types forwarded from mscorlib/System.*.
+             No-op on Windows/Visual Studio since $(MonoFrameworkPath) is empty there. -->
+        <Reference Include="netstandard" Condition="'$(MonoFrameworkPath)' != ''">
+            <HintPath>$(MonoFrameworkPath)/Facades/netstandard.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Runtime" Condition="'$(MonoFrameworkPath)' != ''">
+            <HintPath>$(MonoFrameworkPath)/Facades/System.Runtime.dll</HintPath>
+        </Reference>
         <Reference Include="System"/>
         <Reference Include="System.Core"/>
         <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-            <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+            <HintPath>packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
         </Reference>
         <Reference Include="System.Data"/>
         <Reference Include="System.Xml"/>
         <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c">
-            <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
+            <HintPath>packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
         </Reference>
         <Reference Include="xunit.assert, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c">
-            <HintPath>..\packages\xunit.assert.2.1.0\lib\dotnet\xunit.assert.dll</HintPath>
+            <HintPath>packages\xunit.assert.2.1.0\lib\dotnet\xunit.assert.dll</HintPath>
         </Reference>
         <Reference Include="xunit.core, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c">
-            <HintPath>..\packages\xunit.extensibility.core.2.1.0\lib\dotnet\xunit.core.dll</HintPath>
+            <HintPath>packages\xunit.extensibility.core.2.1.0\lib\dotnet\xunit.core.dll</HintPath>
         </Reference>
         <Reference Include="xunit.execution.desktop, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c">
-            <HintPath>..\packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
+            <HintPath>packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
         </Reference>
         <Reference Include="TaleWorlds.Core">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Core.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Core.dll</HintPath>
         </Reference>
         <Reference Include="TaleWorlds.CampaignSystem">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.CampaignSystem.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.CampaignSystem.dll</HintPath>
         </Reference>
         <Reference Include="TaleWorlds.Library">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Library.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.Library.dll</HintPath>
         </Reference>
         <Reference Include="TaleWorlds.MountAndBlade">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.MountAndBlade.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.MountAndBlade.dll</HintPath>
         </Reference>
         <Reference Include="TaleWorlds.ObjectSystem">
-            <HintPath>/mnt/ssd2/SteamLibrary/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.ObjectSystem.dll</HintPath>
+            <HintPath>/home/matthewsaari/.local/share/Steam/steamapps/common/Mount &amp; Blade II Bannerlord/bin/Win64_Shipping_Client/TaleWorlds.ObjectSystem.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
@@ -76,24 +104,30 @@
         </ProjectReference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Tests\TestHelpers.cs"/>
-        <Compile Include="Tests\EquipmentIntegrationTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Armor\BaseArmorTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Mount\BaseMountTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Shield\BaseShieldTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Character\CharacterTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Weapon\ExposedWeaponTemplate.cs"/>
-        <Compile Include="Tests\Model\Templates\Weapon\IsBastardSwordTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Weapon\MeetsDifficultyRequirementTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Weapon\IsBetterThanTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Weapon\CouchableLanceTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Weapon\ArrowsTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Weapon\BoltsTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Weapon\DefaultWeaponTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Templates\Weapon\SameTypeWeaponTemplateTests.cs"/>
-        <Compile Include="Tests\Model\Saving\GameSettingsTests.cs"/>
-        <Compile Include="Tests\Model\Saving\CharacterSettingsTests.cs"/>
-        <Compile Include="Tests\Properties\AssemblyInfo.cs"/>
+        <Compile Include="TestSupport\TestHelpers.cs"/>
+        <Compile Include="TestSupport\EquipmentIntegrationTests.cs"/>
+        <Compile Include="TestSupport\AssemblyInfo.cs"/>
+        <Compile Include="Model\Templates\Armor\BaseArmorTemplateTests.cs"/>
+        <Compile Include="Model\Templates\Mount\BaseMountTemplateTests.cs"/>
+        <Compile Include="Model\Templates\Shield\BaseShieldTemplateTests.cs"/>
+        <Compile Include="Model\Templates\Character\CharacterTemplateTests.cs"/>
+        <Compile Include="Model\Templates\Character\CaptainTemplateSlotsTests.cs"/>
+        <Compile Include="Model\Templates\Weapon\Polearm\CouchableLanceTemplateTests.cs"/>
+        <Compile Include="Model\Templates\Weapon\Polearm\MountWeaponTemplateTests.cs"/>
+        <Compile Include="Model\Templates\Weapon\Bow\ArrowsTemplateTests.cs"/>
+        <Compile Include="Model\Templates\Weapon\Crossbow\BoltsTemplateTests.cs"/>
+        <Compile Include="Model\Templates\Weapon\OneHanded\OneHandedWeaponTemplateTests.cs"/>
+        <Compile Include="Model\Templates\Weapon\DefaultWeaponTemplateTests.cs"/>
+        <Compile Include="Model\Templates\Weapon\DeclarativeWeaponTemplatesTests.cs"/>
+        <Compile Include="Model\Templates\Weapon\SameTypeWeaponTemplateTests.cs"/>
+        <Compile Include="Model\Saving\GameSettingsTests.cs"/>
+        <Compile Include="Model\Saving\CharacterSettingsTests.cs"/>
+        <Compile Include="Model\Saving\CampaignSettingsTests.cs"/>
+        <Compile Include="Model\Saving\TemplateRegistryTests.cs"/>
+        <Compile Include="Model\AutoEquipModelTests.cs"/>
+        <Compile Include="Model\HeroToggleControllerTests.cs"/>
+        <Compile Include="ViewModel\TemplateItemVMTests.cs"/>
+        <Compile Include="ViewModel\TemplateDropdownVMTests.cs"/>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
