@@ -1,7 +1,7 @@
 <Module>
     <Name value="Auto Equip Companions"/>
     <Id value="AutoEquipCompanions"/>
-    <Version value="v1.3.15"/>
+    <Version value="v1.4.8"/>
     <SingleplayerModule value="true"/>
     <MultiplayerModule value="false"/>
     <DependedModules>
