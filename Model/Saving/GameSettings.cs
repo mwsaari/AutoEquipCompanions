@@ -7,6 +7,7 @@ namespace AutoEquipCompanions.Model.Saving
    {
       public bool CanAutoEquipLockedItems { get; set; } = false;
       public bool DebugEnabled { get; set; } = false;
+      public bool DumpItemsEnabled { get; set; } = false;
       public bool BastardSwordsAreOneHanded { get; set; } = true;
       public bool UseTemplates { get; set; } = false;
 

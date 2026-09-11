@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEquipCompanions.Model;
@@ -15,8 +16,22 @@ namespace AutoEquipCompanions.Test.Model
    // real InventoryLogic.AddTransferCommand calls, InformationManager messages) stays untested
    // integration surface, same category as TestSupport/EquipmentIntegrationTests.cs. These tests
    // cover the decision logic that was extracted to be independent of those statics/side effects.
-   public class AutoEquipModelTests
+   public class AutoEquipModelTests : IDisposable
    {
+      // DetermineSlotChanges only honors CharacterSettings.Template when UseTemplates is on
+      // (GameSettings.UseTemplates default is false) -- most tests here exercise a custom
+      // per-hero template, so it needs to be on for those; reset afterward so it doesn't leak
+      // into other test classes sharing this static.
+      public AutoEquipModelTests()
+      {
+         Main.GameSettings.UseTemplates = true;
+      }
+
+      public void Dispose()
+      {
+         Main.GameSettings.UseTemplates = false;
+      }
+
       private static AutoEquipModel MakeModel() => new AutoEquipModel(null, new HashSet<string>());
 
       // ── GetBestReplacement ───────────────────────────────────────────────────
@@ -149,6 +164,28 @@ namespace AutoEquipCompanions.Test.Model
          var hero = Helpers.MakeHero();
 
          var decisions = model.DetermineSlotChanges(hero, MakeSettings(), Enumerable.Empty<ItemRosterElement>());
+
+         Assert.Empty(decisions);
+      }
+
+      // ── UseTemplates gating ──────────────────────────────────────────────────
+
+      [Fact]
+      public void DetermineSlotChanges_TemplatesDisabled_IgnoresStoredTemplate_UsesDefault()
+      {
+         // Same setup as DetermineSlotChanges_BetterItemAvailable_ReturnsEquipDecision, where
+         // MakeSettings()'s custom template (Weapon0 -> DefaultWeaponTemplate, no current-item
+         // requirement) yields an equip decision. With UseTemplates off, DetermineSlotChanges
+         // should fall back to CharacterTemplate.Instance instead, whose Weapon0 slot uses
+         // SameTypeWeaponTemplate -- which requires an existing same-type weapon already
+         // equipped, so an empty Weapon0 slot yields no decision at all.
+         Main.GameSettings.UseTemplates = false;
+         var model = MakeModel();
+         var better = Helpers.MakeWeapon(ItemObject.ItemTypeEnum.OneHandedWeapon, value: 90);
+         var hero = Helpers.MakeHero();
+
+         var decisions = model.DetermineSlotChanges(
+            hero, MakeSettings(), new[] { new ItemRosterElement(better, 1) });
 
          Assert.Empty(decisions);
       }

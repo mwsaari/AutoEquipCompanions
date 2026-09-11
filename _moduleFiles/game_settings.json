@@ -1,6 +1,7 @@
 {
   "CanAutoEquipLockedItems": false,
   "DebugEnabled": false,
+  "DumpItemsEnabled": false,
   "BastardSwordsAreOneHanded": true,
   "UseTemplates": false
 }

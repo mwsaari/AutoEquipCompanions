@@ -1,6 +1,8 @@
+using System;
 using AutoEquipCompanions.Model;
 using AutoEquipCompanions.Model.Debug;
 using AutoEquipCompanions.Model.Saving;
+using Logger = AutoEquipCompanions.Model.Debug.Logger;
 using AutoEquipCompanions.ViewModel;
 using SandBox.GauntletUI;
 using TaleWorlds.CampaignSystem;
@@ -21,7 +23,6 @@ namespace AutoEquipCompanions
       private readonly InventoryStateListener _listener;
       private GauntletLayer _overlayLayer;
       private AutoEquipOverlayVM _overlayVM;
-      private AutoEquipOverlayVM_v2 _overlayVMV2;
 
       private SpriteCategory _spriteCategory;
 
@@ -47,31 +48,34 @@ namespace AutoEquipCompanions
          if (screen is not GauntletInventoryScreen inventoryScreen)
             return;
 
-         var inventoryState = Game.Current.GameStateManager.ActiveState as InventoryState;
-         if (inventoryState == null)
-            return;
+         AttachOverlay(inventoryScreen);
+      }
 
-         if (Main.GameSettings.DebugEnabled)
-            ItemDebugLogger.DumpAll(inventoryState.InventoryLogic);
-
-         LoadSprites();
-         var model = new AutoEquipModel(inventoryState.InventoryLogic);
-         _overlayLayer = new GauntletLayer("AutoEquipOverlay", 16);
-         _overlayLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.Mouse);
-
-         var useExperimentalUI = Main.GameSettings.UseTemplates;
-         if (useExperimentalUI)
+      private void AttachOverlay(GauntletInventoryScreen inventoryScreen)
+      {
+         try
          {
-            _overlayVMV2 = new AutoEquipOverlayVM_v2(model, inventoryScreen);
-            _overlayLayer.LoadMovie("AutoEquipOverlay_v2", _overlayVMV2);
-         }
-         else
-         {
+            var inventoryState = Game.Current.GameStateManager.ActiveState as InventoryState;
+            if (inventoryState == null)
+               return;
+
+            if (Main.GameSettings.DumpItemsEnabled)
+               ItemDebugLogger.DumpAll(inventoryState.InventoryLogic);
+
+            LoadSprites();
+            var model = new AutoEquipModel(inventoryState.InventoryLogic);
+
             _overlayVM = new AutoEquipOverlayVM(model, inventoryScreen);
+            _overlayLayer = new OverlayBindLayer("AutoEquipOverlay", 16, _overlayVM);
+            _overlayLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.Mouse);
             _overlayLayer.LoadMovie("AutoEquipOverlay", _overlayVM);
-         }
 
-         inventoryScreen.AddLayer(_overlayLayer);
+            inventoryScreen.AddLayer(_overlayLayer);
+         }
+         catch (Exception ex)
+         {
+            Logger.WriteToTrace($"AttachOverlay: EXCEPTION {ex}");
+         }
       }
 
       private void LoadSprites()
@@ -88,10 +92,23 @@ namespace AutoEquipCompanions
          _overlayVM?.OnExecuteCompleteTransactions();
          _overlayVM?.OnFinalize();
          _overlayVM = null;
-         _overlayVMV2?.OnExecuteCompleteTransactions();
-         _overlayVMV2?.OnFinalize();
-         _overlayVMV2 = null;
          _overlayLayer = null;
+      }
+
+      private sealed class OverlayBindLayer : GauntletLayer
+      {
+         private readonly AutoEquipOverlayVM _vm;
+
+         public OverlayBindLayer(string name, int localOrder, AutoEquipOverlayVM vm) : base(name, localOrder)
+         {
+            _vm = vm;
+         }
+
+         protected override void Tick(float dt)
+         {
+            base.Tick(dt);
+            _vm.TryBindLiveInventoryVM();
+         }
       }
 
       public override void SyncData(IDataStore dataStore)

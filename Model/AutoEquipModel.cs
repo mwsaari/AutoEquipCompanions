@@ -1,5 +1,6 @@
 using AutoEquipCompanions.Model.Saving;
 using AutoEquipCompanions.Model.Templates;
+using AutoEquipCompanions.Model.Templates.Character;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,7 +81,8 @@ namespace AutoEquipCompanions.Model
          Hero hero, CharacterSettings heroSettings, IEnumerable<ItemRosterElement> itemPool)
       {
          var candidates = itemPool.ToList();
-         foreach (var (slot, template) in heroSettings.Template.Slots.Where(x => heroSettings[x.Slot]))
+         var characterTemplate = Main.GameSettings.UseTemplates ? heroSettings.Template : CharacterTemplate.Instance;
+         foreach (var (slot, template) in characterTemplate.Slots.Where(x => heroSettings[x.Slot]))
          {
             var current = hero.BattleEquipment.GetEquipmentFromSlot(slot);
             var replacement = GetBestReplacement(candidates, hero, slot, template, current);

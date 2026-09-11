@@ -12,6 +12,7 @@ _publishFiles/
 *.csproj.user
 *.DotSettings
 app.config
+/.idea
 
 # decompiled TaleWorlds reference sources (ilspycmd) -- reference only, not ours to track
 /.tw-decompiled

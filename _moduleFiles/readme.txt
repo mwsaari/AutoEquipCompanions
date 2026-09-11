@@ -8,17 +8,18 @@ Automatically equips companions with the best available gear when closing the in
 Per-character settings allow you to control which equipment slots are managed for each hero.
 
 :: GAME SETTINGS (game_settings.json) ::
-  CanAutoEquipLockedItems Allow auto equip to replace locked items (default: false)
-  DebugEnabled            Write item debug info to log on inventory open (default: false)
+  CanAutoEquipLockedItems    Allow auto equip to replace locked items (default: false)
+  DebugEnabled               Write step tracing to debug_trace.txt on exceptions (default: false)
+  DumpItemsEnabled           Write full item/hero debug info to debug_items.txt on inventory open (default: false)
   BastardSwordsAreOneHanded  Treat bastard swords as valid for one-handed slots (default: true)
-  ExperimentalUI          Use the v2 overlay with per-character template selection (default: false)
+  UseTemplates               Enable per-character template selection in the overlay (default: false, experimental)
 
 :: FEATURES ::
-- Auto-equips companions on inventory close
+- Auto-equips companions with the best available gear on inventory close
 - Manual trigger button in the inventory screen
-- Per-character template selection (Default, Infantry Captain, Cavalry Captain, etc.)
 - Per-character toggle to enable/disable auto equip
 - Per-slot toggles for armor, weapons, horse, and harness
+- Optional per-character template selection (off by default, see TEMPLATES below)
 - Settings are saved between sessions
 - Configurable behavior via game_settings.json
 
@@ -27,11 +28,12 @@ Open the inventory screen. A button will appear in the top-right area.
 - Left click: manually trigger auto equip
 - Right click: toggle the settings panel
 
-In the settings panel you can select a template for the current character, enable/disable auto equip
-per character, and toggle individual equipment slots.
+In the settings panel you can enable/disable auto equip per character, and toggle individual
+equipment slots.
 
-:: TEMPLATES ::
-Templates control what type of gear each slot looks for when auto-equipping.
+:: TEMPLATES (optional, off by default) ::
+Set UseTemplates to true in game_settings.json to enable a per-character template picker in the
+settings panel. Templates control what type of gear each slot looks for when auto-equipping.
 
   Default
     Armor:   Best available of any armor type for each slot
@@ -79,4 +81,4 @@ Templates control what type of gear each slot looks for when auto-equipping.
     Weapon3: One-handed weapon
 
 :: KNOWN ISSUES ::
-None at the moment but. Templates is a full rewrite though so be safe with save data.
+None at the moment. Templates are experimental and off by default -- enable at your own risk.

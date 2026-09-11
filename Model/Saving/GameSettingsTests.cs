@@ -19,13 +19,14 @@ namespace AutoEquipCompanions.Test.Model.Saving
       public void Load_ValidJson_PopulatesFields()
       {
          File.WriteAllText(_path,
-            "{\"CanAutoEquipLockedItems\":true,\"DebugEnabled\":true,\"BastardSwordsAreOneHanded\":false,\"UseTemplates\":true}");
+            "{\"CanAutoEquipLockedItems\":true,\"DebugEnabled\":true,\"DumpItemsEnabled\":true,\"BastardSwordsAreOneHanded\":false,\"UseTemplates\":true}");
 
          var settings = new GameSettings();
          settings.Load(_path);
 
          Assert.True(settings.CanAutoEquipLockedItems);
          Assert.True(settings.DebugEnabled);
+         Assert.True(settings.DumpItemsEnabled);
          Assert.False(settings.BastardSwordsAreOneHanded);
          Assert.True(settings.UseTemplates);
       }
@@ -40,6 +41,7 @@ namespace AutoEquipCompanions.Test.Model.Saving
 
          Assert.False(settings.CanAutoEquipLockedItems);
          Assert.False(settings.DebugEnabled);
+         Assert.False(settings.DumpItemsEnabled);
          Assert.True(settings.BastardSwordsAreOneHanded);
          Assert.False(settings.UseTemplates);
       }
@@ -74,6 +76,7 @@ namespace AutoEquipCompanions.Test.Model.Saving
          {
             CanAutoEquipLockedItems = true,
             DebugEnabled = true,
+            DumpItemsEnabled = true,
             BastardSwordsAreOneHanded = false,
             UseTemplates = true
          };
@@ -84,6 +87,7 @@ namespace AutoEquipCompanions.Test.Model.Saving
 
          Assert.Equal(original.CanAutoEquipLockedItems, loaded.CanAutoEquipLockedItems);
          Assert.Equal(original.DebugEnabled, loaded.DebugEnabled);
+         Assert.Equal(original.DumpItemsEnabled, loaded.DumpItemsEnabled);
          Assert.Equal(original.BastardSwordsAreOneHanded, loaded.BastardSwordsAreOneHanded);
          Assert.Equal(original.UseTemplates, loaded.UseTemplates);
       }

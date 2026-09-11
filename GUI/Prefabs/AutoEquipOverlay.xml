@@ -59,6 +59,31 @@
                                       MarginTop="15"
                                       MarginRight="140"/>
 
+                        <ButtonWidget Id="DebugToggleTemplatesButton"
+                                      IsVisible="@DebugModeEnabled"
+                                      Command.Click="ToggleTemplatesMode"
+                                      SuggestedWidth="150"
+                                      SuggestedHeight="35"
+                                      MarginTop="640"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Top"
+                                      DoNotPassEventsToChildren="true"
+                                      Brush="Header.Tab.Center"
+                                      WidthSizePolicy="Fixed"
+                                      HeightSizePolicy="Fixed">
+                            <Children>
+                                <TextWidget Text="@TemplatesModeButtonText"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Brush="Party.Text.UpgradeAmount"
+                                            Brush.FontSize="18"
+                                            Brush.TextHorizontalAlignment="Center"
+                                            Brush.TextVerticalAlignment="Center"
+                                            WidthSizePolicy="CoverChildren"
+                                            HeightSizePolicy="Fixed"/>
+                            </Children>
+                        </ButtonWidget>
+
                         <ButtonWidget Id="CharacterToggleButton"
                                       Command.Click="ToggleCharacter"
                                       IsSelected="@CharacterToggle"
@@ -86,6 +111,33 @@
                                             Command.HoverEnd="ExecuteEndHint"/>
                             </Children>
                         </ButtonWidget>
+
+                        <Widget IsVisible="@TemplatesEnabled"
+                                DoNotAcceptEvents="true"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                MarginTop="755"
+                                WidthSizePolicy="Fixed"
+                                SuggestedWidth="200"
+                                HeightSizePolicy="CoverChildren">
+                            <Children>
+                                <Widget IsVisible="@CharacterToggle"
+                                        DoNotAcceptEvents="true"
+                                        WidthSizePolicy="StretchToParent"
+                                        HeightSizePolicy="CoverChildren">
+                                    <Children>
+                                        <Widget DataSource="{TemplateDropdown}"
+                                                DoNotAcceptEvents="true"
+                                                WidthSizePolicy="StretchToParent"
+                                                HeightSizePolicy="CoverChildren">
+                                            <Children>
+                                                <AEC.TemplateDropdown/>
+                                            </Children>
+                                        </Widget>
+                                    </Children>
+                                </Widget>
+                            </Children>
+                        </Widget>
 
                         <Widget Id="EquipmentToggles"
                                 IsVisible="@CharacterToggle"
