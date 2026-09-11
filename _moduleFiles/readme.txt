@@ -1,7 +1,7 @@
 # Auto Equip Companions
 
 :: REQUIREMENTS ::
-Mount & Blade II: Bannerlord v1.3.15+
+Mount & Blade II: Bannerlord v1.4.8+
 
 :: DESCRIPTION ::
 Automatically equips companions with the best available gear when closing the inventory screen.
